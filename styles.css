@@ -137,3 +137,41 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
  .carousel-prev{left:2vw}.carousel-next{right:2vw}
 }
 @media(prefers-reduced-motion:reduce){.ecosystem-track{scroll-behavior:auto}.ecosystem-track .ecosystem-feature,.carousel-arrow,.carousel-progress i{transition:none}}
+
+
+/* Pak Wahyu: use the approved hero artwork; preserve the glass header and card carousel. */
+.hero{
+  background-color:#03101f;
+  background-image:
+    linear-gradient(90deg,rgba(2,10,22,.90) 0%,rgba(2,13,27,.70) 31%,rgba(2,13,27,.16) 63%,rgba(2,10,22,.08) 100%),
+    linear-gradient(0deg,rgba(2,10,22,.48),transparent 32%),
+    url("https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/hero%20yuosant.png");
+  background-size:cover,cover,cover;
+  background-position:center,center,center;
+  background-repeat:no-repeat;
+}
+.hero-art{display:none!important}
+.hero-grid{display:none!important}
+.hero-glow{display:none!important}
+.hero-content{max-width:min(48%,650px)}
+@media(max-width:900px){
+  .hero{
+    background-image:
+      linear-gradient(180deg,rgba(2,10,22,.22) 0%,rgba(2,10,22,.18) 38%,rgba(2,10,22,.46) 70%,rgba(2,10,22,.72) 100%),
+      linear-gradient(90deg,rgba(2,10,22,.58),rgba(2,10,22,.03) 100%),
+      url("https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/hero%20yuosant.png");
+    background-position:center,center,58% center;
+  }
+  .hero-content{max-width:78%}
+}
+@media(max-width:620px){
+  .hero{
+    background-image:
+      linear-gradient(180deg,rgba(2,10,22,.20) 0%,rgba(2,10,22,.12) 36%,rgba(2,10,22,.38) 63%,rgba(2,10,22,.74) 100%),
+      linear-gradient(90deg,rgba(2,10,22,.46),rgba(2,10,22,.02) 100%),
+      url("https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/hero%20yuosant.png");
+    background-position:center,center,58% center;
+    min-height:100svh;
+  }
+  .hero-content{max-width:100%;padding-bottom:clamp(280px,42vh,390px)}
+}
