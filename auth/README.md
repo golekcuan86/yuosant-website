@@ -10,7 +10,8 @@
 - Pendaftaran dengan nama, email, dan kata sandi.
 - Verifikasi email melalui Supabase Auth.
 - Login, logout, dan pemulihan kata sandi.
-- Dashboard dasar yang menampilkan status permintaan akses Yuosant AI dan Yuosant FinLab.
+- Dashboard pengguna yang menampilkan status permintaan akses Yuosant AI dan Yuosant FinLab.
+- Dashboard Super Admin pada auth/admin.html untuk melihat akun, memproses permintaan, dan menangguhkan/mengaktifkan akun.
 - Pengajuan akses per layanan. Pendaftaran tidak otomatis memberi akses.
 
 ## Database dan keamanan
@@ -24,17 +25,20 @@
 
 ## Edge Functions yang sudah di-deploy
 - manage-service-access: menyetujui, menolak, mencabut akses, menangguhkan, dan mengaktifkan kembali akun. Memerlukan JWT admin dengan app_metadata.role = super_admin.
+- admin-list-access-requests: mengambil daftar akun dan permintaan untuk dashboard admin. Memeriksa sesi dan role super_admin di server; hanya mengirim data ringkas yang diperlukan.
 - check-service-access: memeriksa status akun dan persetujuan akses. Setiap backend layanan harus memanggil pemeriksaan ini dengan access token pengguna sebelum memberikan akses.
 - Sumber fungsi ada di supabase/functions/.
 - Fungsi memakai secret bawaan environment Supabase di server. Jangan pernah menyalin service-role key ke frontend.
 - Audit log sengaja tidak memiliki policy untuk browser; hanya operasi server tepercaya yang dapat menulisnya.
 
-## Belum selesai sebelum uji pengguna
-1. Tetapkan akun pertama sebagai super admin melalui proses tepercaya setelah email admin ditentukan dan akun dibuat. Jangan pernah memberi role admin dari metadata pendaftaran pengguna.
-2. Atur Auth Site URL dan Redirect URLs untuk URL preview/development yang benar, termasuk halaman /auth/index.html dan /auth/reset.html.
-3. Pastikan SMTP pengiriman email terkonfigurasi dan uji email verifikasi serta reset. Email layanan bawaan Supabase memiliki batas pengiriman.
-4. Uji end-to-end: daftar, verifikasi, login, logout, reset password, pengajuan akses, keputusan admin, penolakan pengguna non-admin, dan pemeriksaan entitlement.
-5. Integrasikan check-service-access ke backend Yuosant AI dan FinLab. Sampai integrasi itu selesai, portal ini belum menjadi gerbang keamanan layanan.
+## Status dan pengujian lanjutan
+- Akun awal `golekcuan86@gmail.com` sudah terverifikasi dan role `super_admin` sudah ditetapkan pada app_metadata melalui proses backend tepercaya.
+- Auth Site URL dan Redirect URL preview sudah diatur agar tautan verifikasi tidak jatuh ke localhost.
+- Halaman login sudah berhasil diuji secara manual oleh pemilik akun.
+- Dashboard admin dan fungsi daftar akses sudah dibuat/deploy di lingkungan Yuosant ID; pengujian interaksi admin dengan data pengguna kedua masih perlu dilakukan.
+- Pastikan SMTP email dan pemulihan password diuji secara terpisah. Email layanan bawaan Supabase memiliki batas pengiriman.
+- Uji end-to-end: logout/login untuk memperbarui JWT, pemuatan antrean admin, keputusan approve/reject/revoke, penolakan pengguna non-admin, dan audit log.
+- Integrasikan check-service-access ke backend Yuosant AI dan FinLab. Sampai integrasi itu selesai, portal ini belum menjadi gerbang keamanan layanan.
 
 ## Cara cek akses
 Panggil Edge Function check-service-access dengan bearer access token pengguna dan service_key=yuosant_ai atau yuosant_finlab. Backend layanan harus menolak akses jika hasil allowed bukan true.
