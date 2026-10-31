@@ -213,3 +213,6 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
  .hero::after{background:radial-gradient(circle at 54% 76%,rgba(0,220,255,.3) 0,rgba(0,170,255,.15) 10%,rgba(0,120,255,.05) 21%,transparent 33%)}
 }
 @media(prefers-reduced-motion:reduce){.hero::after{animation:none!important}.dropdown-chevron,.nav-submenu,.nav-submenu a{transition:none!important}}
+
+/* Keep the hover path continuous between the trigger and submenu. */
+@media(min-width:621px){.nav-submenu{top:100%;padding:16px 9px 9px}}
