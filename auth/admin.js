@@ -7,6 +7,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
 const $ = (selector) => document.querySelector(selector);
 let profiles = [];
 let accessRows = [];
+let auditRows = [];
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -44,6 +45,7 @@ async function loadDashboard() {
     if (!data?.success) throw new Error(data?.error || "Data administrasi gagal dimuat.");
     profiles = data.profiles || [];
     accessRows = data.access || [];
+    auditRows = data.audit || [];
     render();
   } catch (error) {
     notify(error.message || "Terjadi kesalahan saat memuat dashboard.", true);
@@ -84,6 +86,18 @@ function render() {
         : '<span class="pill">Nonaktif</span>';
     return '<article class="admin-card"><div class="admin-card-head"><strong>' + escapeHtml(profile.display_name || "Tanpa nama") + '<br><span class="meta">' + escapeHtml(profile.email || profile.auth_user_id) + '</span></strong><span class="pill">' + labelStatus(profile.account_status) + '</span></div><p class="meta">Terdaftar ' + dateLabel(profile.created_at) + '</p><div class="actions">' + action + '</div></article>';
   }).join("") : '<div class="empty">Belum ada akun.</div>';
+  $("#audit").innerHTML = auditRows.length ? auditRows.map((row) => {
+    const actor = profiles.find((item) => item.auth_user_id === row.actor_auth_user_id) || {};
+    const target = profiles.find((item) => item.auth_user_id === row.target_auth_user_id) || {};
+    const actionLabel = ({
+      approve_access: "Menyetujui akses", reject_access: "Menolak akses",
+      revoke_access: "Mencabut akses", suspend_account: "Menangguhkan akun",
+      reactivate_account: "Mengaktifkan akun"
+    })[row.action] || row.action;
+    const service = row.service_key === "yuosant_ai" ? "Yuosant AI" : row.service_key === "yuosant_finlab" ? "Yuosant FinLab" : "Akun";
+    return '<article class="admin-card"><strong>' + escapeHtml(actionLabel) + ' · ' + service + '</strong><p class="meta">Oleh: ' + escapeHtml(actor.email || row.actor_auth_user_id) + '<br>Target: ' + escapeHtml(target.email || row.target_auth_user_id) + '<br>' + dateLabel(row.created_at) + (row.reason ? '<br>Alasan: ' + escapeHtml(row.reason) : '') + '</p></article>';
+  }).join("") : '<div class="empty">Belum ada riwayat keputusan admin.</div>';
+
 }
 
 async function performAction(button) {
