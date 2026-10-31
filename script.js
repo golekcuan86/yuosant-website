@@ -76,3 +76,31 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
  window.addEventListener('resize', update, {passive:true});
  update();
 })();
+
+
+// Ecosystem dropdown: click/tap toggle with outside-click and Escape support.
+(() => {
+  const dropdown = document.querySelector('.nav-dropdown');
+  const button = document.querySelector('.nav-dropdown-toggle');
+  if (!dropdown || !button) return;
+  const setOpen = (open) => {
+    dropdown.classList.toggle('open', open);
+    button.setAttribute('aria-expanded', String(open));
+  };
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    setOpen(!dropdown.classList.contains('open'));
+  });
+  document.addEventListener('click', (event) => {
+    if (!dropdown.contains(event.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      setOpen(false);
+      button.focus();
+    }
+  });
+  dropdown.querySelectorAll('.nav-submenu a').forEach((link) => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+})();
