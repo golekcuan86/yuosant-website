@@ -564,3 +564,114 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
  .ecosystem-track .ecosystem-feature .feature-copy>p:not(.feature-kicker){font-size:.8rem;}
 }
 @media(prefers-reduced-motion:reduce){.ecosystem-track .ecosystem-feature .feature-image{transform:none!important;}}
+
+
+/* MOBILE CAROUSEL HOTFIX — prevent overlapping/ghosted card copy on narrow screens.
+   Keep the artwork in its own upper panel and give live text an opaque, stable lower panel. */
+@media (max-width: 620px) {
+  .ecosystem-track {
+    perspective: none;
+    transform-style: flat;
+    overflow-y: hidden;
+    padding-top: 26px;
+    padding-bottom: 34px;
+  }
+  .ecosystem-track .ecosystem-feature {
+    position: relative;
+    flex: 0 0 86vw;
+    height: 470px;
+    overflow: hidden;
+    transform: none !important;
+    filter: none !important;
+    opacity: .34;
+    z-index: 1;
+    backface-visibility: visible;
+    isolation: isolate;
+  }
+  .ecosystem-track .ecosystem-feature.is-active {
+    transform: none !important;
+    opacity: 1;
+    z-index: 5;
+  }
+  .ecosystem-track .ecosystem-feature.is-prev,
+  .ecosystem-track .ecosystem-feature.is-next {
+    transform: none !important;
+    opacity: .34;
+    z-index: 1;
+  }
+  .ecosystem-track .ecosystem-feature .feature-visual.feature-image-wrap {
+    inset: 0 0 auto 0 !important;
+    height: 43% !important;
+    min-height: 0 !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    overflow: hidden;
+  }
+  .ecosystem-track .ecosystem-feature .feature-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 12%;
+    transform: none !important;
+  }
+  .ecosystem-track .ecosystem-feature:before {
+    background: linear-gradient(180deg, transparent 0%, transparent 30%, rgba(3,14,27,.24) 40%, #06111f 48%, #06111f 100%) !important;
+    z-index: 1;
+  }
+  .ecosystem-track .ecosystem-feature .feature-copy {
+    position: absolute !important;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 59%;
+    margin: 0 !important;
+    padding: 20px 22px 28px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: linear-gradient(180deg, rgba(6,17,31,.96), #06111f 22%) !important;
+    z-index: 3;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .ecosystem-track .ecosystem-feature .feature-kicker {
+    margin: 0 0 10px !important;
+    line-height: 1.35;
+    font-size: .58rem;
+  }
+  .ecosystem-track .ecosystem-feature .feature-copy h3 {
+    margin: 0 0 10px !important;
+    font-size: clamp(2rem, 8.2vw, 2.45rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.045em;
+    text-shadow: none !important;
+  }
+  .ecosystem-track .ecosystem-feature .feature-copy > p:not(.feature-kicker) {
+    margin: 0 !important;
+    font-size: .82rem !important;
+    line-height: 1.5 !important;
+    max-width: 34ch;
+    color: #d9e8f0;
+    text-shadow: none !important;
+  }
+  .ecosystem-track .ecosystem-feature .feature-cta {
+    margin-top: 14px !important;
+    font-size: .76rem;
+  }
+  .ecosystem-track .ecosystem-feature .feature-number {
+    top: 15px !important;
+    left: 15px !important;
+    z-index: 4;
+  }
+  .ecosystem-track .ecosystem-feature:after {
+    right: 17px;
+    bottom: 17px;
+    z-index: 5;
+  }
+  .carousel-arrow { top: 35% !important; }
+}
+@media (max-width: 380px) {
+  .ecosystem-track .ecosystem-feature { height: 450px; flex-basis: 88vw; }
+  .ecosystem-track .ecosystem-feature .feature-copy { padding: 17px 18px 24px !important; }
+  .ecosystem-track .ecosystem-feature .feature-copy > p:not(.feature-kicker) { font-size: .79rem !important; }
+}
