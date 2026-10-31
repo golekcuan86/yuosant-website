@@ -143,6 +143,7 @@ async function renderSession() {
   }[states[key]] || "Belum mengajukan akses");
   document.querySelector(".panel").innerHTML = `
     <div class="notice">Berhasil masuk sebagai ${escapeHtml(user.email || "")}</div>
+    ${user.app_metadata?.role === "super_admin" ? '<p><a class="text-button" href="./admin.html">Buka Dashboard Super Admin →</a></p>' : ""}
     <h2>Dashboard Yuosant ID</h2>
     <p class="muted">Akun Anda terverifikasi. Hak akses layanan tetap memerlukan persetujuan admin.</p>
     <div class="access-row"><strong>Yuosant AI</strong><span>${statusLabel("yuosant_ai")}</span><button data-request="yuosant_ai">Minta akses</button></div>
