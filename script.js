@@ -62,7 +62,11 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
      if (d < distance) { distance = d; nearest = i; }
    });
    active = nearest;
-   cards.forEach((card, i) => card.classList.toggle('is-active', i === active));
+   cards.forEach((card, i) => {
+     card.classList.toggle('is-active', i === active);
+     card.classList.toggle('is-prev', i === (active - 1 + cards.length) % cards.length);
+     card.classList.toggle('is-next', i === (active + 1) % cards.length);
+   });
    if (current) current.textContent = String(active + 1).padStart(2, '0');
    if (progress) progress.style.width = ((active + 1) / cards.length * 100) + '%';
  };
