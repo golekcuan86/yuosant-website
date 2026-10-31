@@ -163,10 +163,9 @@ async function requestAccess(serviceKey) {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user?.email_confirmed_at) throw new Error("Verifikasi email diperlukan sebelum meminta akses.");
-    const { error } = await supabase.from("yuosant_service_access").upsert({
-      auth_user_id: user.id, service_key: serviceKey, request_status: "pending",
-      requested_at: new Date().toISOString(), decided_at: null, decided_by: null, decision_reason: null
-    }, { onConflict: "auth_user_id,service_key" });
+    const { error } = await supabase.from("yuosant_service_access").insert({
+      auth_user_id: user.id, service_key: serviceKey, request_status: "pending"
+    });
     if (error) throw error;
     showNotice("Permintaan akses dikirim. Akses belum aktif sampai admin menyetujuinya.");
     await renderSession();
