@@ -27,3 +27,52 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 @media(max-width:900px){.portal{width:clamp(250px,52vw,390px);left:55%;top:47%}}
 @media(max-width:620px){.portal{width:clamp(230px,68vw,320px);left:54%;top:44%}}
 @media(prefers-reduced-motion:reduce){.portal{animation:none}}
+
+/* Stage A: cinematic crystal hero, original logo overlay, restrained motion */
+.site-header{position:fixed;top:12px;left:4.5%;right:4.5%;width:91%;padding:12px 28px;border:1px solid rgba(121,220,255,.48);border-radius:22px;background:rgba(4,23,43,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 34px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.12)}
+.site-header.is-scrolled{top:8px;padding-top:10px;padding-bottom:10px;background:rgba(4,19,34,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.hero{position:relative;display:block;min-height:100svh;min-height:max(760px,100svh);padding:clamp(145px,18vh,190px) 6vw 105px;overflow:hidden;background:#03101f;isolation:isolate}
+.hero-grid{z-index:0;opacity:.08;mask-image:linear-gradient(90deg,#000,transparent 70%)}
+.hero-glow{z-index:0}
+.hero-content{z-index:5;max-width:min(48%,650px);padding-bottom:60px}
+.hero h1{font-size:clamp(3.5rem,6.4vw,7rem)}
+.hero-copy{color:#d1e2ec;text-shadow:0 2px 18px #00101f}
+.hero-art{z-index:1;position:absolute;inset:0;width:100%;height:100%;overflow:hidden;opacity:1;pointer-events:none}
+.hero-art:before{z-index:4;background:linear-gradient(90deg,#03101ff5 0%,#03101fc9 27%,#03101f22 55%,transparent 100%),linear-gradient(0deg,#03101fd9 0%,transparent 23%,transparent 82%,#03101f55 100%)}
+.portal{position:absolute;left:70%;top:52%;width:clamp(520px,66vw,1040px);max-width:none;aspect-ratio:720/760;transform:translate(-50%,-50%);z-index:2;animation:crystal-drift 9s ease-in-out infinite;filter:drop-shadow(0 18px 38px #00101f99)}
+.portal .crystal-asset{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 25px #00cfff48)}
+.portal-original-logo{position:absolute;z-index:5;left:50%;top:48%;width:27.5%;height:auto;aspect-ratio:1;object-fit:contain;transform:translate(-50%,-50%);border-radius:50%;filter:drop-shadow(0 0 18px #00cfff88)}
+.art-orbit{z-index:1}
+.hero-art .mountain,.hero-art .figure,.hero-art .art-coordinate,.hero-art .art-caption{z-index:3}
+.scroll-cue{z-index:6}
+.hero-footnote{margin-top:50px}
+@keyframes crystal-light-sweep{0%,100%{filter:drop-shadow(0 0 18px #00cfff22) brightness(1)}50%{filter:drop-shadow(0 0 34px #00cfff66) brightness(1.07)}}
+.portal .crystal-asset{animation:crystal-light-sweep 7s ease-in-out infinite}
+@media(max-width:900px){
+ .site-header{left:3%;right:3%;width:94%;padding:11px 16px;border-radius:17px}
+ .hero{min-height:100svh;padding:135px 6vw 95px}
+ .hero-content{max-width:78%;padding-bottom:300px}
+ .hero h1{font-size:clamp(3.3rem,10vw,6rem)}
+ .hero-art{height:100%;width:100%;bottom:auto;top:0;opacity:1}
+ .hero-art:before{background:linear-gradient(90deg,#03101fe8 0%,#03101fa6 40%,#03101f15 100%),linear-gradient(0deg,#03101fd9 0%,transparent 28%,transparent 80%,#03101f55 100%)}
+ .portal{width:clamp(500px,88vw,820px);left:70%;top:65%}
+ .hero-art .art-orbit{left:70%;top:62%}
+ .orbit-one{width:80vw;height:80vw}.orbit-two{width:72vw;height:72vw}.orbit-three{width:61vw;height:61vw}
+}
+@media(max-width:620px){
+ .site-header{top:8px;left:3%;right:3%;width:94%;padding:9px 12px;background:rgba(4,23,43,.52);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+ .site-header.is-scrolled{top:6px;padding-top:8px;padding-bottom:8px}
+ .hero{min-height:100svh;padding:125px 6vw 85px}
+ .hero-content{max-width:100%;padding-bottom:clamp(280px,42vh,390px)}
+ .hero h1{font-size:clamp(3.05rem,12.4vw,4.7rem);max-width:95%;text-shadow:0 3px 24px #00101f}
+ .hero-copy{font-size:.91rem;max-width:95%;line-height:1.65}
+ .hero-footnote{font-size:.47rem;margin-top:28px}
+ .hero-art{height:100%;width:100%;right:auto;bottom:auto;top:0;opacity:1}
+ .hero-art:before{background:linear-gradient(180deg,#03101f4a 0%,#03101f20 33%,#03101f2a 57%,#03101fd9 100%),linear-gradient(90deg,#03101fbd 0%,transparent 100%)}
+ .portal{width:clamp(410px,112vw,620px);left:66%;top:72%}
+ .portal-original-logo{width:27.5%}
+ .hero-art .art-orbit{left:66%;top:70%}
+ .orbit-one{width:95vw;height:95vw}.orbit-two{width:84vw;height:84vw}.orbit-three{width:70vw;height:70vw}
+ .scroll-cue{bottom:18px}
+}
+@media(prefers-reduced-motion:reduce){.portal,.portal .crystal-asset{animation:none!important}}
