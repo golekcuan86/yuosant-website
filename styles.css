@@ -102,3 +102,38 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
  .portal-original-logo{width:27.5%}
 }
 @media(prefers-reduced-motion:reduce){.hero-glow{animation:none}}
+
+
+/* Horizontal cinematic coverflow for the four ecosystem destinations */
+.ecosystem-carousel{position:relative;padding:8px 0 54px;overflow:hidden}
+.ecosystem-track{display:flex;gap:24px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:24px max(7vw,calc((100vw - 1180px)/2)) 34px;scrollbar-width:none;perspective:1400px}
+.ecosystem-track::-webkit-scrollbar{display:none}
+.ecosystem-track .ecosystem-feature{flex:0 0 min(76vw,930px);width:min(76vw,930px);min-width:0;min-height:500px;margin:0;border-radius:28px;overflow:hidden;scroll-snap-align:center;transform:scale(.91) rotateY(-5deg);transform-origin:center center;transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s,filter .55s;opacity:.68;filter:saturate(.78);box-shadow:0 25px 70px #00101f42}
+.ecosystem-track .ecosystem-feature.is-active{transform:scale(1) rotateY(0);opacity:1;filter:saturate(1);box-shadow:0 30px 90px #00101f66,0 0 0 1px #63e6ff25}
+.ecosystem-track .ecosystem-feature .feature-visual{height:100%;min-height:310px}
+.ecosystem-track .ecosystem-feature .feature-copy{padding:24px 0}
+.carousel-arrow{position:absolute;z-index:10;top:43%;width:48px;height:48px;display:grid;place-items:center;border:1px solid #83eaff80;border-radius:50%;background:#061a2bd9;color:#eafaff;font-size:1.35rem;cursor:pointer;backdrop-filter:blur(12px);transition:background .2s,transform .2s,opacity .2s}
+.carousel-arrow:hover{background:#00cfe9;color:#03111e;transform:scale(1.08)}
+.carousel-prev{left:3.2%}.carousel-next{right:3.2%}
+.carousel-status{display:flex;align-items:center;justify-content:center;gap:12px;color:#6d8b9b;font-size:.65rem;letter-spacing:.15em}
+.carousel-current{color:#10cfe8}
+.carousel-progress{display:block;width:min(160px,28vw);height:2px;background:#19394b;overflow:hidden}
+.carousel-progress i{display:block;width:25%;height:100%;background:#2edff5;transition:width .35s}
+@media(max-width:900px){
+ .ecosystem-track{gap:16px;padding:16px 7vw 28px}
+ .ecosystem-track .ecosystem-feature{flex-basis:84vw;width:84vw;min-height:440px;transform:scale(.94) rotateY(-2deg)}
+ .ecosystem-track .ecosystem-feature .feature-visual{min-height:230px}
+ .carousel-arrow{top:40%;width:42px;height:42px}
+ .carousel-prev{left:3vw}.carousel-next{right:3vw}
+}
+@media(max-width:620px){
+ .ecosystem-carousel{padding-top:0}
+ .ecosystem-track{gap:14px;padding:14px 6vw 25px}
+ .ecosystem-track .ecosystem-feature{flex-basis:86vw;width:86vw;min-height:0;padding:54px 6vw 30px;border-radius:22px;transform:scale(.96);display:grid;grid-template-columns:1fr;gap:8px}
+ .ecosystem-track .ecosystem-feature .feature-visual{height:210px;min-height:210px;max-width:none;grid-row:1;margin:0 auto 8px}
+ .ecosystem-track .ecosystem-feature .feature-copy{grid-row:2;padding:0 0 12px}
+ .ecosystem-track .ecosystem-feature .feature-copy h3{font-size:2.6rem}
+ .carousel-arrow{top:34%;width:38px;height:38px;font-size:1.1rem}
+ .carousel-prev{left:2vw}.carousel-next{right:2vw}
+}
+@media(prefers-reduced-motion:reduce){.ecosystem-track{scroll-behavior:auto}.ecosystem-track .ecosystem-feature,.carousel-arrow,.carousel-progress i{transition:none}}
