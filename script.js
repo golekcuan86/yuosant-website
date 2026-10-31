@@ -104,3 +104,39 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
     link.addEventListener('click', () => setOpen(false));
   });
 })();
+
+
+// Living Crystal: subtle desktop parallax for the background artwork and its light field.
+// The supplied image remains unchanged; motion is deliberately small and disabled for reduced-motion users.
+(() => {
+  const hero = document.querySelector('.hero');
+  if (!hero || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let frame = 0;
+  let targetX = 0, targetY = 0;
+  let currentX = 0, currentY = 0;
+
+  const onMove = (event) => {
+    const bounds = hero.getBoundingClientRect();
+    targetX = ((event.clientX - bounds.left) / bounds.width - 0.5) * -12;
+    targetY = ((event.clientY - bounds.top) / bounds.height - 0.5) * -8;
+    if (!frame) frame = requestAnimationFrame(tick);
+  };
+  const tick = () => {
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
+    hero.style.setProperty('--crystal-parallax-x', currentX.toFixed(2) + 'px');
+    hero.style.setProperty('--crystal-parallax-y', currentY.toFixed(2) + 'px');
+    if (Math.abs(targetX-currentX) > 0.08 || Math.abs(targetY-currentY) > 0.08) {
+      frame = requestAnimationFrame(tick);
+    } else {
+      frame = 0;
+    }
+  };
+  hero.addEventListener('pointermove', onMove, { passive: true });
+  hero.addEventListener('pointerleave', () => {
+    targetX = 0; targetY = 0;
+    if (!frame) frame = requestAnimationFrame(tick);
+  }, { passive: true });
+})();
