@@ -41,15 +41,14 @@ alter table public.yuosant_profiles enable row level security;
 alter table public.yuosant_service_access enable row level security;
 alter table public.yuosant_admin_audit_log enable row level security;
 
--- Users can read/update their own limited profile. Never permit account_status changes by client.
+-- Users can read their own profile. Profile edits should be added with column-level grants
+-- or a trusted server function so account_status cannot be changed by the client.
 create policy "profile read own" on public.yuosant_profiles
   for select to authenticated using (auth.uid() = auth_user_id);
 create policy "profile insert own" on public.yuosant_profiles
   for insert to authenticated with check (auth.uid() = auth_user_id and account_status = 'active');
-create policy "profile update own" on public.yuosant_profiles
-  for update to authenticated using (auth.uid() = auth_user_id) with check (auth.uid() = auth_user_id);
-
 -- Users may see their own service requests and submit a pending request.
+-- Existing requests cannot be reset by users; an admin must decide rejected/revoked requests.
 create policy "access read own" on public.yuosant_service_access
   for select to authenticated using (auth.uid() = auth_user_id);
 create policy "access request own" on public.yuosant_service_access
