@@ -76,3 +76,29 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
  .scroll-cue{bottom:18px}
 }
 @media(prefers-reduced-motion:reduce){.portal,.portal .crystal-asset{animation:none!important}}
+
+
+/* Full-bleed cinematic background asset + restrained CSS atmosphere */
+.hero{
+ background-color:#03101f;
+ background-image:linear-gradient(90deg,rgba(2,10,22,.93) 0%,rgba(2,13,27,.72) 34%,rgba(2,13,27,.18) 68%,rgba(2,10,22,.18) 100%),linear-gradient(0deg,rgba(2,10,22,.52),transparent 34%),url('/assets/yuosant-hero-background.svg');
+ background-size:cover,cover,cover;
+ background-position:center,center,center;
+ background-repeat:no-repeat;
+}
+.hero-grid{display:none}
+.hero-glow{animation:hero-atmosphere 10s ease-in-out infinite;pointer-events:none}
+.hero-art:before{background:linear-gradient(90deg,rgba(3,16,31,.82) 0%,rgba(3,16,31,.48) 26%,rgba(3,16,31,.05) 54%,transparent 100%),linear-gradient(0deg,rgba(3,16,31,.48) 0%,transparent 24%,transparent 80%,rgba(3,16,31,.18) 100%)}
+.portal-original-logo{object-fit:cover;background:#061b32;border:1px solid rgba(99,230,255,.6);box-shadow:0 0 28px rgba(0,207,255,.45)}
+@keyframes hero-atmosphere{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
+@media(max-width:900px){
+ .hero{background-position:center,center,58% center}
+ .hero-art:before{background:linear-gradient(180deg,rgba(3,16,31,.28) 0%,rgba(3,16,31,.2) 38%,rgba(3,16,31,.42) 66%,rgba(3,16,31,.7) 100%),linear-gradient(90deg,rgba(3,16,31,.62),rgba(3,16,31,.05) 95%)}
+}
+@media(max-width:620px){
+ .hero{background-position:center,center,57% center}
+ .hero-content{position:relative;z-index:5}
+ .hero-art:before{background:linear-gradient(180deg,rgba(3,16,31,.22) 0%,rgba(3,16,31,.18) 38%,rgba(3,16,31,.42) 67%,rgba(3,16,31,.72) 100%),linear-gradient(90deg,rgba(3,16,31,.48),rgba(3,16,31,.04) 100%)}
+ .portal-original-logo{width:27.5%}
+}
+@media(prefers-reduced-motion:reduce){.hero-glow{animation:none}}
