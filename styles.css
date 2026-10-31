@@ -403,3 +403,74 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 @media(prefers-reduced-motion:reduce){
  .hero-energy-reflection,.hero-energy-reflection:before,.hero-energy-reflection:after,.hero-energy-reflection span{animation:none!important}
 }
+
+
+/* PERFORMANCE PASS — keep Living Crystal glow, reduce repaint-heavy effects */
+.hero::before{
+ animation:living-crystal-facet-sweep 11s ease-in-out infinite;
+}
+.hero::after{
+ animation:living-crystal-energy-light 7s ease-in-out infinite;
+}
+.hero-glow{
+ animation:living-crystal-particles-light 18s ease-in-out infinite;
+}
+@keyframes living-crystal-energy-light{
+ 0%,100%{opacity:.58}
+ 50%{opacity:.88}
+}
+@keyframes living-crystal-particles-light{
+ 0%,100%{opacity:.5;transform:translate3d(0,0,0)}
+ 50%{opacity:.82;transform:translate3d(0,-4px,0)}
+}
+/* Reflection animation uses opacity only; avoid animating blur, brightness and large shadows. */
+.hero-energy-reflection{
+ animation:hero-reflection-light 4.8s ease-in-out infinite;
+ box-shadow:0 -2px 8px rgba(99,230,255,.28),0 -8px 22px rgba(0,210,255,.16);
+}
+.hero-energy-reflection:before{
+ filter:none;
+ box-shadow:0 -2px 12px rgba(0,220,255,.35);
+ animation:hero-cyan-ripple-light 5.5s ease-in-out infinite;
+}
+.hero-energy-reflection:after{
+ filter:none;
+ animation:hero-gold-glint-light 7s ease-in-out infinite;
+}
+.hero-energy-reflection span{
+ filter:blur(12px);
+ box-shadow:0 0 18px 7px rgba(0,206,255,.22),0 0 28px 8px rgba(255,196,91,.08);
+ animation:hero-reflection-core-light 4.2s ease-in-out infinite;
+}
+.hero-energy-reflection i{
+ filter:none;
+ box-shadow:0 0 8px rgba(0,221,255,.42),0 0 14px rgba(255,191,82,.12);
+}
+@keyframes hero-reflection-light{
+ 0%,100%{opacity:.72}
+ 50%{opacity:1}
+}
+@keyframes hero-cyan-ripple-light{
+ 0%,100%{opacity:.55;transform:scaleX(.96)}
+ 50%{opacity:1;transform:scaleX(1.01)}
+}
+@keyframes hero-gold-glint-light{
+ 0%,100%{opacity:.24;transform:translateX(-12%)}
+ 50%{opacity:.72;transform:translateX(12%)}
+}
+@keyframes hero-reflection-core-light{
+ 0%,100%{opacity:.52;transform:scaleX(.9)}
+ 50%{opacity:.9;transform:scaleX(1.05)}
+}
+@media(max-width:900px){
+ /* Mobile: preserve the visual but avoid continuous large-area animation/repaint. */
+ .hero::before{animation:living-crystal-facet-sweep 14s ease-in-out infinite}
+ .hero::after,.hero-glow{animation:none!important}
+ .hero-energy-reflection{animation:hero-reflection-light 6s ease-in-out infinite}
+ .hero-energy-reflection:before{animation:none}
+ .hero-energy-reflection:after{animation:hero-gold-glint-light 9s ease-in-out infinite}
+ .hero-energy-reflection span{animation:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero::before,.hero::after,.hero-glow,.hero-energy-reflection,.hero-energy-reflection:before,.hero-energy-reflection:after,.hero-energy-reflection span{animation:none!important}
+}
