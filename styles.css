@@ -38,7 +38,7 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 .hero h1{font-size:clamp(3.5rem,6.4vw,7rem)}
 .hero-copy{color:#d1e2ec;text-shadow:0 2px 18px #00101f}
 .hero-art{z-index:1;position:absolute;inset:0;width:100%;height:100%;overflow:hidden;opacity:1;pointer-events:none}
-.hero-art:before{z-index:4;background:linear-gradient(90deg,#03101ff5 0%,#03101fc9 27%,#03101f22 55%,transparent 100%),linear-gradient(0deg,#03101fd9 0%,transparent 23%,transparent 82%,#03101f55 100%)}
+.hero-art:before{z-index:1;background:linear-gradient(90deg,#03101ff5 0%,#03101fc9 27%,#03101f22 55%,transparent 100%),linear-gradient(0deg,#03101fd9 0%,transparent 23%,transparent 82%,#03101f55 100%)}
 .portal{position:absolute;left:70%;top:52%;width:clamp(520px,66vw,1040px);max-width:none;aspect-ratio:720/760;transform:translate(-50%,-50%);z-index:2;animation:crystal-drift 9s ease-in-out infinite;filter:drop-shadow(0 18px 38px #00101f99)}
 .portal .crystal-asset{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 25px #00cfff48)}
 .portal-original-logo{position:absolute;z-index:5;left:50%;top:48%;width:27.5%;height:auto;aspect-ratio:1;object-fit:contain;transform:translate(-50%,-50%);border-radius:50%;filter:drop-shadow(0 0 18px #00cfff88)}
