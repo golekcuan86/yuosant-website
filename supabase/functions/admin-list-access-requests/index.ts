@@ -36,19 +36,21 @@ Deno.serve(async (req: Request) => {
   if (caller?.app_metadata?.role !== "super_admin") return json({ error: "Forbidden" }, 403, origin);
 
   const headers = { apikey: serviceKey, Authorization: "Bearer " + serviceKey };
-  const [profilesRes, accessRes] = await Promise.all([
+  const [profilesRes, accessRes, auditRes] = await Promise.all([
     fetch(url + "/rest/v1/yuosant_profiles?select=auth_user_id,email,display_name,account_status,created_at,updated_at&order=created_at.desc&limit=100", { headers }),
     fetch(url + "/rest/v1/yuosant_service_access?select=id,auth_user_id,service_key,request_status,requested_at,decided_at,decided_by,decision_reason&order=requested_at.desc&limit=200", { headers }),
+    fetch(url + "/rest/v1/yuosant_admin_audit_log?select=id,actor_auth_user_id,target_auth_user_id,service_key,action,old_value,new_value,reason,created_at&order=created_at.desc&limit=100", { headers }),
   ]);
-  if (!profilesRes.ok || !accessRes.ok) {
+  if (!profilesRes.ok || !accessRes.ok || !auditRes.ok) {
     return json({ error: "Could not load administration data" }, 500, origin);
   }
-  const [profiles, access] = await Promise.all([profilesRes.json(), accessRes.json()]);
+  const [profiles, access, audit] = await Promise.all([profilesRes.json(), accessRes.json(), auditRes.json()]);
   return json({
     success: true,
     admin: { id: caller.id, email: caller.email },
     profiles,
     access,
-    limits: { profiles: 100, access: 200 },
+    audit,
+    limits: { profiles: 100, access: 200, audit: 100 },
   }, 200, origin);
 });
