@@ -17,3 +17,13 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 .portal{filter:drop-shadow(0 12px 22px #0005)}
 @media(max-width:620px){.site-header.is-scrolled{padding-top:9px;padding-bottom:9px}.nav{top:calc(100% + 1px)}.hero{scroll-margin-top:74px}}
 @media(prefers-reduced-motion:reduce){.site-header{transition:none}}
+
+/* Custom Yuosant optical crystal asset */
+.portal{width:clamp(260px,36vw,470px);aspect-ratio:720/760;left:53%;top:43%;transform:translate(-50%,-50%);animation:crystal-drift 8s ease-in-out infinite;filter:drop-shadow(0 18px 34px #00101f99)}
+.portal .crystal-asset{display:block;position:relative;width:100%;height:100%;object-fit:contain;z-index:3;filter:drop-shadow(0 0 22px #00cfff35)}
+.portal-glass{display:none}
+.portal:before,.portal:after{display:none}
+@keyframes crystal-drift{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -12px;rotate:1deg}}
+@media(max-width:900px){.portal{width:clamp(250px,52vw,390px);left:55%;top:47%}}
+@media(max-width:620px){.portal{width:clamp(230px,68vw,320px);left:54%;top:44%}}
+@media(prefers-reduced-motion:reduce){.portal{animation:none}}
