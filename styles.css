@@ -270,3 +270,71 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 @media(prefers-reduced-motion:reduce){
   .hero::before,.hero::after{animation:none!important}
 }
+
+
+/* LIVING CRYSTAL v2 — visible atmosphere, facet sweep, particles and desktop parallax.
+   CSS-only lighting keeps the supplied hero artwork intact and avoids heavy 3D libraries. */
+.hero{--crystal-parallax-x:0px;--crystal-parallax-y:0px;--crystal-aura:.62; background-position:center,center,calc(50% + var(--crystal-parallax-x)) calc(50% + var(--crystal-parallax-y));}
+.hero::before{
+ content:"";position:absolute;inset:-2%;z-index:2;pointer-events:none;opacity:.8;mix-blend-mode:screen;
+ background:
+  linear-gradient(112deg,transparent 0%,transparent 39%,rgba(99,230,255,0) 43%,rgba(205,251,255,.32) 47%,rgba(0,221,255,.2) 49%,rgba(99,230,255,0) 54%,transparent 60%),
+  linear-gradient(70deg,transparent 0%,transparent 67%,rgba(255,222,153,0) 71%,rgba(255,236,189,.23) 73%,rgba(255,191,89,0) 76%,transparent 80%);
+ background-size:240% 100%,210% 100%;background-position:140% 0,-110% 0;
+ animation:living-crystal-facet-sweep 8s ease-in-out infinite;
+}
+.hero::after{
+ content:"";position:absolute;z-index:1;inset:0;pointer-events:none;opacity:var(--crystal-aura);
+ background:
+  radial-gradient(ellipse at 73% 48%,rgba(0,218,255,.22) 0%,rgba(0,149,255,.11) 15%,transparent 34%),
+  radial-gradient(ellipse at 79% 76%,rgba(255,190,88,.12) 0%,transparent 25%);
+ animation:living-crystal-energy 5.2s ease-in-out infinite;
+}
+.hero-glow{
+ display:block!important;z-index:1;pointer-events:none;inset:0;width:auto;height:auto;right:auto;top:auto;filter:none;
+ background:
+  radial-gradient(circle at 72% 31%,rgba(113,239,255,.95) 0 1px,transparent 3px),
+  radial-gradient(circle at 84% 47%,rgba(255,224,155,.85) 0 1px,transparent 3px),
+  radial-gradient(circle at 64% 61%,rgba(105,229,255,.8) 0 1.5px,transparent 4px),
+  radial-gradient(circle at 91% 67%,rgba(111,231,255,.85) 0 1px,transparent 3px),
+  radial-gradient(circle at 76% 82%,rgba(255,226,167,.75) 0 1px,transparent 3px),
+  radial-gradient(ellipse at 72% 49%,rgba(0,180,255,.12),transparent 34%);
+ animation:living-crystal-particles 13s ease-in-out infinite;
+}
+.hero-content{z-index:5}
+@keyframes living-crystal-facet-sweep{
+  0%,10%{background-position:140% 0,-110% 0;opacity:.18}
+  32%{opacity:.88}
+  56%{background-position:-35% 0,115% 0;opacity:.7}
+  72%,100%{background-position:-35% 0,115% 0;opacity:.12}
+}
+@keyframes living-crystal-energy{
+  0%,100%{opacity:.48;filter:brightness(.88)}
+  50%{opacity:.95;filter:brightness(1.3)}
+}
+@keyframes living-crystal-particles{
+  0%,100%{opacity:.48;transform:translate3d(0,0,0)}
+  35%{opacity:.9;transform:translate3d(-5px,-7px,0)}
+  70%{opacity:.65;transform:translate3d(4px,5px,0)}
+}
+@media(min-width:901px){
+ .hero{background-position:center,center,calc(50% + var(--crystal-parallax-x)) calc(50% + var(--crystal-parallax-y))}
+ .hero::after{background:
+  radial-gradient(ellipse at 73% 43%,rgba(0,218,255,.24) 0%,rgba(0,149,255,.12) 16%,transparent 35%),
+  radial-gradient(ellipse at 78% 75%,rgba(255,190,88,.14) 0%,transparent 27%)}
+}
+@media(max-width:900px){
+ .hero::before{background-size:280% 100%,240% 100%;background-position:130% 0,-100% 0}
+ .hero::after{background:
+  radial-gradient(ellipse at 65% 77%,rgba(0,218,255,.24) 0%,rgba(0,149,255,.12) 17%,transparent 38%),
+  radial-gradient(ellipse at 72% 88%,rgba(255,190,88,.15) 0%,transparent 27%)}
+ .hero-glow{background:
+  radial-gradient(circle at 66% 69%,rgba(113,239,255,.95) 0 1px,transparent 3px),
+  radial-gradient(circle at 83% 76%,rgba(255,224,155,.85) 0 1px,transparent 3px),
+  radial-gradient(circle at 52% 82%,rgba(105,229,255,.8) 0 1.5px,transparent 4px),
+  radial-gradient(circle at 90% 88%,rgba(111,231,255,.85) 0 1px,transparent 3px),
+  radial-gradient(ellipse at 68% 78%,rgba(0,180,255,.14),transparent 37%)}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero::before,.hero::after,.hero-glow{animation:none!important}
+}
