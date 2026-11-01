@@ -178,6 +178,7 @@ async function renderSession() {
     ${user.app_metadata?.role === "super_admin" ? '<p><a class="text-button" href="./admin.html">Buka Dashboard Super Admin →</a></p>' : ""}
     <h2>Dashboard Yuosant ID</h2>
     <p class="muted">Halo ${escapeHtml(profile.display_name || user.email || "Pengguna")}. Pilih layanan yang sudah disetujui administrator.</p>
+    <p class="muted access-note">Akses Yuosant AI dan Yuosant FinLab hanya dapat dilakukan melalui Dashboard Yuosant ID setelah login dan mendapat persetujuan administrator.</p>
     <div class="service-access-list">
       ${serviceCard("yuosant_ai", "Yuosant AI", "https://ai.yuosant.com")}
       ${serviceCard("yuosant_finlab", "Yuosant FinLab", "https://finlab.yuosant.com")}
