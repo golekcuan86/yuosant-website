@@ -3,3 +3,27 @@
 
 /* Respect the HTML hidden attribute even when component styles define display. */
 [hidden]{display:none!important}
+
+/* Yuosant ID dashboard service access and navigation refinement */
+.panel .panel-home-link{
+  display:flex;justify-content:center;align-items:center;width:100%;
+  margin:0 0 22px;padding:15px 18px;border:1px solid #6b9fce;
+  border-radius:13px;background:linear-gradient(105deg,#244b83,#176b70);
+  color:#f5fbff;font-size:15px;font-weight:800;box-shadow:0 8px 22px #071b3d66;
+}
+.panel .panel-home-link:hover{background:linear-gradient(105deg,#2e5e9e,#1b807f);border-color:#a4d7dc}
+.service-access-list{display:grid;gap:12px;margin:22px 0}
+.service-access-card{padding:16px;border:1px solid #2b3b5a;border-radius:14px;background:#0a1429}
+.service-access-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.service-access-top strong{font-size:16px;color:#f1f5ff}
+.service-status{font-size:12px;color:#aab8d0}
+.service-status.is-approved{color:#c9f28a;font-weight:800}
+.service-status.is-pending{color:#f5d78a}
+.service-access-bottom{display:flex;justify-content:flex-end;margin-top:13px}
+.access-approved,.access-pending{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:750}
+.access-approved{background:#183b32;color:#c9f28a;border:1px solid #39755d}
+.access-pending{background:#3a3020;color:#f5d78a;border:1px solid #79623b}
+.request-button{border:1px solid #6a91c7;border-radius:9px;padding:10px 15px;background:#213b62;color:#f3f7ff;font-weight:750}
+.request-button:hover{background:#2d507e}
+.logout-button{display:inline-flex;align-items:center;justify-content:center;margin-top:4px;padding:10px 16px;border:1px solid #4b5870;border-radius:10px;background:#151f32;color:#b9c5d9;font-weight:700}
+.logout-button:hover{background:#202d45}
