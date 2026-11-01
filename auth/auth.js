@@ -201,9 +201,9 @@ async function requestAccess(serviceKey) {
   try {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user?.email_confirmed_at) throw new Error("Verifikasi email diperlukan sebelum meminta akses.");
-    const { data, error } = await supabase.rpc("request_service_access", { p_service_key: serviceKey });
+    const { data, error } = await supabase.functions.invoke("request-service-access", { body: { service_key: serviceKey } });
     if (error) throw error;
-    if (!data?.success || data.request_status !== "pending") throw new Error("Pengajuan akses belum berhasil. Silakan coba lagi.");
+    if (!data?.success || data.request_status !== "pending") throw new Error(data?.error || "Pengajuan akses belum berhasil. Silakan coba lagi.");
     showNotice("Permintaan akses berhasil dikirim. Akses aktif setelah disetujui administrator.");
     await renderSession();
   } catch (error) {
