@@ -99,7 +99,8 @@ forgot.addEventListener("click", async () => {
     return;
   }
   try {
-    const redirectTo = new URL("./reset.html", window.location.href).href;
+    const callbackOrigin = ["yuosant.com", "www.yuosant.com"].includes(window.location.hostname) ? "https://yuosant.com" : window.location.origin;
+    const redirectTo = new URL("/auth/reset.html", callbackOrigin).href;
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) throw error;
     showNotice("Jika email terdaftar, tautan pemulihan akan dikirim. Periksa kotak masuk dan folder spam.");
