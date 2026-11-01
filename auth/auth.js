@@ -141,16 +141,34 @@ async function renderSession() {
     rejected: "Ditolak",
     revoked: "Akses dicabut"
   }[states[key]] || "Belum mengajukan akses");
+  const serviceCard = (key, label) => {
+    const status = states[key];
+    const approved = status === "approved";
+    const pending = status === "pending";
+    const rejected = status === "rejected";
+    const statusText = approved ? "Akses disetujui" : pending ? "Menunggu persetujuan" : rejected ? "Permintaan ditolak" : status === "revoked" ? "Akses dicabut" : "Belum memiliki akses";
+    const action = approved
+      ? '<span class="access-approved" aria-label="Akses disetujui">✓ Disetujui</span>'
+      : pending
+        ? '<span class="access-pending">Dalam proses</span>'
+        : `<button class="request-button" data-request="${key}">${rejected || status === "revoked" ? "Ajukan kembali" : "Minta akses"}</button>`;
+    return `<article class="service-access-card">
+      <div class="service-access-top"><strong>${label}</strong><span class="service-status ${approved ? "is-approved" : pending ? "is-pending" : ""}">${statusText}</span></div>
+      <div class="service-access-bottom">${action}</div>
+    </article>`;
+  };
   document.querySelector(".panel").innerHTML = `
     <div class="notice">Berhasil masuk sebagai ${escapeHtml(user.email || "")}</div>
     <a class="home-link panel-home-link" href="/">← Kembali ke Beranda Yuosant</a>
     ${user.app_metadata?.role === "super_admin" ? '<p><a class="text-button" href="./admin.html">Buka Dashboard Super Admin →</a></p>' : ""}
     <h2>Dashboard Yuosant ID</h2>
-    <p class="muted">Akun Anda terverifikasi. Hak akses layanan tetap memerlukan persetujuan admin.</p>
-    <div class="access-row"><strong>Yuosant AI</strong><span>${statusLabel("yuosant_ai")}</span><button data-request="yuosant_ai">Minta akses</button></div>
-    <div class="access-row"><strong>Yuosant FinLab</strong><span>${statusLabel("yuosant_finlab")}</span><button data-request="yuosant_finlab">Minta akses</button></div>
-    <button class="primary" id="logout" type="button">Keluar</button>
-    <p class="fineprint">Status di sini hanya untuk tampilan. Setiap layanan wajib memvalidasi akses di backend masing-masing.</p>`;
+    <p class="muted">Akun Anda terverifikasi. Akses layanan diberikan setelah persetujuan administrator.</p>
+    <div class="service-access-list">
+      ${serviceCard("yuosant_ai", "Yuosant AI")}
+      ${serviceCard("yuosant_finlab", "Yuosant FinLab")}
+    </div>
+    <button class="logout-button" id="logout" type="button">Keluar</button>
+    <p class="fineprint">Akses layanan akan tersedia setelah persetujuan admin dan integrasi pemeriksaan hak akses selesai. Status akun tidak otomatis membuka layanan.</p>`;
   document.querySelectorAll("[data-request]").forEach((button) => button.addEventListener("click", () => requestAccess(button.dataset.request)));
   document.querySelector("#logout").addEventListener("click", async () => {
     const { error: logoutError } = await supabase.auth.signOut();
