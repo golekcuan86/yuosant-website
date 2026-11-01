@@ -165,7 +165,7 @@ async function renderSession() {
       : pending
         ? '<span class="access-pending">Menunggu keputusan administrator</span>'
         : rejected || status === "revoked"
-          ? '<span class="access-pending">Akses belum aktif. Hubungi administrator untuk pengajuan ulang.</span>'
+          ? `<button class="request-button" data-request="${key}">Ajukan ulang</button>`
           : `<button class="request-button" data-request="${key}">Minta akses</button>`;
     return `<article class="service-access-card">
       <div class="service-access-top"><strong>${label}</strong><span class="service-status ${approved ? "is-approved" : pending ? "is-pending" : ""}">${statusText}</span></div>
@@ -196,17 +196,19 @@ function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
 }
 async function requestAccess(serviceKey) {
+  const button = document.querySelector(`[data-request="${serviceKey}"]`);
+  if (button) button.disabled = true;
   try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user?.email_confirmed_at) throw new Error("Verifikasi email diperlukan sebelum meminta akses.");
-    const { error } = await supabase.from("yuosant_service_access").insert({
-      auth_user_id: user.id, service_key: serviceKey, request_status: "pending"
-    });
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.email_confirmed_at) throw new Error("Verifikasi email diperlukan sebelum meminta akses.");
+    const { data, error } = await supabase.rpc("request_service_access", { p_service_key: serviceKey });
     if (error) throw error;
-    showNotice("Permintaan akses dikirim. Akses belum aktif sampai admin menyetujuinya.");
+    if (!data?.success || data.request_status !== "pending") throw new Error("Pengajuan akses belum berhasil. Silakan coba lagi.");
+    showNotice("Permintaan akses berhasil dikirim. Akses aktif setelah disetujui administrator.");
     await renderSession();
   } catch (error) {
     showNotice(safeError(error), true);
+    if (button) button.disabled = false;
   }
 }
 
