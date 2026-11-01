@@ -125,8 +125,6 @@ async function renderSession() {
     showNotice("Email Anda belum diverifikasi. Periksa email untuk mengaktifkan akun.", true);
     return;
   }
-  // Read the account state and service entitlements from the authenticated user's own rows.
-  // These values control portal navigation only; each destination must enforce access server-side.
   const [{ data: profile, error: profileError }, { data: access, error: accessError }] = await Promise.all([
     supabase.from("yuosant_profiles").select("account_status,display_name").eq("auth_user_id", user.id).maybeSingle(),
     supabase.from("yuosant_service_access")
@@ -213,8 +211,8 @@ async function requestAccess(serviceKey) {
 }
 
 const params = new URLSearchParams(window.location.search);
-if (params.get("verified") === "1") showNotice("Tautan email telah dibuka. Anda dapat mencoba masuk.");
-if (params.has("code")) showNotice("Tautan autentikasi terdeteksi. Jika verifikasi gagal, minta tautan baru.");
+if (params.get("verified") === "1") showNotice("Email berhasil diverifikasi. Silakan masuk ke Yuosant ID untuk melanjutkan.");
+if (params.has("code")) showNotice("Tautan autentikasi sedang diproses. Jika verifikasi gagal, minta tautan baru.");
 if (configured()) {
   supabase.auth.onAuthStateChange((_event, session) => {
     if (session) setTimeout(() => renderSession().catch((error) => showNotice(safeError(error), true)), 0);
