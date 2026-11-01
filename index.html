@@ -2,45 +2,106 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="YuoSant — Independent Digital Studio. Website, aplikasi custom, dan solusi AI." />
-  <title>YuoSant — Independent Digital Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#06111f" />
+  <meta name="description" content="Yuosant adalah ekosistem digital untuk belajar, berkarya, membangun bisnis, dan menjelajahi kemungkinan baru." />
+  <title>Yuosant — A New Digital Perspective</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#home">YUOSANT<span>.</span></a>
-    <button class="menu-toggle" aria-label="Buka menu">☰</button>
-    <nav class="nav">
-      <a href="#work">Our Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a>
-      <a class="nav-cta" href="https://ai.yuosant.com" target="_blank" rel="noreferrer">Launch AI ↗</a>
+    <a class="brand" href="#home" aria-label="Yuosant, beranda"><img src="/yuosant-logo-bulat.png" alt="Logo Yuosant" /><span>YUOSANT</span></a>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="ecosystem-submenu">Ecosystem <span class="dropdown-chevron" aria-hidden="true">⌄</span></button>
+        <div class="nav-submenu" id="ecosystem-submenu">
+          <a href="https://ai.yuosant.com" target="_blank" rel="noreferrer"><span class="submenu-index">01</span><span><b>Yuosant AI</b><small>AI &amp; Learning</small></span><span class="submenu-arrow">↗</span></a>
+          <a href="https://finlab.yuosant.com" target="_blank" rel="noreferrer"><span class="submenu-index">02</span><span><b>Yuosant FinLab</b><small>Financial Learning</small></span><span class="submenu-arrow">↗</span></a>
+          <a href="https://yuosant-digital-hacks.vercel.app/#harga" target="_blank" rel="noreferrer"><span class="submenu-index">03</span><span><b>Digital Store</b><small>Digital Goods</small></span><span class="submenu-arrow">↗</span></a>
+          <a href="/blog/"><span class="submenu-index">04</span><span><b>Yuosant Journal</b><small>Ideas &amp; Insights</small></span><span class="submenu-arrow">↗</span></a>
+        </div>
+      </div>
+      <a href="/blog/">Journal</a><a href="#about">About</a>
+      <a class="nav-member" href="/member/">Member ↗</a>
     </nav>
   </header>
-
   <main>
     <section id="home" class="hero">
-      <div class="hero-content"><p class="eyebrow">INDEPENDENT DIGITAL STUDIO</p><h1>Your vision.<br><em>Our craft.</em></h1><p class="hero-copy">We design and build meaningful digital products for education, business, and everyday needs.</p><div class="actions"><a class="button primary" href="#work">Explore our work ↗</a><a class="button secondary" href="#contact">Start a project</a></div></div>
-      <div class="hero-visual"><div class="hero-orbit"></div><div class="hero-device"><div class="device-top"><span></span><span></span><span></span></div><div class="device-screen"><small>YUOSANT / DIGITAL STUDIO</small><strong>Ideas into<br><i>experience.</i></strong><div class="screen-line"></div></div></div><div class="visual-caption">A place where ideas become digital products.</div></div>
+      <div class="hero-grid" aria-hidden="true"></div><div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow"><span class="eyebrow-line"></span> INDEPENDENT DIGITAL ECOSYSTEM</p>
+        <h1>A new digital<br><em>perspective.</em></h1>
+        <p class="hero-copy">Satu ruang untuk belajar, berkarya, membangun bisnis, dan menemukan kemungkinan baru di dunia digital.</p>
+        <div class="actions"><a class="button primary" href="#ecosystem">Explore ecosystem <span>↗</span></a><a class="text-link" href="#manifesto">Discover Yuosant <span>↓</span></a></div>
+        <div class="hero-footnote"><span>01 / 04</span><span>IDEAS INTO DIGITAL POSSIBILITIES</span></div>
+      </div>
+      <div class="hero-art" aria-label="Visual abstrak portal digital Yuosant">
+        <div class="art-halo halo-one"></div><div class="art-halo halo-two"></div>
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-orbit orbit-three"></div>
+        <div class="art-spark spark-one"></div><div class="art-spark spark-two"></div><div class="art-spark spark-three"></div>
+        <div class="portal">
+          <img class="crystal-asset" src="/assets/yuosant-crystal-portal.svg" alt="" width="720" height="760" fetchpriority="high" />
+          <img class="portal-original-logo" src="/yuosant-logo-bulat.png" alt="Logo asli Yuosant" width="180" height="180" />
+        </div>
+        <div class="mountain mountain-back"></div><div class="mountain mountain-front"></div>
+        <div class="figure"><span></span></div>
+        <div class="art-coordinate">06° 42' S<br>111° 09' E</div>
+        <div class="art-caption"><span class="caption-dot"></span> A WORLD OF POSSIBILITIES</div>
+      </div>
+      <div class="hero-energy-reflection" aria-hidden="true"><span></span><i></i></div>
+      <a class="scroll-cue" href="#manifesto"><span class="scroll-mouse"></span><span>SCROLL TO DISCOVER</span><b>↓</b></a>
     </section>
 
-    <section class="intro section"><div class="section-label">01 / THE STUDIO</div><div><h2>Built with curiosity.<br><span>Driven by purpose.</span></h2><p>YuoSant is an independent digital studio founded by Wahyu Eko Santoso. We focus on creating modern, useful, and thoughtfully designed digital experiences.</p></div></section>
+    <section id="manifesto" class="manifesto section">
+      <div class="section-label">01 <span>/ THE BIGGER PICTURE</span></div>
+      <div class="manifesto-main"><p class="eyebrow dark-eyebrow">MORE THAN A WEBSITE</p><h2>Satu ekosistem.<br><span>Banyak kemungkinan.</span></h2></div>
+      <div class="manifesto-aside"><p>Teknologi seharusnya membuka jalan, bukan menambah kerumitan. Yuosant menghubungkan ide, pengetahuan, dan perangkat digital agar hal besar bisa dimulai dari langkah sederhana.</p><a class="line-link" href="#ecosystem">Kenali ekosistem kami <span>↗</span></a></div>
+      <div class="manifesto-index" aria-hidden="true">Y.</div>
+    </section>
 
-    <section id="work" class="section work-section"><div class="section-heading"><div class="section-label">02 / SELECTED WORK & CONCEPTS</div><h2>Ideas brought<br><span>into reality.</span></h2></div>
-      <div class="work-grid">
-        <article class="project project-large"><div class="project-art ai-art"><div class="mock-window"><div class="mock-head">YUOSANT AI <span>● ● ●</span></div><div class="mock-body"><aside>Overview<br>Chat AI<br>Learning<br>History</aside><div><small>GOOD MORNING</small><b>What will you<br>create today?</b><div class="mock-card"></div></div></div></div></div><div class="project-meta"><span>01 — LIVE PRODUCT</span><span>AI PLATFORM</span></div><h3>YuoSant AI</h3><p>AI for learning, work, and personal growth.</p></article>
-        <article class="project"><div class="project-art corporate-art"><div class="corporate-page"><small>ATELIER / COMPANY</small><b>Architecture<br>for tomorrow.</b><div class="gold-line"></div></div></div><div class="project-meta"><span>02 — CONCEPT</span><span>WEB DESIGN</span></div><h3>Corporate Website</h3><p>A refined digital presence for modern companies.</p></article>
-        <article class="project"><div class="project-art pos-art"><div class="pos-window"><small>TOKO WAHYU</small><b>Daily business,<br>made simpler.</b><div class="pos-stats"><span>Sales<br><strong>Rp 8.450K</strong></span><span>Orders<br><strong>128</strong></span></div></div></div><div class="project-meta"><span>03 — CONCEPT</span><span>BUSINESS SOFTWARE</span></div><h3>Toko Wahyu POS</h3><p>A simple digital tool for everyday business.</p></article>
-        <article class="project"><div class="project-art education-art"><div class="education-card"><small>SMALFA / LEARNING</small><b>Learning<br>without limits.</b><span>Explore your next lesson ↗</span></div></div><div class="project-meta"><span>04 — CONCEPT</span><span>EDUCATION</span></div><h3>Education Platform</h3><p>Digital tools for students, teachers, and parents.</p></article>
-        <article class="project"><div class="project-art mobile-art"><div class="phone"><div class="phone-notch"></div><small>YUOSANT</small><b>Small screen.<br>Big possibility.</b><div class="phone-pill"></div><div class="phone-pill short"></div></div></div><div class="project-meta"><span>05 — CONCEPT</span><span>MOBILE EXPERIENCE</span></div><h3>Mobile App Concept</h3><p>Thoughtful interfaces for everyday needs.</p></article>
-        <article class="project"><div class="project-art dashboard-art"><div class="dashboard"><small>BUSINESS INSIGHTS</small><b>Make data<br>feel simple.</b><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div></div><div class="project-meta"><span>06 — CONCEPT</span><span>DIGITAL PRODUCT</span></div><h3>Business Dashboard</h3><p>Clear data, better decisions.</p></article>
+    <section id="ecosystem" class="ecosystem-section">
+      <div class="ecosystem-top section">
+        <div><p class="eyebrow dark-eyebrow">02 / EXPLORE WHAT'S POSSIBLE</p><h2>Made for your<br><span>next chapter.</span></h2></div>
+        <p class="section-lead">Setiap ruang punya tujuan dan karakternya sendiri. Temukan yang paling sesuai dengan perjalanan Anda.</p>
+      </div>
+      <div class="ecosystem-carousel" aria-label="Yuosant ecosystem cards">
+        <button class="carousel-arrow carousel-prev" type="button" aria-label="Previous cards">←</button>
+        <div class="ecosystem-track" tabindex="0">
+        <a class="ecosystem-feature feature-ai" href="https://ai.yuosant.com" target="_blank" rel="noreferrer">
+          <div class="feature-number">01 <span>AI & LEARNING</span></div><div class="feature-visual feature-image-wrap"><img class="feature-image" src="https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/yuosant-ai.png" alt="Kristal biru bercahaya untuk Yuosant AI" loading="lazy" width="1536" height="1024" /></div>
+          <div class="feature-copy"><p class="feature-kicker">THINK · LEARN · CREATE</p><h3>Yuosant <i>AI</i></h3><p>Asisten cerdas untuk belajar, mengajar, berkarya, dan menyelesaikan pekerjaan dengan lebih bermakna.</p><span class="feature-cta">Jelajahi Yuosant AI <b>↗</b></span></div>
+        </a>
+        <a class="ecosystem-feature feature-finlab" href="https://finlab.yuosant.com" target="_blank" rel="noreferrer">
+          <div class="feature-number">02 <span>FINANCIAL LEARNING</span></div><div class="feature-visual feature-image-wrap"><img class="feature-image" src="https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/yuosant-finlab.png" alt="Kristal emas untuk Yuosant FinLab" loading="lazy" width="1536" height="1024" /></div>
+          <div class="feature-copy"><p class="feature-kicker">UNDERSTAND · PLAN · GROW</p><h3>Yuosant <i>FinLab</i></h3><p>Ruang belajar literasi finansial dan trading yang mengutamakan pengetahuan, disiplin, serta keputusan yang terukur.</p><span class="feature-cta">Jelajahi FinLab <b>↗</b></span></div>
+        </a>
+        <a class="ecosystem-feature feature-store" href="https://yuosant-digital-hacks.vercel.app/#harga" target="_blank" rel="noreferrer">
+          <div class="feature-number">03 <span>DIGITAL GOODS</span></div><div class="feature-visual feature-image-wrap"><img class="feature-image" src="https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/yuosant-digital-store-crystal.webp" alt="Kristal ungu Digital Store dengan ikon keranjang belanja" loading="lazy" width="1536" height="1024" /></div>
+          <div class="feature-copy"><p class="feature-kicker">DISCOVER · DOWNLOAD · DO</p><h3>Digital <i>Store</i></h3><p>Temukan e-book, materi belajar, template, dan sumber daya digital yang dirancang untuk langsung digunakan.</p><span class="feature-cta">Jelajahi produk <b>↗</b></span></div>
+        </a>
+        <a class="ecosystem-feature feature-journal" href="/blog/">
+          <div class="feature-number">04 <span>IDEAS & INSIGHTS</span></div><div class="feature-visual feature-image-wrap"><img class="feature-image" src="https://raw.githubusercontent.com/golekcuan86/yuosant-website/main/yuosant-journal-crystal.webp" alt="Kristal cyan Yuosant Journal dengan ikon buku digital" loading="lazy" width="1536" height="1024" /></div>
+          <div class="feature-copy"><p class="feature-kicker">READ · REFLECT · REIMAGINE</p><h3>Yuosant <i>Journal</i></h3><p>Catatan tentang teknologi, AI, pendidikan, produktivitas, dan ide praktis untuk kehidupan digital.</p><span class="feature-cta">Baca Journal <b>↗</b></span></div>
+        </a>
+        </div>
+        <button class="carousel-arrow carousel-next" type="button" aria-label="Next cards">→</button>
+        <div class="carousel-status" aria-live="polite"><span class="carousel-current">01</span><span class="carousel-progress"><i></i></span><span>04</span></div>
       </div>
     </section>
 
-    <section id="services" class="section services-section"><div class="section-label">03 / WHAT WE BUILD</div><div class="service-list"><div><span>01</span><h3>Websites</h3><p>Professional websites for businesses, schools, and organizations.</p></div><div><span>02</span><h3>Custom applications</h3><p>Digital systems designed around the way your organization works.</p></div><div><span>03</span><h3>AI solutions</h3><p>Useful AI experiences integrated into modern digital products.</p></div><div><span>04</span><h3>UI/UX design</h3><p>Clear, elegant, and enjoyable interfaces for every screen.</p></div></div></section>
-    <section id="about" class="section about-section"><div class="section-label">04 / ABOUT YUOSANT</div><div><h2>Small studio.<br><span>Thoughtful products.</span></h2><p>We believe great digital products do not need to be complicated. They need a clear purpose, careful design, and continuous improvement.</p></div></section>
-    <section id="contact" class="contact-section"><p class="eyebrow">LET'S BUILD SOMETHING MEANINGFUL</p><h2>Have an idea?<br><em>Let's build it.</em></h2><p>Tell us what you have in mind and start a conversation.</p><a class="button primary" href="mailto:hello@yuosant.com">Start a conversation ↗</a></section>
+    <section class="interlude">
+      <div class="interlude-mark">Y</div><p class="eyebrow">BUILT AROUND HUMAN POSSIBILITY</p><h2>Technology is the tool.<br><em>Possibility is the point.</em></h2><p class="interlude-copy">Kami percaya teknologi terbaik bukan yang paling rumit, tetapi yang membantu manusia melangkah lebih jauh.</p><a class="button outline-light" href="#about">Cerita di balik Yuosant <span>↗</span></a><div class="interlude-orbit"></div>
+    </section>
+
+    <section id="about" class="about-section section">
+      <div class="section-label">03 <span>/ ABOUT YUOSANT</span></div><div class="about-title"><p class="eyebrow dark-eyebrow">INDEPENDENT DIGITAL STUDIO</p><h2>Ideas deserve<br><span>to become real.</span></h2></div><div class="about-copy"><p>Yuosant dibangun dengan keyakinan bahwa ide yang baik layak mendapat ruang untuk tumbuh. Dari pendidikan hingga bisnis digital, kami mengeksplorasi cara teknologi dapat menjadi lebih berguna, lebih dekat, dan lebih manusiawi.</p><a class="line-link" href="mailto:hello@yuosant.com">Punya ide untuk diwujudkan? <span>↗</span></a></div>
+    </section>
+
+    <section class="contact-section"><div class="contact-orb" aria-hidden="true"></div><p class="eyebrow">THE NEXT POSSIBILITY STARTS SOMEWHERE</p><h2>What will you<br><em>make possible?</em></h2><p>Setiap perjalanan besar dimulai dari sebuah ide.</p><a class="button primary" href="mailto:hello@yuosant.com">Mulai percakapan <span>↗</span></a><div class="contact-bottom"><span>YUOSANT / DIGITAL ECOSYSTEM</span><span>BUILT WITH PURPOSE · 2026</span></div></section>
   </main>
-  <footer class="footer"><div><a class="brand" href="#home">YUOSANT<span>.</span></a><p>Independent Digital Studio</p></div><p>© 2026 YuoSant. Built with purpose.</p></footer>
+  <footer class="footer"><a class="brand footer-brand" href="#home"><img src="/yuosant-logo-bulat.png" alt="" /><span>YUOSANT</span></a><span>Independent Digital Ecosystem</span><a href="#home">Kembali ke atas ↑</a><span>© 2026 Yuosant</span></footer>
   <script src="script.js"></script>
 </body>
 </html>
