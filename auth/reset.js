@@ -84,10 +84,10 @@ form.addEventListener("submit", async (event) => {
     if (sessionError || !session) throw new Error("Sesi pemulihan sudah berakhir. Minta tautan pemulihan baru.");
     const { error } = await client.auth.updateUser({ password });
     if (error) throw error;
-    message("Kata sandi berhasil diperbarui. Silakan kembali ke halaman masuk dan login dengan kata sandi baru.");
     form.reset();
     setFormEnabled(false);
     await client.auth.signOut();
+    window.location.replace("/auth/?password_updated=1");
   } catch (error) {
     message(error.message || "Kata sandi belum berhasil diperbarui. Periksa tautan pemulihan dan coba lagi.", true);
     submit.disabled = false;
