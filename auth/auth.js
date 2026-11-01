@@ -125,33 +125,48 @@ async function renderSession() {
     showNotice("Email Anda belum diverifikasi. Periksa email untuk mengaktifkan akun.", true);
     return;
   }
-  // UI display only. Service authorization must always be checked by a trusted backend.
-  const { data: access, error: accessError } = await supabase
-    .from("yuosant_service_access")
-    .select("service_key,request_status,requested_at")
-    .eq("auth_user_id", user.id);
-  if (accessError) {
-    showNotice("Login berhasil, tetapi status akses belum dapat dimuat. Pastikan migrasi database sudah diterapkan.", true);
+  // Read the account state and service entitlements from the authenticated user's own rows.
+  // These values control portal navigation only; each destination must enforce access server-side.
+  const [{ data: profile, error: profileError }, { data: access, error: accessError }] = await Promise.all([
+    supabase.from("yuosant_profiles").select("account_status,display_name").eq("auth_user_id", user.id).maybeSingle(),
+    supabase.from("yuosant_service_access")
+      .select("service_key,request_status,requested_at")
+      .eq("auth_user_id", user.id)
+  ]);
+  if (profileError || accessError || !profile) {
+    showNotice("Login berhasil, tetapi status akun atau akses belum dapat dimuat. Silakan muat ulang atau hubungi administrator.", true);
+    return;
+  }
+  if (profile.account_status !== "active") {
+    const accountMessage = profile.account_status === "suspended"
+      ? "Akun Anda sedang ditangguhkan. Hubungi administrator Yuosant."
+      : "Akun Yuosant ID Anda dinonaktifkan. Hubungi administrator.";
+    document.querySelector(".panel").innerHTML = `
+      <div class="notice error">${escapeHtml(accountMessage)}</div>
+      <h2>Akses akun dihentikan</h2>
+      <p class="muted">Layanan Yuosant tidak dapat dibuka dari akun ini.</p>
+      <button class="logout-button" id="logout" type="button">Keluar</button>`;
+    document.querySelector("#logout").addEventListener("click", async () => {
+      const { error: logoutError } = await supabase.auth.signOut();
+      if (logoutError) showNotice(safeError(logoutError), true);
+      else window.location.reload();
+    });
     return;
   }
   const states = Object.fromEntries((access || []).map((row) => [row.service_key, row.request_status]));
-  const statusLabel = (key) => ({
-    approved: "Disetujui",
-    pending: "Menunggu persetujuan",
-    rejected: "Ditolak",
-    revoked: "Akses dicabut"
-  }[states[key]] || "Belum mengajukan akses");
-  const serviceCard = (key, label) => {
+  const serviceCard = (key, label, destination) => {
     const status = states[key];
     const approved = status === "approved";
     const pending = status === "pending";
     const rejected = status === "rejected";
     const statusText = approved ? "Akses disetujui" : pending ? "Menunggu persetujuan" : rejected ? "Permintaan ditolak" : status === "revoked" ? "Akses dicabut" : "Belum memiliki akses";
     const action = approved
-      ? '<span class="access-approved" aria-label="Akses disetujui">✓ Disetujui</span>'
+      ? `<a class="request-button" href="${destination}" target="_blank" rel="noopener noreferrer">Buka ${label} ↗</a>`
       : pending
-        ? '<span class="access-pending">Dalam proses</span>'
-        : rejected || status === "revoked" ? '<span class="access-pending">Hubungi administrator</span>' : `<button class="request-button" data-request="${key}">Minta akses</button>`;
+        ? '<span class="access-pending">Menunggu keputusan administrator</span>'
+        : rejected || status === "revoked"
+          ? '<span class="access-pending">Akses belum aktif. Hubungi administrator untuk pengajuan ulang.</span>'
+          : `<button class="request-button" data-request="${key}">Minta akses</button>`;
     return `<article class="service-access-card">
       <div class="service-access-top"><strong>${label}</strong><span class="service-status ${approved ? "is-approved" : pending ? "is-pending" : ""}">${statusText}</span></div>
       <div class="service-access-bottom">${action}</div>
@@ -162,13 +177,13 @@ async function renderSession() {
     <a class="home-link panel-home-link" href="/">← Kembali ke Beranda Yuosant</a>
     ${user.app_metadata?.role === "super_admin" ? '<p><a class="text-button" href="./admin.html">Buka Dashboard Super Admin →</a></p>' : ""}
     <h2>Dashboard Yuosant ID</h2>
-    <p class="muted">Akun Anda terverifikasi. Akses layanan diberikan setelah persetujuan administrator.</p>
+    <p class="muted">Halo ${escapeHtml(profile.display_name || user.email || "Pengguna")}. Pilih layanan yang sudah disetujui administrator.</p>
     <div class="service-access-list">
-      ${serviceCard("yuosant_ai", "Yuosant AI")}
-      ${serviceCard("yuosant_finlab", "Yuosant FinLab")}
+      ${serviceCard("yuosant_ai", "Yuosant AI", "https://ai.yuosant.com")}
+      ${serviceCard("yuosant_finlab", "Yuosant FinLab", "https://finlab.yuosant.com")}
     </div>
     <button class="logout-button" id="logout" type="button">Keluar</button>
-    <p class="fineprint">Akses layanan akan tersedia setelah persetujuan admin dan integrasi pemeriksaan hak akses selesai. Status akun tidak otomatis membuka layanan.</p>`;
+    <p class="fineprint">Tombol layanan hanya tersedia setelah persetujuan. Setiap aplikasi tetap wajib memeriksa hak akses pada backend-nya.</p>`;
   document.querySelectorAll("[data-request]").forEach((button) => button.addEventListener("click", () => requestAccess(button.dataset.request)));
   document.querySelector("#logout").addEventListener("click", async () => {
     const { error: logoutError } = await supabase.auth.signOut();
