@@ -16,6 +16,7 @@ const forgot = document.querySelector("#forgot");
 const tabs = [...document.querySelectorAll(".tab")];
 let mode = "login";
 let supabase = null;
+const isVerificationReturn = new URLSearchParams(window.location.search).get("verified") === "1";
 
 function showNotice(message, error = false) {
   notice.textContent = message;
@@ -216,9 +217,24 @@ if (params.get("verified") === "1") showNotice("Email berhasil diverifikasi. Sil
 if (params.has("code")) showNotice("Tautan autentikasi sedang diproses. Jika verifikasi gagal, minta tautan baru.");
 if (configured()) {
   supabase.auth.onAuthStateChange((_event, session) => {
-    if (session) setTimeout(() => renderSession().catch((error) => showNotice(safeError(error), true)), 0);
+    // Email confirmation must return to the login form, not open an authenticated dashboard.
+    if (session && !isVerificationReturn) {
+      setTimeout(() => renderSession().catch((error) => showNotice(safeError(error), true)), 0);
+    }
   });
-  supabase.auth.getSession().then(({ data }) => {
+  supabase.auth.getSession().then(async ({ data }) => {
+    if (isVerificationReturn) {
+      if (data.session) {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          showNotice("Email berhasil diverifikasi. Silakan masuk secara manual untuk melanjutkan.", true);
+          return;
+        }
+      }
+      setMode("login");
+      showNotice("Email berhasil diverifikasi. Silakan masuk ke Yuosant ID untuk melanjutkan.");
+      return;
+    }
     if (data.session) renderSession().catch((error) => showNotice(safeError(error), true));
   });
 }
