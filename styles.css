@@ -675,3 +675,95 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
   .ecosystem-track .ecosystem-feature .feature-copy { padding: 17px 18px 24px !important; }
   .ecosystem-track .ecosystem-feature .feature-copy > p:not(.feature-kicker) { font-size: .79rem !important; }
 }
+
+
+/* MOBILE LAYOUT REPAIR 2026-11
+   Normalize the page canvas and prevent oversized hero artwork from narrowing/overflowing content. */
+@media (max-width: 620px) {
+  html, body {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+  body { font-size: 16px; }
+  main, .site-header, .footer,
+  .hero, .manifesto, .ecosystem-section, .interlude,
+  .about-section, .contact-section {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .site-header {
+    left: 0;
+    right: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 780px;
+    height: auto;
+    padding: 132px 24px 300px;
+    background-size: auto 100%, auto 100%, auto 100%;
+    background-position: center, center, 62% bottom;
+    background-repeat: no-repeat;
+  }
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.65rem, 12vw, 4.2rem);
+    overflow-wrap: normal;
+  }
+  .hero-copy { max-width: 34ch; font-size: .94rem; }
+  .hero-footnote { flex-wrap: wrap; gap: 10px 16px; margin-top: 34px; }
+  .scroll-cue { bottom: 18px; white-space: nowrap; }
+  .section { padding: 76px 24px; }
+  .manifesto {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .manifesto-main, .manifesto-aside,
+  .about-title, .about-copy { min-width: 0; width: 100%; }
+  .manifesto-aside { padding-left: 18px; }
+  .manifesto-index { right: 0; bottom: -8%; font-size: 11rem; }
+  .ecosystem-top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .ecosystem-top h2, .manifesto h2, .about-title h2 {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  .ecosystem-carousel { width: 100%; max-width: 100%; overflow: hidden; }
+  .ecosystem-track { width: 100%; max-width: 100%; }
+  .interlude { padding: 100px 24px 90px; }
+  .interlude h2 { font-size: clamp(2.1rem, 9vw, 3.4rem); }
+  .about-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .about-copy { padding-top: 0; }
+  .contact-section { padding: 100px 24px 28px; }
+  .contact-section h2 { font-size: clamp(2.8rem, 12vw, 4.2rem); }
+  .contact-bottom { flex-wrap: wrap; gap: 12px; margin-top: 64px; }
+  .footer { flex-wrap: wrap; padding: 24px; }
+}
+@media (max-width: 380px) {
+  .hero { padding-left: 20px; padding-right: 20px; }
+  .section { padding-left: 20px; padding-right: 20px; }
+  .actions { gap: 14px; }
+  .button { padding: 13px 17px; }
+}
