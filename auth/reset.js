@@ -12,8 +12,7 @@ const client = (!SUPABASE_URL.includes("GANTI_") && !SUPABASE_PUBLISHABLE_KEY.in
       auth: {
         autoRefreshToken: true,
         persistSession: true,
-        detectSessionInUrl: true,
-        flowType: "implicit"
+        detectSessionInUrl: true
       }
     })
   : null;
