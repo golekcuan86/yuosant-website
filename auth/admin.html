@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Admin Yuosant ID</title>
+  <link rel="stylesheet" href="./auth.css">
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <main class="shell admin-shell">
+    <header class="brand"><div class="mark">Y</div><div><strong>YUOSANT ID</strong><span>Panel administrasi</span></div></header>
+    <section class="intro">
+      <p class="eyebrow">ADMINISTRATION</p>
+      <h1>Kontrol akses.<br><span>Terpusat dan tercatat.</span></h1>
+      <p>Kelola permintaan akses layanan dan status akun Yuosant dari satu tempat.</p>
+    </section>
+    <section class="panel admin-panel">
+      <div class="admin-top">
+        <div><h2>Dashboard Super Admin</h2><p class="muted" id="admin-email">Memeriksa sesi...</p></div>
+        <a class="text-button" href="./index.html">Kembali ke akun</a>
+      </div>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div class="stats" id="stats"></div>
+      <div class="toolbar">
+        <label for="filter">Tampilkan permintaan</label>
+        <select id="filter"><option value="pending">Menunggu persetujuan</option><option value="all">Semua status</option><option value="approved">Disetujui</option><option value="rejected">Ditolak</option><option value="revoked">Dicabut</option></select>
+        <button class="secondary" id="refresh" type="button">Muat ulang</button>
+      </div>
+      <h3>Permintaan akses layanan</h3>
+      <div id="requests" class="admin-list"><p class="muted">Memuat data...</p></div>
+      <h3>Pengelolaan akun</h3>
+      <div id="accounts" class="admin-list"><p class="muted">Memuat data...</p></div>
+      <h3>Riwayat keputusan admin</h3>
+      <div id="audit" class="admin-list"><p class="muted">Memuat data...</p></div>
+      <p class="fineprint">Daftar dibatasi hingga 100 akun dan 200 permintaan terbaru. Semua keputusan dilakukan di backend dan dicatat dalam audit log.</p>
+    </section>
+    <footer>© 2026 Yuosant · Lingkungan pengembangan</footer>
+  </main>
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>
