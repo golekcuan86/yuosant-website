@@ -69,7 +69,7 @@ form.addEventListener("submit", async (event) => {
         email, password,
         options: {
           data: { display_name: displayName },
-          emailRedirectTo: new URL("/auth/index.html?verified=1", window.location.origin).href
+          emailRedirectTo: new URL("/auth/index.html?verified=1", (["yuosant.com", "www.yuosant.com"].includes(window.location.hostname) ? "https://yuosant.com" : window.location.origin)).href
         }
       });
       if (error) throw error;
