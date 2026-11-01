@@ -214,6 +214,7 @@ async function requestAccess(serviceKey) {
 
 const params = new URLSearchParams(window.location.search);
 if (params.get("verified") === "1") showNotice("Email berhasil diverifikasi. Silakan masuk ke Yuosant ID untuk melanjutkan.");
+if (params.get("password_updated") === "1") showNotice("Kata sandi berhasil diperbarui. Silakan masuk menggunakan kata sandi baru.");
 if (params.has("code")) showNotice("Tautan autentikasi sedang diproses. Jika verifikasi gagal, minta tautan baru.");
 if (configured()) {
   supabase.auth.onAuthStateChange((_event, session) => {
