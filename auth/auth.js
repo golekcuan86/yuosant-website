@@ -151,7 +151,7 @@ async function renderSession() {
       ? '<span class="access-approved" aria-label="Akses disetujui">✓ Disetujui</span>'
       : pending
         ? '<span class="access-pending">Dalam proses</span>'
-        : `<button class="request-button" data-request="${key}">${rejected || status === "revoked" ? "Ajukan kembali" : "Minta akses"}</button>`;
+        : rejected || status === "revoked" ? '<span class="access-pending">Hubungi administrator</span>' : `<button class="request-button" data-request="${key}">Minta akses</button>`;
     return `<article class="service-access-card">
       <div class="service-access-top"><strong>${label}</strong><span class="service-status ${approved ? "is-approved" : pending ? "is-pending" : ""}">${statusText}</span></div>
       <div class="service-access-bottom">${action}</div>
