@@ -69,7 +69,7 @@ form.addEventListener("submit", async (event) => {
         email, password,
         options: {
           data: { display_name: displayName },
-          emailRedirectTo: new URL("./index.html?verified=1", window.location.href).href
+          emailRedirectTo: new URL("/auth/index.html?verified=1", window.location.origin).href
         }
       });
       if (error) throw error;
@@ -177,7 +177,7 @@ async function renderSession() {
     <a class="home-link panel-home-link" href="/">← Kembali ke Beranda Yuosant</a>
     ${user.app_metadata?.role === "super_admin" ? '<p><a class="text-button" href="./admin.html">Buka Dashboard Super Admin →</a></p>' : ""}
     <h2>Dashboard Yuosant ID</h2>
-    <p class="muted">Halo ${escapeHtml(profile.display_name || user.email || "Pengguna")}. Pilih layanan yang sudah disetujui administrator.</p>
+    <p class="muted">Halo ${escapeHtml(profile.display_name || user.email || "Pengguna")}. Email terverifikasi dan akun aktif. Pilih layanan yang sudah disetujui administrator.</p>
     <p class="muted access-note">Akses Yuosant AI dan Yuosant FinLab hanya dapat dilakukan melalui Dashboard Yuosant ID setelah login dan mendapat persetujuan administrator.</p>
     <div class="service-access-list">
       ${serviceCard("yuosant_ai", "Yuosant AI", "https://ai.yuosant.com")}
