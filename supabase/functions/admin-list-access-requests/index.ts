@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+const allowedOriginPattern = /^https:\/\/(?:yuosant-portal-preview(?:-[a-z0-9-]+)?-golekcuan\.vercel\.app|yuosant\.com|www\.yuosant\.com)$/i;
 const jsonHeaders = (origin: string) => ({
   "Access-Control-Allow-Origin": origin,
   "Access-Control-Allow-Headers": "authorization, apikey, content-type",
@@ -12,12 +13,12 @@ const json = (body: unknown, status = 200, origin = "") =>
 
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get("origin") ?? "";
-  const allowedOrigin = /^https:\/\/yuosant-portal-preview(?:-[a-z0-9-]+)?-golekcuan\.vercel\.app$/i.test(origin);
+  const allowedOrigin = allowedOriginPattern.test(origin);
   if (req.method === "OPTIONS") {
     if (!allowedOrigin) return new Response("forbidden", { status: 403 });
     return new Response("ok", { headers: jsonHeaders(origin) });
   }
-  if (!allowedOrigin) return json({ error: "Origin not allowed" }, 403);
+  if (!allowedOrigin) return json({ error: "Origin not allowed" }, 403, origin);
   if (req.method !== "GET") return json({ error: "Method not allowed" }, 405, origin);
 
   const url = Deno.env.get("SUPABASE_URL") ?? "";
