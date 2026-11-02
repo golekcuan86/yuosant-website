@@ -789,3 +789,6 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
   .hero-copy{margin-top:20px;line-height:1.55}
   .hero-content .actions{margin-top:22px;gap:18px}
 }
+
+/* Keep mobile hero actions above the central emblem without moving the headline or artwork. */
+@media(max-width:620px){.hero-content .actions{transform:translateY(-36px)}}
