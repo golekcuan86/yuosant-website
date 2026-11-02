@@ -8,7 +8,7 @@
   <title>Yuosant — A New Digital Perspective</title>
   <link rel="stylesheet" href="styles.css?v=20261102-tools-title-white" />
   <link rel="stylesheet" href="/mobile-fix.css?v=20261102-final" />
-  <link rel="stylesheet" href="/chat-widget.css?v=yuosant-glass-logo-2" />
+  <link rel="stylesheet" href="/chat-widget.css?v=turnstile-protection-1" />
 </head>
 <body>
   <header class="site-header">
@@ -114,8 +114,8 @@
   <section id="yuosant-chat-panel" role="dialog" aria-label="Yuosant AI Chat" aria-modal="false">
     <div class="yc-head"><div class="yc-brand"><div class="yc-mark"><img src="/yuosant-logo-bulat.png" alt="Logo Yuosant" width="42" height="42" /></div><div><div class="yc-title">Yuosant AI</div><div class="yc-subtitle">Asisten digital Yuosant</div></div></div><button class="yc-close" type="button" aria-label="Tutup chat">×</button></div>
     <div class="yc-log" aria-live="polite"><div class="yc-message bot">Halo! Saya Yuosant AI. Ada yang bisa saya bantu hari ini?</div></div>
-    <div><div class="yc-note">Jawaban AI dapat keliru. Hindari mengirim data pribadi atau rahasia.</div><form class="yc-compose"><textarea class="yc-input" rows="1" maxlength="6000" placeholder="Tulis pertanyaan..." aria-label="Tulis pertanyaan"></textarea><button class="yc-send" type="submit">Kirim</button></form></div>
+    <div><div class="yc-note">Jawaban AI dapat keliru. Hindari mengirim data pribadi atau rahasia.</div><form class="yc-compose"><div id="yc-turnstile" aria-label="Verifikasi keamanan"></div><textarea class="yc-input" rows="1" maxlength="6000" placeholder="Tulis pertanyaan..." aria-label="Tulis pertanyaan"></textarea><button class="yc-send" type="submit">Kirim</button></form></div>
   </section>
-  <script src="/chat-widget.js?v=gemini-prototype-1" defer></script>
+  <script src="/chat-widget.js?v=turnstile-protection-1" defer></script>
 </body>
 </html>
