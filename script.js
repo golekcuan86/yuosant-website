@@ -8,15 +8,33 @@ const updateHeader = () => {
 updateHeader();
 window.addEventListener('scroll', updateHeader, { passive: true });
 
+const radialMenu = document.querySelector('.mobile-radial-menu');
+const setMobileMenu = (open) => {
+  document.body.classList.toggle('menu-toggled', open);
+  toggle?.setAttribute('aria-expanded', String(open));
+  toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  radialMenu?.setAttribute('aria-hidden', String(!open));
+};
+
 toggle?.addEventListener('click', () => {
-  const isOpen = nav?.classList.toggle('open') ?? false;
-  toggle.setAttribute('aria-expanded', String(isOpen));
-  toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  setMobileMenu(toggle.getAttribute('aria-expanded') !== 'true');
+});
+
+radialMenu?.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', () => setMobileMenu(false));
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && document.body.classList.contains('menu-toggled')) {
+    setMobileMenu(false);
+    toggle?.focus();
+  }
 });
 
 document.querySelectorAll('.nav a').forEach((link) => {
   link.addEventListener('click', () => {
     nav?.classList.remove('open');
+    if (window.matchMedia('(max-width: 620px)').matches) setMobileMenu(false);
     toggle?.setAttribute('aria-expanded', 'false');
     toggle?.setAttribute('aria-label', 'Open menu');
   });
