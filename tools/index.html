@@ -21,7 +21,38 @@
 <section class="tool"><div class="tool-head"><div class="tool-icon">Aa</div><h3>Penghitung Kata</h3></div><p class="desc">Hitung jumlah kata, karakter, kalimat, dan perkiraan waktu membaca.</p><div class="field"><label for="wordText">Masukkan teks</label><textarea id="wordText" placeholder="Tempel atau ketik teks di sini..."></textarea></div><div class="result" id="wordResult" aria-live="polite">0 kata · 0 karakter · 0 kalimat</div><div class="subresult" id="readTime">Perkiraan membaca: 0 menit</div></section>
 <section class="tool"><div class="tool-head"><div class="tool-icon">Aa↕</div><h3>Pengubah Format Teks</h3></div><p class="desc">Ubah teks menjadi huruf kapital, huruf kecil, atau format judul.</p><div class="field"><label for="caseText">Teks</label><textarea id="caseText" placeholder="Tulis teks yang ingin diubah..."></textarea></div><div class="actions"><button class="btn" data-case="upper">HURUF BESAR</button><button class="btn secondary" data-case="lower">huruf kecil</button><button class="btn secondary" data-case="title">Format Judul</button></div><div class="actions"><button class="btn secondary" id="copyCase">Salin hasil</button></div><div class="result" id="caseResult" aria-live="polite"></div></section>
 <section class="tool"><div class="tool-head"><div class="tool-icon">✳</div><h3>Generator Password</h3></div><p class="desc">Buat password acak dengan panjang dan kombinasi karakter yang dapat dipilih.</p><div class="field"><label for="passLength">Panjang password</label><div class="range"><input id="passLength" type="range" min="8" max="32" value="16"><output id="passLengthValue">16</output></div></div><div class="fields" style="margin-top:14px"><label><input id="passUpper" type="checkbox" checked> Huruf besar</label><label><input id="passLower" type="checkbox" checked> Huruf kecil</label><label><input id="passNumber" type="checkbox" checked> Angka</label><label><input id="passSymbol" type="checkbox" checked> Simbol</label></div><div class="actions"><button class="btn" id="makePass">Buat password</button><button class="btn secondary" id="copyPass">Salin</button></div><div class="result" id="passResult" aria-live="polite"></div><div class="subresult">Simpan password di pengelola password. Jangan gunakan ulang password yang sama.</div></section>
-<section class="tool"><div class="tool-head"><div class="tool-icon">▥</div><h3>Barcode Generator</h3></div><p class="desc">Buat barcode untuk label produk, inventaris, atau kebutuhan usaha. Pilih format, masukkan kode, lalu unduh hasilnya.</p><div class="fields"><div class="field"><label for="barcodeFormat">Format barcode</label><select id="barcodeFormat"><option value="CODE128">Code 128 · Serbaguna</option><option value="EAN13">EAN-13 · Produk ritel</option><option value="UPC">UPC-A · Produk ritel</option><option value="CODE39">Code 39 · Inventaris</option></select></div><div class="field"><label for="barcodeValue">Nomor / teks barcode</label><input id="barcodeValue" type="text" autocomplete="off" placeholder="Contoh: 8991234567890"></div></div><div class="actions"><button class="btn" id="makeBarcode" type="button">Buat barcode</button></div><div class="result" id="barcodeMessage" aria-live="polite"></div><div id="barcodePreview" style="display:none;margin-top:14px;padding:14px;background:#fff;border:1px solid #dce0df;border-radius:12px;text-align:center"><svg id="barcodeSvg" style="max-width:100%;height:auto"></svg></div><div class="actions" id="barcodeDownloads" style="display:none"><button class="btn secondary" id="downloadBarcodeSvg" type="button">Unduh SVG</button><button class="btn secondary" id="downloadBarcodePng" type="button">Unduh PNG</button></div><div class="subresult">EAN-13 dan UPC-A memerlukan angka dengan panjang yang sesuai. Barcode yang dibuat sendiri bukan pengganti nomor produk resmi GS1.</div></section></div><p class="notice">Catatan: Yuosant Tools adalah kumpulan utilitas bantu. Periksa kembali hasil perhitungan sebelum digunakan untuk keputusan keuangan atau pekerjaan penting. Password dibuat di browser pada perangkat Anda.</p></div></section></main>
+<section class="tool"><div class="tool-head"><div class="tool-icon">▥</div><h3>Barcode Generator</h3></div><p class="desc">Buat barcode untuk label produk, inventaris, atau kebutuhan usaha. Pilih format, masukkan kode, lalu unduh hasilnya.</p><div class="fields"><div class="field"><label for="barcodeFormat">Format barcode</label><select id="barcodeFormat"><option value="CODE128">Code 128 · Serbaguna</option><option value="EAN13">EAN-13 · Produk ritel</option><option value="UPC">UPC-A · Produk ritel</option><option value="CODE39">Code 39 · Inventaris</option></select></div><div class="field"><label for="barcodeValue">Nomor / teks barcode</label><input id="barcodeValue" type="text" autocomplete="off" placeholder="Contoh: 8991234567890"></div></div><div class="actions"><button class="btn" id="makeBarcode" type="button">Buat barcode</button></div><div class="result" id="barcodeMessage" aria-live="polite"></div><div id="barcodePreview" style="display:none;margin-top:14px;padding:14px;background:#fff;border:1px solid #dce0df;border-radius:12px;text-align:center"><svg id="barcodeSvg" style="max-width:100%;height:auto"></svg></div><div class="actions" id="barcodeDownloads" style="display:none"><button class="btn secondary" id="downloadBarcodeSvg" type="button">Unduh SVG</button><button class="btn secondary" id="downloadBarcodePng" type="button">Unduh PNG</button></div><div class="subresult">EAN-13 dan UPC-A memerlukan angka dengan panjang yang sesuai. Barcode yang dibuat sendiri bukan pengganti nomor produk resmi GS1.</div></section></div>
+<section class="tool" id="kalkulator-hpp">
+ <div class="tool-head"><div class="tool-icon">Rp</div><h3>Kalkulator HPP & Harga Jual</h3></div>
+ <p class="desc">Hitung total modal produksi, HPP per produk, laba berdasarkan target markup, dan rekomendasi harga jual. Biaya admin marketplace dapat dihitung terpisah.</p>
+ <div class="fields">
+  <div class="field wide"><label for="ys-hpp-bahan">Total biaya bahan baku & kemasan (Rp)</label><input id="ys-hpp-bahan" type="number" min="0" step="any" inputmode="decimal" placeholder="Contoh: 350000"></div>
+  <div class="field wide"><label for="ys-hpp-operasional">Biaya operasional / tenaga kerja (Rp)</label><input id="ys-hpp-operasional" type="number" min="0" step="any" inputmode="decimal" placeholder="Contoh: 150000"></div>
+  <div class="field"><label for="ys-hpp-jumlah">Jumlah hasil produksi (pcs)</label><input id="ys-hpp-jumlah" type="number" min="1" step="1" inputmode="numeric" placeholder="Contoh: 50"></div>
+  <div class="field"><label for="ys-hpp-margin">Target laba / markup (%)</label><input id="ys-hpp-margin" type="number" min="0" step="any" inputmode="decimal" placeholder="Contoh: 35"></div>
+  <div class="field wide"><label for="ys-hpp-admin">Biaya admin marketplace (%) · opsional</label><input id="ys-hpp-admin" type="number" min="0" max="99.99" step="any" inputmode="decimal" placeholder="Contoh: 6.5"></div>
+ </div>
+ <div class="actions"><button class="btn" id="ys-hpp-calc" type="button">Hitung HPP & harga</button><button class="btn secondary" id="ys-hpp-reset" type="button">Reset</button></div>
+ <div class="result" id="ys-hpp-result" aria-live="polite"></div>
+ <div class="subresult" id="ys-hpp-detail" aria-live="polite"></div>
+ <p class="subresult">Catatan: persentase target laba di sini dihitung sebagai markup dari HPP, bukan margin dari harga jual.</p>
+</section>
+<section class="tool" id="generator-whatsapp">
+ <div class="tool-head"><div class="tool-icon">WA</div><h3>Generator Link WhatsApp</h3></div>
+ <p class="desc">Buat tautan chat WhatsApp dengan pesan otomatis dan QR Code agar pelanggan dapat langsung menghubungi bisnis Anda.</p>
+ <div class="fields">
+  <div class="field wide"><label for="ys-wa-number">Nomor WhatsApp</label><input id="ys-wa-number" type="tel" inputmode="tel" autocomplete="tel" placeholder="Contoh: 081234567890"></div>
+  <div class="field wide"><label for="ys-wa-message">Pesan otomatis · opsional</label><textarea id="ys-wa-message" placeholder="Halo Admin, saya ingin memesan produk..."></textarea></div>
+ </div>
+ <div class="actions"><button class="btn" id="ys-wa-create" type="button">Buat link & QR</button><button class="btn secondary" id="ys-wa-copy" type="button" disabled>Salin link</button><a class="btn secondary" id="ys-wa-open" href="#" target="_blank" rel="noopener noreferrer" hidden>Buka chat ↗</a></div>
+ <div class="result" id="ys-wa-result" aria-live="polite"></div>
+ <div id="ys-wa-qr-wrap" style="display:none;margin-top:14px;padding:16px;background:#fff;border:1px solid #dce0df;border-radius:12px;text-align:center">
+  <div id="ys-wa-qr" style="display:flex;justify-content:center;margin-bottom:10px"></div>
+  <div class="subresult">Pindai QR Code untuk membuka chat WhatsApp.</div>
+ </div>
+ <p class="subresult">Nomor berawalan 08 otomatis diubah ke format 62. Nomor dan pesan diproses di browser, tidak disimpan oleh Yuosant.</p>
+</section>
+<p class="notice">Catatan: Yuosant Tools adalah kumpulan utilitas bantu. Periksa kembali hasil perhitungan sebelum digunakan untuk keputusan keuangan atau pekerjaan penting. Password dibuat di browser pada perangkat Anda.</p></div></section></main>
 <footer class="footer"><div class="wrap foot"><span>© 2026 Yuosant · Tools</span><span>Bagian dari ekosistem Yuosant</span><a href="/blog/">Baca Yuosant Journal ↗</a></div></footer>
 <script>
 const byId=id=>document.getElementById(id);
@@ -90,4 +121,67 @@ byId('downloadBarcodePng').addEventListener('click',()=>{
  img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=img.width*2;canvas.height=img.height*2;const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);canvas.toBlob(png=>{if(!png)return;const pngUrl=URL.createObjectURL(png);const a=document.createElement('a');a.href=pngUrl;a.download='yuosant-barcode.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(pngUrl),1000);},'image/png');};
  img.onerror=()=>{URL.revokeObjectURL(url);byId('barcodeMessage').textContent='Gagal menyiapkan PNG. Coba unduh format SVG.';};
  img.src=url;
-});</script></body></html>
+});
+/* HPP calculator: user inputs are processed locally in the browser. */
+const ysMoney=n=>'Rp '+Math.ceil(n).toLocaleString('id-ID');
+byId('ys-hpp-calc').addEventListener('click',()=>{
+ const bahan=Number(byId('ys-hpp-bahan').value);
+ const operasional=Number(byId('ys-hpp-operasional').value)||0;
+ const jumlah=Number(byId('ys-hpp-jumlah').value);
+ const markup=Number(byId('ys-hpp-margin').value)||0;
+ const admin=Number(byId('ys-hpp-admin').value)||0;
+ const result=byId('ys-hpp-result'),detail=byId('ys-hpp-detail');
+ if(byId('ys-hpp-bahan').value===''||bahan<=0||operasional<0||!Number.isInteger(jumlah)||jumlah<=0||markup<0||admin<0||admin>=100){
+  result.textContent='Periksa input: biaya bahan harus lebih dari 0, jumlah produksi bilangan bulat positif, dan persentase admin di bawah 100%.';
+  detail.textContent='';return;
+ }
+ const total=bahan+operasional,hpp=total/jumlah,laba=hpp*markup/100,harga=hpp+laba;
+ result.textContent='Rekomendasi harga jual per produk: '+ysMoney(harga);
+ detail.textContent='Total modal produksi: '+ysMoney(total)+' · HPP per produk: '+ysMoney(hpp)+' · Laba per produk: '+ysMoney(laba)+(admin>0?' · Harga marketplace untuk menutup admin '+admin+'%: '+ysMoney(harga/(1-admin/100)):'');
+});
+byId('ys-hpp-reset').addEventListener('click',()=>{
+ ['ys-hpp-bahan','ys-hpp-operasional','ys-hpp-jumlah','ys-hpp-margin','ys-hpp-admin'].forEach(id=>byId(id).value='');
+ byId('ys-hpp-result').textContent='';byId('ys-hpp-detail').textContent='';
+});
+
+/* WhatsApp link + QR generator. QR library is loaded only when requested. */
+let ysQrPromise;
+function ysLoadQr(){
+ if(window.QRCode)return Promise.resolve(true);
+ if(ysQrPromise)return ysQrPromise;
+ ysQrPromise=new Promise(resolve=>{
+  const sources=['https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js','https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js'];
+  const load=i=>{
+   if(window.QRCode){resolve(true);return;}
+   if(i>=sources.length){resolve(false);return;}
+   const sc=document.createElement('script');sc.src=sources[i];sc.async=true;
+   sc.onload=()=>resolve(!!window.QRCode);sc.onerror=()=>{sc.remove();load(i+1);};
+   document.head.appendChild(sc);
+  };load(0);
+ });
+ return ysQrPromise;
+}
+let ysWaLink='';
+byId('ys-wa-create').addEventListener('click',async()=>{
+ let number=byId('ys-wa-number').value.trim().replace(/[^0-9]/g,'');
+ const message=byId('ys-wa-message').value.trim();
+ const result=byId('ys-wa-result'),qrWrap=byId('ys-wa-qr-wrap');
+ if(number.startsWith('0'))number='62'+number.slice(1);
+ else if(number.startsWith('8'))number='62'+number;
+ if(number.length<10||number.length>15){result.textContent='Masukkan nomor WhatsApp yang valid, termasuk kode negara bila diperlukan.';qrWrap.style.display='none';return;}
+ ysWaLink='https://wa.me/'+number+(message?'?text='+encodeURIComponent(message):'');
+ result.textContent=ysWaLink;
+ const open=byId('ys-wa-open');open.href=ysWaLink;open.hidden=false;
+ byId('ys-wa-copy').disabled=false;
+ const ready=await ysLoadQr();
+ if(!ready){qrWrap.style.display='none';result.textContent+=' · QR tidak dapat dimuat. Anda tetap dapat menyalin link atau membuka chat.';return;}
+ const qr=byId('ys-wa-qr');qr.innerHTML='';
+ new QRCode(qr,{text:ysWaLink,width:180,height:180,colorDark:'#06111f',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+ qrWrap.style.display='block';
+});
+byId('ys-wa-copy').addEventListener('click',async()=>{
+ if(!ysWaLink)return;
+ try{await navigator.clipboard.writeText(ysWaLink);byId('ys-wa-copy').textContent='Tersalin ✓';}
+ catch{byId('ys-wa-result').textContent='Salin manual tautan berikut: '+ysWaLink;}
+});
+</script></body></html>
