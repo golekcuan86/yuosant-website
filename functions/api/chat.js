@@ -2,6 +2,11 @@ const MODEL = "gemini-3.1-flash-lite";
 const MAX_BODY_BYTES = 20_000;
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_CHARS = 6_000;
+const ALLOWED_HOSTNAMES = new Set([
+  "yuosant.com",
+  "www.yuosant.com",
+  "d6e45164.yuosant-website.pages.dev",
+]);
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -14,25 +19,43 @@ function json(data, status = 200) {
   });
 }
 
-function isAllowedOrigin(request) {
+function getAllowedHostname(request) {
   const origin = request.headers.get("Origin");
-  if (!origin) return false;
+  if (!origin) return null;
   try {
     const url = new URL(origin);
     const host = url.hostname.toLowerCase();
-    return (
-      host === "yuosant.com" ||
-      host === "www.yuosant.com" ||
-      host.endsWith(".yuosant-website.pages.dev")
-    ) && url.protocol === "https:";
+    return url.protocol === "https:" && ALLOWED_HOSTNAMES.has(host) ? host : null;
   } catch {
-    return false;
+    return null;
   }
 }
 
+async function verifyTurnstile(token, secret, hostname, remoteIp) {
+  const form = new URLSearchParams({ secret, response: token });
+  if (remoteIp) form.set("remoteip", remoteIp);
+
+  let response;
+  try {
+    response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: form,
+    });
+  } catch {
+    return false;
+  }
+
+  if (!response.ok) return false;
+  const result = await response.json().catch(() => null);
+  return result?.success === true && result?.hostname === hostname;
+}
+
 export async function onRequestPost({ request, env }) {
-  if (!isAllowedOrigin(request)) return json({ error: "Origin tidak diizinkan." }, 403);
+  const hostname = getAllowedHostname(request);
+  if (!hostname) return json({ error: "Origin tidak diizinkan." }, 403);
   if (!env.GEMINI_API_KEY) return json({ error: "Konfigurasi AI belum tersedia." }, 503);
+  if (!env.TURNSTILE_SECRET_KEY) return json({ error: "Perlindungan keamanan belum dikonfigurasi." }, 503);
 
   const declaredLength = Number(request.headers.get("content-length") || 0);
   if (declaredLength > MAX_BODY_BYTES) return json({ error: "Pesan terlalu besar." }, 413);
@@ -43,6 +66,18 @@ export async function onRequestPost({ request, env }) {
   } catch {
     return json({ error: "Format permintaan tidak valid." }, 400);
   }
+
+  if (typeof payload.turnstileToken !== "string" || !payload.turnstileToken) {
+    return json({ error: "Selesaikan verifikasi keamanan terlebih dahulu." }, 400);
+  }
+
+  const verified = await verifyTurnstile(
+    payload.turnstileToken,
+    env.TURNSTILE_SECRET_KEY,
+    hostname,
+    request.headers.get("CF-Connecting-IP")
+  );
+  if (!verified) return json({ error: "Verifikasi keamanan gagal atau kedaluwarsa. Silakan verifikasi lagi." }, 403);
 
   if (!Array.isArray(payload.messages) || payload.messages.length === 0) {
     return json({ error: "Tuliskan pesan terlebih dahulu." }, 400);
