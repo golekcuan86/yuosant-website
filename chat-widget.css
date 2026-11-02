@@ -1,0 +1,22 @@
+/* Yuosant AI Chat prototype: isolated styles */
+#yuosant-chat-launcher{position:fixed;right:24px;bottom:24px;z-index:9998;border:0;border-radius:999px;padding:14px 19px;background:#087f65;color:#fff;font:600 14px/1.2 inherit;box-shadow:0 12px 34px #00101f38;cursor:pointer}
+#yuosant-chat-launcher:hover{background:#06916f;transform:translateY(-2px)}
+#yuosant-chat-panel{position:fixed;right:24px;bottom:86px;z-index:9999;width:min(390px,calc(100vw - 28px));height:min(590px,calc(100dvh - 120px));display:none;grid-template-rows:auto 1fr auto;background:#fff;color:#17212b;border:1px solid #dce5e8;border-radius:20px;box-shadow:0 22px 70px #00101f35;overflow:hidden;font-family:inherit}
+#yuosant-chat-panel.is-open{display:grid}
+.yc-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:#071827;color:#fff}
+.yc-brand{display:flex;align-items:center;gap:10px}
+.yc-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#0a8b6d;color:#fff;font-weight:800}
+.yc-title{font-weight:700;font-size:15px}
+.yc-subtitle{font-size:11px;color:#b9cbd2;margin-top:3px}
+.yc-close{border:0;background:transparent;color:#fff;font-size:25px;line-height:1;cursor:pointer;padding:4px 7px}
+.yc-log{padding:16px;overflow:auto;background:#f6f9fa;display:flex;flex-direction:column;gap:11px}
+.yc-message{max-width:88%;padding:11px 13px;border-radius:14px;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.yc-message.bot{align-self:flex-start;background:#fff;border:1px solid #e0e8eb;border-top-left-radius:5px}
+.yc-message.user{align-self:flex-end;background:#087f65;color:#fff;border-top-right-radius:5px}
+.yc-note{font-size:10px;color:#71808a;text-align:center;padding:0 12px 8px}
+.yc-compose{display:flex;gap:8px;padding:12px;border-top:1px solid #e6ecee;background:#fff}
+.yc-input{min-width:0;flex:1;resize:none;max-height:100px;border:1px solid #d5dfe3;border-radius:12px;padding:11px 12px;font:13px/1.4 inherit;outline:none}
+.yc-input:focus{border-color:#0a9874;box-shadow:0 0 0 3px #0a98741a}
+.yc-send{border:0;border-radius:12px;padding:0 15px;background:#087f65;color:#fff;font-weight:700;cursor:pointer}
+.yc-send:disabled{opacity:.5;cursor:wait}
+@media(max-width:520px){#yuosant-chat-launcher{right:14px;bottom:14px}#yuosant-chat-panel{right:8px;bottom:74px;width:calc(100vw - 16px);height:min(640px,calc(100dvh - 94px));border-radius:17px}}
