@@ -144,3 +144,22 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
     if (!frame) frame = requestAnimationFrame(tick);
   }, { passive: true });
 })();
+
+
+// Type the existing Yuosant tagline once, directly above the hero scroll cue.
+(() => {
+  const target = document.getElementById('hero-tagline');
+  if (!target) return;
+  const phrase = 'IDEAS INTO DIGITAL POSSIBILITIES';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    target.textContent = phrase;
+    return;
+  }
+  let index = 0;
+  const typeNext = () => {
+    if (index >= phrase.length) return;
+    target.textContent += phrase.charAt(index++);
+    window.setTimeout(typeNext, 65);
+  };
+  window.setTimeout(typeNext, 500);
+})();
