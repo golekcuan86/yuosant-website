@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06111f">
-<meta name="description" content="Yuosant Tools menyediakan alat digital gratis untuk menghitung persentase, menghitung kata, mengubah format teks, dan membuat password.">
+<meta name="description" content="Yuosant Tools menyediakan alat digital gratis untuk menghitung persentase, menghitung kata, mengubah format teks, membuat password, dan menghasilkan barcode.">
 <title>Yuosant Tools | Alat Digital Gratis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 <section class="tool"><div class="tool-head"><div class="tool-icon">Aa</div><h3>Penghitung Kata</h3></div><p class="desc">Hitung jumlah kata, karakter, kalimat, dan perkiraan waktu membaca.</p><div class="field"><label for="wordText">Masukkan teks</label><textarea id="wordText" placeholder="Tempel atau ketik teks di sini..."></textarea></div><div class="result" id="wordResult" aria-live="polite">0 kata · 0 karakter · 0 kalimat</div><div class="subresult" id="readTime">Perkiraan membaca: 0 menit</div></section>
 <section class="tool"><div class="tool-head"><div class="tool-icon">Aa↕</div><h3>Pengubah Format Teks</h3></div><p class="desc">Ubah teks menjadi huruf kapital, huruf kecil, atau format judul.</p><div class="field"><label for="caseText">Teks</label><textarea id="caseText" placeholder="Tulis teks yang ingin diubah..."></textarea></div><div class="actions"><button class="btn" data-case="upper">HURUF BESAR</button><button class="btn secondary" data-case="lower">huruf kecil</button><button class="btn secondary" data-case="title">Format Judul</button></div><div class="actions"><button class="btn secondary" id="copyCase">Salin hasil</button></div><div class="result" id="caseResult" aria-live="polite"></div></section>
 <section class="tool"><div class="tool-head"><div class="tool-icon">✳</div><h3>Generator Password</h3></div><p class="desc">Buat password acak dengan panjang dan kombinasi karakter yang dapat dipilih.</p><div class="field"><label for="passLength">Panjang password</label><div class="range"><input id="passLength" type="range" min="8" max="32" value="16"><output id="passLengthValue">16</output></div></div><div class="fields" style="margin-top:14px"><label><input id="passUpper" type="checkbox" checked> Huruf besar</label><label><input id="passLower" type="checkbox" checked> Huruf kecil</label><label><input id="passNumber" type="checkbox" checked> Angka</label><label><input id="passSymbol" type="checkbox" checked> Simbol</label></div><div class="actions"><button class="btn" id="makePass">Buat password</button><button class="btn secondary" id="copyPass">Salin</button></div><div class="result" id="passResult" aria-live="polite"></div><div class="subresult">Simpan password di pengelola password. Jangan gunakan ulang password yang sama.</div></section>
-</div><p class="notice">Catatan: Yuosant Tools adalah kumpulan utilitas bantu. Periksa kembali hasil perhitungan sebelum digunakan untuk keputusan keuangan atau pekerjaan penting. Password dibuat di browser pada perangkat Anda.</p></div></section></main>
+<section class="tool"><div class="tool-head"><div class="tool-icon">▥</div><h3>Barcode Generator</h3></div><p class="desc">Buat barcode untuk label produk, inventaris, atau kebutuhan usaha. Pilih format, masukkan kode, lalu unduh hasilnya.</p><div class="fields"><div class="field"><label for="barcodeFormat">Format barcode</label><select id="barcodeFormat"><option value="CODE128">Code 128 · Serbaguna</option><option value="EAN13">EAN-13 · Produk ritel</option><option value="UPC">UPC-A · Produk ritel</option><option value="CODE39">Code 39 · Inventaris</option></select></div><div class="field"><label for="barcodeValue">Nomor / teks barcode</label><input id="barcodeValue" type="text" autocomplete="off" placeholder="Contoh: 8991234567890"></div></div><div class="actions"><button class="btn" id="makeBarcode" type="button">Buat barcode</button></div><div class="result" id="barcodeMessage" aria-live="polite"></div><div id="barcodePreview" style="display:none;margin-top:14px;padding:14px;background:#fff;border:1px solid #dce0df;border-radius:12px;text-align:center"><svg id="barcodeSvg" style="max-width:100%;height:auto"></svg></div><div class="actions" id="barcodeDownloads" style="display:none"><button class="btn secondary" id="downloadBarcodeSvg" type="button">Unduh SVG</button><button class="btn secondary" id="downloadBarcodePng" type="button">Unduh PNG</button></div><div class="subresult">EAN-13 dan UPC-A memerlukan angka dengan panjang yang sesuai. Barcode yang dibuat sendiri bukan pengganti nomor produk resmi GS1.</div></section></div><p class="notice">Catatan: Yuosant Tools adalah kumpulan utilitas bantu. Periksa kembali hasil perhitungan sebelum digunakan untuk keputusan keuangan atau pekerjaan penting. Password dibuat di browser pada perangkat Anda.</p></div></section></main>
 <footer class="footer"><div class="wrap foot"><span>© 2026 Yuosant · Tools</span><span>Bagian dari ekosistem Yuosant</span><a href="/blog/">Baca Yuosant Journal ↗</a></div></footer>
 <script>
 const byId=id=>document.getElementById(id);
@@ -32,4 +32,35 @@ byId('copyCase').addEventListener('click',async()=>{const t=byId('caseResult').t
 byId('passLength').addEventListener('input',()=>byId('passLengthValue').value=byId('passLength').value);
 byId('makePass').addEventListener('click',()=>{let chars='';const sets=[['passUpper','ABCDEFGHJKLMNPQRSTUVWXYZ'],['passLower','abcdefghijkmnopqrstuvwxyz'],['passNumber','23456789'],['passSymbol','!@#$%&*+-_=']];const active=sets.filter(([id])=>byId(id).checked);if(!active.length){byId('passResult').textContent='Pilih minimal satu jenis karakter.';return;}active.forEach(([,s])=>chars+=s);const len=Number(byId('passLength').value);const values=new Uint32Array(len);crypto.getRandomValues(values);const arr=active.map(([,s])=>s[Math.floor(Math.random()*s.length)]);for(let i=arr.length;i<len;i++)arr.push(chars[values[i]%chars.length]);for(let i=arr.length-1;i>0;i--){const j=values[i]% (i+1);[arr[i],arr[j]]=[arr[j],arr[i]];}byId('passResult').textContent=arr.join('');});
 byId('copyPass').addEventListener('click',async()=>{const t=byId('passResult').textContent;if(t)try{await navigator.clipboard.writeText(t);byId('copyPass').textContent='Tersalin ✓';}catch{}});
+
+const barcodeSvg=byId('barcodeSvg');
+byId('makeBarcode').addEventListener('click',()=>{
+ const format=byId('barcodeFormat').value;
+ const value=byId('barcodeValue').value.trim();
+ const msg=byId('barcodeMessage');
+ byId('barcodePreview').style.display='none';
+ byId('barcodeDownloads').style.display='none';
+ if(!value){msg.textContent='Masukkan nomor atau teks terlebih dahulu.';return;}
+ if(format==='EAN13'&&!/^\\d{12,13}$/.test(value)){msg.textContent='EAN-13 memerlukan 12 atau 13 digit angka.';return;}
+ if(format==='UPC'&&!/^\\d{11,12}$/.test(value)){msg.textContent='UPC-A memerlukan 11 atau 12 digit angka.';return;}
+ if(format==='CODE39'&&!/^[0-9A-Z .$/+%\\-]+$/.test(value)){msg.textContent='Code 39 hanya mendukung huruf besar, angka, spasi, dan karakter khusus tertentu.';return;}
+ if(typeof JsBarcode==='undefined'){msg.textContent='Generator barcode belum dapat dimuat. Periksa koneksi internet lalu coba lagi.';return;}
+ try{
+  JsBarcode(barcodeSvg,value,{format,lineColor:'#101820',background:'#ffffff',width:2,height:92,margin:12,displayValue:true,font:'DM Sans',fontSize:16,textMargin:7});
+  byId('barcodePreview').style.display='block';
+  byId('barcodeDownloads').style.display='flex';
+  msg.textContent='Barcode berhasil dibuat. Pindai hasilnya untuk memastikan kode terbaca.';
+ }catch(e){msg.textContent='Kode tidak sesuai format barcode yang dipilih. Periksa kembali input.';}
+});
+byId('downloadBarcodeSvg').addEventListener('click',()=>{
+ const svg=byId('barcodeSvg').cloneNode(true);
+ svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+ const blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='yuosant-barcode.svg';a.click();URL.revokeObjectURL(url);
+});
+byId('downloadBarcodePng').addEventListener('click',()=>{
+ const svg=byId('barcodeSvg').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+ const data='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg));
+ const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=img.width*2;canvas.height=img.height*2;const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);const a=document.createElement('a');a.download='yuosant-barcode.png';a.href=canvas.toDataURL('image/png');a.click();};img.src=data;
+});
 </script></body></html>
