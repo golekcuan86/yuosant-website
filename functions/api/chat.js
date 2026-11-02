@@ -7,6 +7,7 @@ const ALLOWED_HOSTNAMES = new Set([
   "www.yuosant.com",
   "d6e45164.yuosant-website.pages.dev",
   "feature-yuosant-gemini-chat-prototype.yuosant-website.pages.dev",
+  "feature-yuosant-gemini-chat.yuosant-website.pages.dev",
 ]);
 
 function json(data, status = 200) {
