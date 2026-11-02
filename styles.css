@@ -771,3 +771,13 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 
 
 
+
+
+/* Single-purpose enhancement: type the existing Yuosant tagline above the scroll cue. */
+.scroll-cue{flex-direction:column;gap:9px}
+.scroll-cue-content{display:flex;align-items:center;justify-content:center;gap:12px;white-space:nowrap}
+.scroll-tagline{display:block;min-height:1em;color:#9bd7e8;font-size:.55rem;font-weight:600;letter-spacing:.16em;line-height:1.5;text-align:center;white-space:nowrap;text-shadow:0 0 12px rgba(0,207,255,.2)}
+.typing-caret{display:inline-block;width:1px;height:.9em;margin-left:3px;vertical-align:-1px;background:var(--cyan);animation:yuosant-caret-blink .8s steps(1,end) infinite}
+@keyframes yuosant-caret-blink{50%{opacity:0}}
+@media(max-width:700px){.scroll-tagline{font-size:.45rem;letter-spacing:.12em}.scroll-cue{gap:7px}}
+@media(prefers-reduced-motion:reduce){.typing-caret{animation:none}}
