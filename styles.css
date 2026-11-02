@@ -780,3 +780,8 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 .ecosystem-feature.feature-tools .feature-image{width:100%;height:100%;object-fit:contain;object-position:center;transform:none}
 .ecosystem-feature.feature-tools.is-active .feature-image{transform:none}
 .ecosystem-feature.feature-tools .feature-number{display:none}
+
+
+/* Improve Yuosant Tools card text contrast on the dark emerald artwork. */
+.ecosystem-track .ecosystem-feature.feature-tools .feature-copy h3{color:#fff}
+.ecosystem-track .ecosystem-feature.feature-tools .feature-cta{color:#fff}
