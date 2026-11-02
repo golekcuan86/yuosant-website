@@ -783,12 +783,12 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 @media(prefers-reduced-motion:reduce){.typing-caret{animation:none}}
 
 
-/* Mobile hero spacing: lift copy and actions clear of the central crystal emblem. */
+/* Mobile hero: move the complete text block upward while preserving CTA placement. */
 @media(max-width:620px){
-  .hero-content{transform:translateY(-16px)}
+  .hero-content{transform:none}
+  .hero-content > .eyebrow,
+  .hero-content > h1,
+  .hero-content > .hero-copy{position:relative;top:-60px}
   .hero-copy{margin-top:20px;line-height:1.55}
-  .hero-content .actions{margin-top:22px;gap:18px}
+  .hero-content .actions{margin-top:22px;gap:18px;transform:translateY(-52px)}
 }
-
-/* Keep mobile hero actions above the central emblem without moving the headline or artwork. */
-@media(max-width:620px){.hero-content .actions{transform:translateY(-36px)}}
