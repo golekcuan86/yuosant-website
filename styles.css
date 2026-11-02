@@ -792,3 +792,7 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
   .hero-copy{margin-top:20px;line-height:1.55}
   .hero-content .actions{margin-top:22px;gap:18px;transform:translateY(-52px)}
 }
+
+/* Yuosant Tools card: keep the non-italic title and CTA white on emerald artwork. */
+.ecosystem-track .ecosystem-feature.feature-tools .feature-copy h3{color:#fff}
+.ecosystem-track .ecosystem-feature.feature-tools .feature-cta{color:#fff}
