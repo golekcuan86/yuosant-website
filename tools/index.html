@@ -63,8 +63,8 @@ byId('makeBarcode').addEventListener('click',async()=>{
  byId('barcodePreview').style.display='none';
  byId('barcodeDownloads').style.display='none';
  if(!value){msg.textContent='Masukkan nomor atau teks terlebih dahulu.';return;}
- if(format==='EAN13'&&!/^\\d{12,13}$/.test(value)){msg.textContent='EAN-13 memerlukan 12 atau 13 digit angka.';return;}
- if(format==='UPC'&&!/^\\d{11,12}$/.test(value)){msg.textContent='UPC-A memerlukan 11 atau 12 digit angka.';return;}
+ if(format==='EAN13'&&!/^\d{12,13}$/.test(value)){msg.textContent='EAN-13 memerlukan 12 atau 13 digit angka.';return;}
+ if(format==='UPC'&&!/^\d{11,12}$/.test(value)){msg.textContent='UPC-A memerlukan 11 atau 12 digit angka.';return;}
  if(format==='CODE39'&&!/^[0-9A-Z .$/+%-]+$/.test(value)){msg.textContent='Code 39 hanya mendukung huruf besar, angka, spasi, dan karakter khusus tertentu.';return;}
  msg.textContent='Menyiapkan generator barcode...';
  const ready=await ensureBarcodeLibrary();
