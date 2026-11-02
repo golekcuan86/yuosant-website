@@ -33,8 +33,30 @@ byId('passLength').addEventListener('input',()=>byId('passLengthValue').value=by
 byId('makePass').addEventListener('click',()=>{let chars='';const sets=[['passUpper','ABCDEFGHJKLMNPQRSTUVWXYZ'],['passLower','abcdefghijkmnopqrstuvwxyz'],['passNumber','23456789'],['passSymbol','!@#$%&*+-_=']];const active=sets.filter(([id])=>byId(id).checked);if(!active.length){byId('passResult').textContent='Pilih minimal satu jenis karakter.';return;}active.forEach(([,s])=>chars+=s);const len=Number(byId('passLength').value);const values=new Uint32Array(len);crypto.getRandomValues(values);const arr=active.map(([,s])=>s[Math.floor(Math.random()*s.length)]);for(let i=arr.length;i<len;i++)arr.push(chars[values[i]%chars.length]);for(let i=arr.length-1;i>0;i--){const j=values[i]% (i+1);[arr[i],arr[j]]=[arr[j],arr[i]];}byId('passResult').textContent=arr.join('');});
 byId('copyPass').addEventListener('click',async()=>{const t=byId('passResult').textContent;if(t)try{await navigator.clipboard.writeText(t);byId('copyPass').textContent='Tersalin ✓';}catch{}});
 
-const barcodeSvg=byId('barcodeSvg');
-byId('makeBarcode').addEventListener('click',()=>{
+let barcodeLibraryPromise;
+function ensureBarcodeLibrary(){
+ if(window.JsBarcode)return Promise.resolve(true);
+ if(barcodeLibraryPromise)return barcodeLibraryPromise;
+ barcodeLibraryPromise=new Promise(resolve=>{
+  const sources=[
+   'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js',
+   'https://unpkg.com/jsbarcode@3.11.6/dist/JsBarcode.all.min.js'
+  ];
+  const load=index=>{
+   if(window.JsBarcode){resolve(true);return;}
+   if(index>=sources.length){resolve(false);return;}
+   const script=document.createElement('script');
+   script.src=sources[index];
+   script.async=true;
+   script.onload=()=>resolve(!!window.JsBarcode);
+   script.onerror=()=>{script.remove();load(index+1);};
+   document.head.appendChild(script);
+  };
+  load(0);
+ });
+ return barcodeLibraryPromise;
+}
+byId('makeBarcode').addEventListener('click',async()=>{
  const format=byId('barcodeFormat').value;
  const value=byId('barcodeValue').value.trim();
  const msg=byId('barcodeMessage');
@@ -43,24 +65,29 @@ byId('makeBarcode').addEventListener('click',()=>{
  if(!value){msg.textContent='Masukkan nomor atau teks terlebih dahulu.';return;}
  if(format==='EAN13'&&!/^\\d{12,13}$/.test(value)){msg.textContent='EAN-13 memerlukan 12 atau 13 digit angka.';return;}
  if(format==='UPC'&&!/^\\d{11,12}$/.test(value)){msg.textContent='UPC-A memerlukan 11 atau 12 digit angka.';return;}
- if(format==='CODE39'&&!/^[0-9A-Z .$/+%\\-]+$/.test(value)){msg.textContent='Code 39 hanya mendukung huruf besar, angka, spasi, dan karakter khusus tertentu.';return;}
- if(typeof JsBarcode==='undefined'){msg.textContent='Generator barcode belum dapat dimuat. Periksa koneksi internet lalu coba lagi.';return;}
+ if(format==='CODE39'&&!/^[0-9A-Z .$/+%-]+$/.test(value)){msg.textContent='Code 39 hanya mendukung huruf besar, angka, spasi, dan karakter khusus tertentu.';return;}
+ msg.textContent='Menyiapkan generator barcode...';
+ const ready=await ensureBarcodeLibrary();
+ if(!ready){msg.textContent='Library barcode tidak dapat dimuat. Periksa koneksi internet lalu coba lagi.';return;}
  try{
-  JsBarcode(barcodeSvg,value,{format,lineColor:'#101820',background:'#ffffff',width:2,height:92,margin:12,displayValue:true,font:'DM Sans',fontSize:16,textMargin:7});
+  window.JsBarcode(byId('barcodeSvg'),value,{format,lineColor:'#101820',background:'#ffffff',width:2,height:92,margin:12,displayValue:true,font:'DM Sans',fontSize:16,textMargin:7});
   byId('barcodePreview').style.display='block';
   byId('barcodeDownloads').style.display='flex';
   msg.textContent='Barcode berhasil dibuat. Pindai hasilnya untuk memastikan kode terbaca.';
- }catch(e){msg.textContent='Kode tidak sesuai format barcode yang dipilih. Periksa kembali input.';}
+ }catch(error){msg.textContent='Kode tidak sesuai format barcode yang dipilih. Periksa kembali input.';}
 });
 byId('downloadBarcodeSvg').addEventListener('click',()=>{
  const svg=byId('barcodeSvg').cloneNode(true);
  svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
  const blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'});
- const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='yuosant-barcode.svg';a.click();URL.revokeObjectURL(url);
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='yuosant-barcode.svg';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 byId('downloadBarcodePng').addEventListener('click',()=>{
  const svg=byId('barcodeSvg').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
- const data='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg));
- const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=img.width*2;canvas.height=img.height*2;const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);const a=document.createElement('a');a.download='yuosant-barcode.png';a.href=canvas.toDataURL('image/png');a.click();};img.src=data;
-});
-</script></body></html>
+ const markup=new XMLSerializer().serializeToString(svg);
+ const blob=new Blob([markup],{type:'image/svg+xml;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const img=new Image();
+ img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=img.width*2;canvas.height=img.height*2;const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);canvas.toBlob(png=>{if(!png)return;const pngUrl=URL.createObjectURL(png);const a=document.createElement('a');a.href=pngUrl;a.download='yuosant-barcode.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(pngUrl),1000);},'image/png');};
+ img.onerror=()=>{URL.revokeObjectURL(url);byId('barcodeMessage').textContent='Gagal menyiapkan PNG. Coba unduh format SVG.';};
+ img.src=url;
+});</script></body></html>
