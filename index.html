@@ -8,6 +8,25 @@
   <title>Yuosant — A New Digital Perspective</title>
   <link rel="stylesheet" href="styles.css?v=20261102-tools-title-white" />
   <link rel="stylesheet" href="/mobile-fix.css?v=20261102-final" />
+
+  <style id="yuosant-freeai-widget-style">
+    .yuosant-freeai-launcher{position:fixed;right:24px;bottom:24px;z-index:1000;display:flex;align-items:center;gap:10px;padding:13px 18px;border:1px solid rgba(111,190,255,.42);border-radius:999px;background:linear-gradient(135deg,#123b63,#087c9b);color:#fff;font:600 14px/1.2 inherit;letter-spacing:.01em;box-shadow:0 12px 36px rgba(0,0,0,.28);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+    .yuosant-freeai-launcher:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(0,0,0,.34)}
+    .yuosant-freeai-launcher:focus-visible,.yuosant-freeai-close:focus-visible{outline:3px solid #83d8ff;outline-offset:3px}
+    .yuosant-freeai-launcher-mark{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:rgba(255,255,255,.16);font-size:16px}
+    .yuosant-freeai-panel{position:fixed;right:24px;bottom:88px;z-index:1001;width:min(390px,calc(100vw - 32px));height:min(610px,calc(100dvh - 125px));display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(116,183,224,.28);border-radius:20px;background:#081827;box-shadow:0 24px 70px rgba(0,0,0,.42)}
+    .yuosant-freeai-panel[hidden]{display:none}
+    .yuosant-freeai-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;background:linear-gradient(110deg,#0c2944,#07566a);color:#fff}
+    .yuosant-freeai-heading{display:flex;align-items:center;gap:10px;font:600 14px/1.3 inherit}
+    .yuosant-freeai-status{width:8px;height:8px;border-radius:50%;background:#55e2b0;box-shadow:0 0 12px #55e2b0}
+    .yuosant-freeai-subtitle{display:block;margin-top:3px;color:#b9d4e6;font-size:11px;font-weight:400}
+    .yuosant-freeai-close{display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:20px;cursor:pointer}
+    .yuosant-freeai-frame{display:block;width:100%;height:100%;flex:1;border:0;background:#fff}
+    .yuosant-freeai-note{padding:8px 12px;background:#0b1d2c;color:#9eb6c8;text-align:center;font-size:10px;line-height:1.45}
+    @media(max-width:600px){.yuosant-freeai-launcher{right:16px;bottom:16px;padding:12px 15px}.yuosant-freeai-panel{right:8px;bottom:76px;width:calc(100vw - 16px);height:calc(100dvh - 94px);max-height:680px;border-radius:17px}}
+    @media(prefers-reduced-motion:reduce){.yuosant-freeai-launcher{transition:none}}
+  </style>
+
 </head>
 <body>
   <header class="site-header">
@@ -107,6 +126,48 @@
 
     <section class="contact-section"><div class="contact-orb" aria-hidden="true"></div><p class="eyebrow">THE NEXT POSSIBILITY STARTS SOMEWHERE</p><h2>What will you<br><em>make possible?</em></h2><p>Setiap perjalanan besar dimulai dari sebuah ide.</p><a class="button primary" href="mailto:hello@yuosant.com">Mulai percakapan <span>↗</span></a><div class="contact-bottom"><span>YUOSANT / DIGITAL ECOSYSTEM</span><span>BUILT WITH PURPOSE · 2026</span></div></section>
   </main>
+  
+  <section class="yuosant-freeai-panel" id="yuosant-freeai-panel" aria-label="Yuosant AI Chat" role="dialog" aria-modal="false" aria-labelledby="yuosant-freeai-title" hidden>
+    <div class="yuosant-freeai-head">
+      <div class="yuosant-freeai-heading"><span class="yuosant-freeai-status" aria-hidden="true"></span><span><span id="yuosant-freeai-title">Yuosant AI Chat</span><small class="yuosant-freeai-subtitle">Didukung Free.ai · Kuota gratis harian</small></span></div>
+      <button class="yuosant-freeai-close" id="yuosant-freeai-close" type="button" aria-label="Tutup chat">×</button>
+    </div>
+    <iframe class="yuosant-freeai-frame" id="yuosant-freeai-frame" title="Chat AI Free.ai" loading="lazy" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="yuosant-freeai-note">Layanan AI pihak ketiga oleh Free.ai. Hindari mengirim kata sandi atau data pribadi sensitif.</div>
+  </section>
+  <button class="yuosant-freeai-launcher" id="yuosant-freeai-launcher" type="button" aria-controls="yuosant-freeai-panel" aria-expanded="false">
+    <span class="yuosant-freeai-launcher-mark" aria-hidden="true">✦</span><span>AI Chat</span>
+  </button>
+  <script id="yuosant-freeai-widget-script">
+    (() => {
+      const launcher = document.getElementById('yuosant-freeai-launcher');
+      const panel = document.getElementById('yuosant-freeai-panel');
+      const close = document.getElementById('yuosant-freeai-close');
+      const frame = document.getElementById('yuosant-freeai-frame');
+      if (!launcher || !panel || !close || !frame) return;
+      let loaded = false;
+      const openChat = () => {
+        panel.hidden = false;
+        launcher.setAttribute('aria-expanded', 'true');
+        if (!loaded) {
+          frame.src = 'https://free.ai/embed/chat/';
+          loaded = true;
+        }
+        close.focus();
+      };
+      const closeChat = () => {
+        panel.hidden = true;
+        launcher.setAttribute('aria-expanded', 'false');
+        launcher.focus();
+      };
+      launcher.addEventListener('click', () => panel.hidden ? openChat() : closeChat());
+      close.addEventListener('click', closeChat);
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !panel.hidden) closeChat();
+      });
+    })();
+  </script>
+
   <footer class="footer"><a class="brand footer-brand" href="#home"><img src="/yuosant-logo-bulat.png" alt="" /><span>YUOSANT</span></a><span>Independent Digital Ecosystem</span><a href="#home">Kembali ke atas ↑</a><span>© 2026 Yuosant</span></footer>
   <script src="script.js?v=20261102-tagline-type-loop"></script>
 </body>
