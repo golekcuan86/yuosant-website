@@ -1,0 +1,100 @@
+/* MOBILE HERO + CANVAS FINAL FIX
+   The hero artwork is already baked into hero yuosant.png. Hide the duplicate
+   foreground crystal on phones so it cannot cover the copy or dominate the page. */
+@media (max-width: 620px) {
+  html, body {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body, main, main > section, .footer {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .site-header {
+    width: auto;
+    left: 14px;
+    right: 14px;
+    max-width: none;
+  }
+
+  .hero {
+    display: block;
+    width: 100%;
+    min-height: max(760px, 100svh);
+    height: auto;
+    padding: 132px 22px 86px;
+    background-size: auto 100%;
+    background-position: 61% center;
+    background-repeat: no-repeat;
+  }
+
+  .hero-art { display: none !important; }
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 0 260px;
+    margin: 0;
+  }
+  .hero .eyebrow {
+    max-width: 100%;
+    font-size: .58rem;
+    letter-spacing: .14em;
+    line-height: 1.6;
+  }
+  .hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.9rem, 11.5vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -.065em;
+    overflow-wrap: normal;
+  }
+  .hero-copy {
+    width: 100%;
+    max-width: 34ch;
+    font-size: .94rem;
+    line-height: 1.7;
+  }
+  .hero-footnote { max-width: 100%; flex-wrap: wrap; }
+  .scroll-cue { left: 50%; white-space: nowrap; }
+
+  .section { width: 100%; padding: 76px 22px; }
+  .manifesto,
+  .about-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .manifesto > *, .about-section > *,
+  .manifesto-main, .manifesto-aside, .about-title, .about-copy {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+  .manifesto-aside { padding-left: 18px; }
+  .ecosystem-top {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .ecosystem-top > *, .section-lead { min-width: 0; max-width: 100%; }
+  .ecosystem-carousel, .ecosystem-track { width: 100%; max-width: 100%; }
+  .interlude { width: 100%; padding: 96px 22px 84px; }
+  .interlude h2 { max-width: 100%; font-size: clamp(2.15rem, 9vw, 3.4rem); }
+  .contact-section { width: 100%; padding: 96px 22px 28px; }
+  .contact-section h2 { font-size: clamp(2.7rem, 11vw, 4rem); }
+  .contact-bottom { flex-wrap: wrap; gap: 12px; }
+  .footer { width: 100%; flex-wrap: wrap; gap: 16px; padding: 24px 22px; }
+}
+
+@media (max-width: 380px) {
+  .hero { padding-left: 19px; padding-right: 19px; }
+  .section, .interlude, .contact-section { padding-left: 19px; padding-right: 19px; }
+  .actions { gap: 13px; }
+  .button { padding: 13px 16px; }
+}
