@@ -15,7 +15,8 @@
 .yc-message.bot{align-self:flex-start;background:#fff;border:1px solid #e0e8eb;border-top-left-radius:5px}
 .yc-message.user{align-self:flex-end;background:#087f65;color:#fff;border-top-right-radius:5px}
 .yc-note{font-size:10px;color:#71808a;text-align:center;padding:0 12px 8px}
-.yc-compose{display:flex;gap:8px;padding:12px;border-top:1px solid #e6ecee;background:#fff}
+.yc-compose{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;padding:12px;border-top:1px solid #e6ecee;background:#fff}
+#yc-turnstile{flex:1 0 100%;min-height:0;display:flex;justify-content:center;overflow:hidden}
 .yc-input{min-width:0;flex:1;resize:none;max-height:100px;border:1px solid #d5dfe3;border-radius:12px;padding:11px 12px;font-family:inherit;font-size:13px;line-height:1.4;outline:none}
 .yc-input:focus{border-color:#0a9874;box-shadow:0 0 0 3px #0a98741a}
 .yc-send{border:0;border-radius:12px;padding:0 15px;background:#087f65;color:#fff;font-weight:700;cursor:pointer}
