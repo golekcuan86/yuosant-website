@@ -146,7 +146,7 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
 })();
 
 
-// Type the existing Yuosant tagline once, directly above the hero scroll cue.
+// Continuously type and erase the Yuosant tagline above the hero scroll cue.
 (() => {
   const target = document.getElementById('hero-tagline');
   if (!target) return;
@@ -155,11 +155,31 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
     target.textContent = phrase;
     return;
   }
+
   let index = 0;
+  let deleting = false;
   const typeNext = () => {
-    if (index >= phrase.length) return;
-    target.textContent += phrase.charAt(index++);
-    window.setTimeout(typeNext, 65);
+    if (!deleting) {
+      index++;
+      target.textContent = phrase.slice(0, index);
+      if (index >= phrase.length) {
+        deleting = true;
+        window.setTimeout(typeNext, 1900);
+        return;
+      }
+      window.setTimeout(typeNext, 75);
+      return;
+    }
+
+    index--;
+    target.textContent = phrase.slice(0, index);
+    if (index <= 0) {
+      deleting = false;
+      window.setTimeout(typeNext, 550);
+      return;
+    }
+    window.setTimeout(typeNext, 32);
   };
-  window.setTimeout(typeNext, 500);
+
+  window.setTimeout(typeNext, 450);
 })();
