@@ -781,3 +781,11 @@ html{scroll-padding-top:88px}.brand{display:inline-flex;align-items:center;gap:1
 @keyframes yuosant-caret-blink{50%{opacity:0}}
 @media(max-width:700px){.scroll-tagline{font-size:.52rem;letter-spacing:.095em}.scroll-cue{gap:7px}}
 @media(prefers-reduced-motion:reduce){.typing-caret{animation:none}}
+
+
+/* Mobile hero spacing: lift copy and actions clear of the central crystal emblem. */
+@media(max-width:620px){
+  .hero-content{transform:translateY(-16px)}
+  .hero-copy{margin-top:20px;line-height:1.55}
+  .hero-content .actions{margin-top:22px;gap:18px}
+}
