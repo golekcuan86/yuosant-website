@@ -49,6 +49,7 @@
       turnstileWidgetId = window.turnstile.render(challenge, {
         sitekey: SITE_KEY,
         theme: "light",
+        appearance: "interaction-only",
         callback: (token) => { turnstileToken = token; },
         "expired-callback": () => { turnstileToken = ""; },
         "error-callback": () => {
