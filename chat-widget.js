@@ -161,7 +161,10 @@
           .trim()
           .slice(0, 180);
         throw new Error(
-          \`API mengirim HTML (HTTP \${response.status}, \${contentType || "tanpa content-type"}).\${detail ? " Detail: " + detail : ""}\${rayId ? " Ray ID: " + rayId : ""}\`
+          "API mengirim HTML (HTTP " + response.status + ", " +
+          (contentType || "tanpa content-type") + ")." +
+          (detail ? " Detail: " + detail : "") +
+          (rayId ? " Ray ID: " + rayId : "")
         );
       }
 
