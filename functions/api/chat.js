@@ -1,3 +1,58 @@
+const MODEL = "gemini-3.1-flash-lite";
+const MAX_BODY_BYTES = 20_000;
+const MAX_MESSAGES = 12;
+const MAX_MESSAGE_CHARS = 6_000;
+const ALLOWED_HOSTNAMES = new Set([
+  "yuosant.com",
+  "www.yuosant.com",
+  "d6e45164.yuosant-website.pages.dev",
+  "feature-yuosant-gemini-chat-prototype.yuosant-website.pages.dev",
+  "feature-yuosant-gemini-chat.yuosant-website.pages.dev",
+]);
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+    },
+  });
+}
+
+function getAllowedHostname(request) {
+  const origin = request.headers.get("Origin");
+  if (!origin) return null;
+  try {
+    const url = new URL(origin);
+    const host = url.hostname.toLowerCase();
+    return url.protocol === "https:" && ALLOWED_HOSTNAMES.has(host) ? host : null;
+  } catch {
+    return null;
+  }
+}
+
+async function verifyTurnstile(token, secret, hostname, remoteIp) {
+  const form = new URLSearchParams({ secret, response: token });
+  if (remoteIp) form.set("remoteip", remoteIp);
+
+  let response;
+  try {
+    response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: form,
+    });
+  } catch {
+    return false;
+  }
+
+  if (!response.ok) return false;
+  const result = await response.json().catch(() => null);
+  return result?.success === true && result?.hostname === hostname;
+}
+
 export async function onRequestPost({ request, env }) {
   try {
     const hostname = getAllowedHostname(request);
