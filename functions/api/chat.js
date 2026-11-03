@@ -118,12 +118,22 @@ export async function onRequestPost({ request, env }) {
           },
         }),
       });
-    } catch {
+    } catch (error) {
+      console.error("Gemini API fetch failed:", {
+        message: error instanceof Error ? error.message : String(error),
+        requestId: request.headers.get("cf-ray") || null,
+      });
       return json({ error: "Layanan AI tidak dapat dihubungi. Coba lagi sebentar." }, 502);
     }
 
     const result = await upstream.json().catch(() => ({}));
     if (!upstream.ok) {
+      console.error("Gemini API returned an error:", {
+        httpStatus: upstream.status,
+        providerStatus: result?.error?.status || null,
+        providerMessage: result?.error?.message || null,
+        requestId: request.headers.get("cf-ray") || null,
+      });
       const status = upstream.status === 429 ? 429 : 502;
       return json({
         error: upstream.status === 429
