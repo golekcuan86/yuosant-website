@@ -107,8 +107,27 @@
           turnstileToken,
         }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Permintaan belum berhasil.");
+      const contentType = response.headers.get("content-type") || "";
+      const responseText = await response.text();
+
+      if (!contentType.toLowerCase().includes("application/json")) {
+        throw new Error(
+          `Server mengirim respons bukan JSON (HTTP ${response.status}, ${contentType || "content-type tidak tersedia"}). Periksa endpoint atau deployment API.`
+        );
+      }
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        throw new Error(`Respons server berformat JSON tidak valid (HTTP ${response.status}).`);
+      }
+
+      if (!response.ok) throw new Error(data.error || `Permintaan gagal (HTTP ${response.status}).`);
+      if (typeof data.answer !== "string" || !data.answer.trim()) {
+        throw new Error("Server berhasil merespons, tetapi jawaban AI tidak ditemukan.");
+      }
+
       pending.textContent = data.answer;
       history.push({ role: "assistant", content: data.answer });
     } catch (error) {
