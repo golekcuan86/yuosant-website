@@ -54,8 +54,18 @@ async function verifyTurnstile(token, secret, hostname, remoteIp) {
 }
 
 export async function onRequestPost({ request, env }) {
+  const requestId = request.headers.get("cf-ray") || crypto.randomUUID();
+  const startedAt = Date.now();
+  console.log("[yuosant-chat] request-start", {
+    requestId,
+    method: request.method,
+    url: new URL(request.url).pathname,
+    origin: request.headers.get("Origin"),
+    colo: request.cf?.colo || null,
+  });
   try {
     const hostname = getAllowedHostname(request);
+    console.log("[yuosant-chat] origin-check", { requestId, allowed: Boolean(hostname), hostname });
     if (!hostname) return json({ error: "Origin tidak diizinkan." }, 403);
     if (!env.GEMINI_API_KEY) return json({ error: "Konfigurasi AI belum tersedia." }, 503);
     if (!env.TURNSTILE_SECRET_KEY) return json({ error: "Perlindungan keamanan belum dikonfigurasi." }, 503);
@@ -74,12 +84,14 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Selesaikan verifikasi keamanan terlebih dahulu." }, 400);
     }
 
+    console.log("[yuosant-chat] turnstile-start", { requestId });
     const verified = await verifyTurnstile(
       payload.turnstileToken,
       env.TURNSTILE_SECRET_KEY,
       hostname,
       request.headers.get("CF-Connecting-IP")
     );
+    console.log("[yuosant-chat] turnstile-result", { requestId, verified, elapsedMs: Date.now() - startedAt });
     if (!verified) return json({ error: "Verifikasi keamanan gagal atau kedaluwarsa. Silakan verifikasi lagi." }, 403);
 
     if (!Array.isArray(payload.messages) || payload.messages.length === 0) {
@@ -98,6 +110,7 @@ export async function onRequestPost({ request, env }) {
 
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
     let upstream;
+    console.log("[yuosant-chat] gemini-start", { requestId, model: MODEL, messageCount: messages.length });
     try {
       upstream = await fetch(endpoint, {
         method: "POST",
@@ -126,6 +139,12 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Layanan AI tidak dapat dihubungi. Coba lagi sebentar." }, 502);
     }
 
+    console.log("[yuosant-chat] gemini-response", {
+      requestId,
+      status: upstream.status,
+      ok: upstream.ok,
+      elapsedMs: Date.now() - startedAt,
+    });
     const result = await upstream.json().catch(() => ({}));
     if (!upstream.ok) {
       console.error("Gemini API returned an error:", {
@@ -148,9 +167,15 @@ export async function onRequestPost({ request, env }) {
       .trim();
 
     if (!answer) return json({ error: "AI belum menghasilkan jawaban. Silakan coba lagi." }, 502);
+    console.log("[yuosant-chat] request-success", { requestId, elapsedMs: Date.now() - startedAt });
     return json({ answer, model: MODEL });
   } catch (error) {
-    console.error("Yuosant chat function runtime error:", error);
+    console.error("[yuosant-chat] runtime-error", {
+      requestId,
+      elapsedMs: Date.now() - startedAt,
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : null,
+    });
     return json({
       error: "Terjadi kesalahan internal pada layanan chat. Silakan coba lagi.",
       requestId: request.headers.get("cf-ray") || null,
