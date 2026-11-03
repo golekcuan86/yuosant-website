@@ -14,6 +14,7 @@
   let turnstileWidgetId = null;
   let turnstileToken = "";
   let turnstileLoading = null;
+  let tokenWaiter = null;
 
   function addMessage(text, who) {
     const bubble = document.createElement("div");
@@ -49,17 +50,58 @@
       turnstileWidgetId = window.turnstile.render(challenge, {
         sitekey: SITE_KEY,
         theme: "light",
-        appearance: "interaction-only",
-        callback: (token) => { turnstileToken = token; },
-        "expired-callback": () => { turnstileToken = ""; },
+        appearance: "always",
+        callback: (token) => {
+          turnstileToken = token;
+          challenge.setAttribute("data-status", "verified");
+          if (tokenWaiter) {
+            clearTimeout(tokenWaiter.timer);
+            tokenWaiter.resolve(token);
+            tokenWaiter = null;
+          }
+        },
+        "expired-callback": () => {
+          turnstileToken = "";
+          challenge.setAttribute("data-status", "waiting");
+        },
         "error-callback": () => {
           turnstileToken = "";
-          challenge.textContent = "Verifikasi terganggu. Muat ulang halaman lalu coba lagi.";
+          challenge.setAttribute("data-status", "error");
+          if (tokenWaiter) {
+            clearTimeout(tokenWaiter.timer);
+            tokenWaiter.reject(new Error("Verifikasi keamanan gagal. Silakan coba lagi."));
+            tokenWaiter = null;
+          }
         },
       });
     } catch (error) {
       challenge.textContent = error.message;
     }
+  }
+
+  function waitForTurnstileToken() {
+    if (turnstileToken) return Promise.resolve(turnstileToken);
+    if (tokenWaiter) return tokenWaiter.promise;
+
+    let resolveWaiter;
+    let rejectWaiter;
+    const promise = new Promise((resolve, reject) => {
+      resolveWaiter = resolve;
+      rejectWaiter = reject;
+    });
+    const timer = setTimeout(() => {
+      if (!tokenWaiter) return;
+      tokenWaiter = null;
+      rejectWaiter(new Error("Verifikasi belum selesai. Centang verifikasi keamanan, lalu coba kirim lagi."));
+    }, 30000);
+    tokenWaiter = { promise, resolve: resolveWaiter, reject: rejectWaiter, timer };
+    return promise;
+  }
+
+  async function getTurnstileToken() {
+    await renderTurnstile();
+    if (turnstileToken) return turnstileToken;
+    return waitForTurnstileToken();
   }
 
   function resetTurnstile() {
@@ -85,12 +127,6 @@
     event.preventDefault();
     const text = input.value.trim();
     if (!text || send.disabled) return;
-    if (!turnstileToken) {
-      addMessage("Silakan selesaikan verifikasi keamanan terlebih dahulu.", "bot");
-      renderTurnstile();
-      return;
-    }
-
     addMessage(text, "user");
     history.push({ role: "user", content: text });
     input.value = "";
@@ -99,12 +135,13 @@
     const pending = addMessage("Yuosant AI sedang berpikir…", "bot");
 
     try {
+      const token = await getTurnstileToken();
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           messages: history.slice(-12),
-          turnstileToken,
+          turnstileToken: token,
         }),
       });
       const contentType = response.headers.get("content-type") || "";
