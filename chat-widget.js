@@ -148,20 +148,20 @@
       const responseText = await response.text();
 
       if (!contentType.toLowerCase().includes("application/json")) {
-        const pageTitle = responseText.match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i)?.[1]
+        const pageTitle = responseText.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]
           ?.replace(/<[^>]+>/g, " ")
-          .replace(/\\s+/g, " ")
+          .replace(/\s+/g, " ")
           .trim();
         const rayId = response.headers.get("cf-ray");
         const detail = pageTitle || responseText
-          .replace(/<script[\\s\\S]*?<\\/script>/gi, " ")
-          .replace(/<style[\\s\\S]*?<\\/style>/gi, " ")
+          .replace(/<script[\s\S]*?<\/script>/gi, " ")
+          .replace(/<style[\s\S]*?<\/style>/gi, " ")
           .replace(/<[^>]+>/g, " ")
-          .replace(/\\s+/g, " ")
+          .replace(/\s+/g, " ")
           .trim()
           .slice(0, 180);
         throw new Error(
-          `API mengirim HTML (HTTP ${response.status}, ${contentType || "tanpa content-type"}).${detail ? " Detail: " + detail : ""}${rayId ? " Ray ID: " + rayId : ""}`
+          \`API mengirim HTML (HTTP \${response.status}, \${contentType || "tanpa content-type"}).\${detail ? " Detail: " + detail : ""}\${rayId ? " Ray ID: " + rayId : ""}\`
         );
       }
 
