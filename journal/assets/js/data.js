@@ -23,12 +23,12 @@ YJ.data = {
   },
 
   authors: {
-    'sinta': { name: 'Sinta Maharani',  role: 'Editor AI & Teknologi',     avatar: 'https://picsum.photos/seed/yj-sinta/160/160?grayscale', bio: 'Delapan tahun menulis tentang teknologi konsumen dan AI. Percaya alat terbaik adalah yang tidak membuat Anda pusing.' },
-    'bimo':  { name: 'Bimo Aditama',    role: 'Penulis Produktivitas',     avatar: 'https://picsum.photos/seed/yj-bimo/160/160?grayscale',  bio: 'Menguji sistem kerja dan kebiasaan belajar, lalu melaporkan yang benar-benar bertahan setelah sebulan.' },
-    'laras': { name: 'Laras Wulandari', role: 'Redaktur Pendidikan',       avatar: 'https://picsum.photos/seed/yj-laras/160/160?grayscale', bio: 'Mantan guru yang kini menulis tentang cara belajar — untuk siswa, guru, dan orang tua.' },
-    'dafa':  { name: 'Dafa Alghifari',  role: 'Analis Bisnis Digital',     avatar: 'https://picsum.photos/seed/yj-dafa/160/160?grayscale',  bio: 'Mendampingi UMKM go online sejak 2019. Suka angka kecil yang jujur daripada janji besar yang samar.' },
-    'nadia': { name: 'Nadia Kusuma',    role: 'Jurnalis Berita',           avatar: 'https://picsum.photos/seed/yj-nadia/160/160?grayscale', bio: 'Menyaring kabar teknologi harian menjadi yang penting saja. Anti-gaduh sejak lama.' },
-    'pandu': { name: 'Pandu Wirawan',   role: 'Pendiri & Pemimpin Redaksi', avatar: 'https://picsum.photos/seed/yj-pandu/160/160?grayscale', bio: 'Mendirikan Yuosant Journal pada 2024 dengan satu keyakinan: informasi berguna tidak harus rumit.' }
+    'sinta': { name: 'Sinta Maharani',  role: 'Editor AI & Teknologi',     avatar: 'assets/img/people/yj-sinta.jpg', bio: 'Delapan tahun menulis tentang teknologi konsumen dan AI. Percaya alat terbaik adalah yang tidak membuat Anda pusing.' },
+    'bimo':  { name: 'Bimo Aditama',    role: 'Penulis Produktivitas',     avatar: 'assets/img/people/yj-bimo.jpg',  bio: 'Menguji sistem kerja dan kebiasaan belajar, lalu melaporkan yang benar-benar bertahan setelah sebulan.' },
+    'laras': { name: 'Laras Wulandari', role: 'Redaktur Pendidikan',       avatar: 'assets/img/people/yj-laras.jpg', bio: 'Mantan guru yang kini menulis tentang cara belajar — untuk siswa, guru, dan orang tua.' },
+    'dafa':  { name: 'Dafa Alghifari',  role: 'Analis Bisnis Digital',     avatar: 'assets/img/people/yj-dafa.jpg',  bio: 'Mendampingi UMKM go online sejak 2019. Suka angka kecil yang jujur daripada janji besar yang samar.' },
+    'nadia': { name: 'Nadia Kusuma',    role: 'Jurnalis Berita',           avatar: 'assets/img/people/yj-nadia.jpg', bio: 'Menyaring kabar teknologi harian menjadi yang penting saja. Anti-gaduh sejak lama.' },
+    'pandu': { name: 'Pandu Wirawan',   role: 'Pendiri & Pemimpin Redaksi', avatar: 'assets/img/people/yj-pandu.jpg', bio: 'Mendirikan Yuosant Journal pada 2024 dengan satu keyakinan: informasi berguna tidak harus rumit.' }
   },
 
   articles: [
@@ -38,7 +38,7 @@ YJ.data = {
       excerpt: 'Lupakan daftar “100 prompt terbaik” yang viral. Ini tujuh pola prompt yang kami pakai setiap hari untuk merangkum rapat, menyusun email sulit, dan membaca dokumen panjang.',
       category: 'ai', author: 'sinta', date: '2026-11-10', readTime: 7,
       hero: true, editorsPick: true,
-      seed: 'yj-prompt-ai', imgAlt: 'Ilustrasi meja kerja dengan laptop dan catatan prompt',
+      seed: 'yj-prompt-ai', img: 'assets/img/articles/prompt-ai-pekerja-kantoran.jpg', imgAlt: 'Ilustrasi meja kerja dengan laptop dan catatan prompt',
       tags: ['AI', 'Prompting', 'Produktivitas Kerja'],
       content: [
         { t: 'p', x: 'Setiap minggu ada saja daftar “100 prompt AI terbaik” yang beredar di media sosial. Kebanyakan tidak pernah dipakai dua kali. Dari ratusan pola yang kami coba di redaksi, hanya tujuh yang bertahan — karena benar-benar menghemat waktu, bukan sekadar terlihat pintar.' },
@@ -66,7 +66,7 @@ YJ.data = {
       excerpt: 'Pemerintah menyiapkan kerangka aturan kecerdasan buatan pertama di Indonesia. Kami rangkum tiga hal utama dan langkah praktis yang bisa Anda siapkan mulai sekarang.',
       category: 'terkini', author: 'nadia', date: '2026-11-11', readTime: 5,
       hero: true, editorsPick: false,
-      seed: 'yj-aturan-ai', imgAlt: 'Gedung pemerintahan yang mengilustrasikan regulasi teknologi',
+      seed: 'yj-aturan-ai', img: 'assets/img/articles/aturan-ai-indonesia-kreator-umkm.jpg', imgAlt: 'Gedung pemerintahan yang mengilustrasikan regulasi teknologi',
       tags: ['Regulasi', 'AI', 'Kreator', 'UMKM'],
       content: [
         { t: 'p', x: 'Pemerintah Indonesia tengah memfinalisasi kerangka tata kelola kecerdasan buatan yang akan menjadi acuan pertama bagi industri kreatif dan pelaku usaha. Dari draf yang beredar, aturan ini mengatur tiga hal utama: transparansi konten buatan AI, perlindungan data pribadi, dan tanggung jawab platform.' },
@@ -91,7 +91,7 @@ YJ.data = {
       excerpt: 'Masalahnya bukan niat — lingkungan kita memang dirancang untuk memecah perhatian. Lima ritual ini membantu redaksi kami menjaga jam kerja paling dalam sepanjang hari.',
       category: 'produktivitas', author: 'bimo', date: '2026-11-09', readTime: 6,
       hero: true, editorsPick: false,
-      seed: 'yj-deepwork', imgAlt: 'Ruang kerja tenang tanpa notifikasi untuk kerja mendalam',
+      seed: 'yj-deepwork', img: 'assets/img/articles/deep-work-ritual-fokus-90-menit.jpg', imgAlt: 'Ruang kerja tenang tanpa notifikasi untuk kerja mendalam',
       tags: ['Deep Work', 'Fokus', 'Kebiasaan'],
       content: [
         { t: 'p', x: 'Kita semua tahu rasanya: baru lima belas menit bekerja, tangan sudah meraih ponsel. Masalahnya bukan niat Anda yang lemah — melainkan lingkungan kerja yang memang dirancang untuk memecah perhatian menjadi potongan-potongan kecil.' },
@@ -115,7 +115,7 @@ YJ.data = {
       excerpt: 'Sumber belajar melimpah justru bikin bingung mulai dari mana. Roadmap enam bulan ini disusun bersama dua mentor bootcamp dan satu engineering manager — dengan satu prinsip: bangun sesuatu sejak minggu pertama.',
       category: 'pendidikan', author: 'laras', date: '2026-11-08', readTime: 9,
       hero: true, editorsPick: false,
-      seed: 'yj-coding-2026', imgAlt: 'Layar laptop dengan kode dan buku catatan belajar',
+      seed: 'yj-coding-2026', img: 'assets/img/articles/roadmap-belajar-coding-2026.jpg', imgAlt: 'Layar laptop dengan kode dan buku catatan belajar',
       tags: ['Coding', 'Karier', 'Belajar Mandiri'],
       content: [
         { t: 'p', x: 'Belajar coding di 2026 terasa paradoks: sumber belajar melimpah ruah, tapi justru makin sulit tahu harus mulai dari mana. Roadmap ini kami susun dengan satu prinsip utama — Anda harus membangun sesuatu sejak minggu pertama, bukan sekadar menonton.' },
@@ -142,7 +142,7 @@ YJ.data = {
       excerpt: 'Rp500 ribu tidak akan membelikan gudang atau karyawan. Tapi cukup untuk satu hal yang paling menentukan: memvalidasi bahwa ada orang yang mau membayar Anda.',
       category: 'bisnis', author: 'dafa', date: '2026-11-07', readTime: 8,
       hero: false, editorsPick: true,
-      seed: 'yj-modal-500', imgAlt: 'Meja kasir sederhana UMKM dengan kemasan produk',
+      seed: 'yj-modal-500', img: 'assets/img/articles/modal-500-ribu-bisnis-digital.jpg', imgAlt: 'Meja kasir sederhana UMKM dengan kemasan produk',
       tags: ['Bisnis Digital', 'UMKM', 'Validasi'],
       content: [
         { t: 'p', x: 'Rp500 ribu tidak akan membelikan Anda gudang atau karyawan. Tapi jumlah itu cukup untuk satu hal yang menentukan hidup-mati bisnis: memvalidasi bahwa ada orang sungguhan yang mau membayar untuk keahlian atau produk Anda. Begini caranya, langkah demi langkah.' },
@@ -171,7 +171,7 @@ YJ.data = {
       excerpt: 'Pertanyaan paling sering masuk ke redaksi. Jawaban singkatnya: tergantung apakah Anda butuh meja kerja bersama atau lemari arsip pribadi. Ini perbandingan jujur setelah setahun memakai keduanya.',
       category: 'produktivitas', author: 'bimo', date: '2026-11-05', readTime: 7,
       hero: false, editorsPick: true,
-      seed: 'yj-notion-obsidian', imgAlt: 'Perbandingan dua aplikasi catatan di layar',
+      seed: 'yj-notion-obsidian', img: 'assets/img/articles/notion-vs-obsidian.jpg', imgAlt: 'Perbandingan dua aplikasi catatan di layar',
       tags: ['Aplikasi', 'Catatan', 'PKM'],
       content: [
         { t: 'p', x: 'Pertanyaan yang paling sering masuk ke redaksi kami: “Harus pilih Notion atau Obsidian?” Jawaban singkatnya — tergantung apakah Anda lebih membutuhkan meja kerja bersama atau lemari arsip pribadi.' },
@@ -196,7 +196,7 @@ YJ.data = {
       excerpt: 'Cerita kehilangan data selalu dimulai dengan kalimat yang sama: “Saya kira sudah aman.” Aturan 3-2-1 adalah asuransi termurah yang pernah ada — begini penerapannya.',
       category: 'teknologi', author: 'sinta', date: '2026-11-04', readTime: 6,
       hero: false, editorsPick: true,
-      seed: 'yj-backup-321', imgAlt: 'Hard disk eksternal dan laptop sebagai simbol cadangan data',
+      seed: 'yj-backup-321', img: 'assets/img/articles/aturan-backup-3-2-1.jpg', imgAlt: 'Hard disk eksternal dan laptop sebagai simbol cadangan data',
       tags: ['Backup', 'Data', 'Keamanan'],
       content: [
         { t: 'p', x: 'Foto pernikahan di laptop yang dicuri. Skripsi di flashdisk yang tiba-tiba tidak terbaca. Arsip pelanggan di ponsel yang tercebur. Cerita kehilangan data selalu dimulai dengan kalimat yang sama: “Saya kira sudah aman.”' },
@@ -223,7 +223,7 @@ YJ.data = {
       excerpt: 'Anda tidak perlu jadi ahli keamanan siber untuk melindungi keluarga. Lima langkah ini menutup sebagian besar risiko umum — selesai sebelum teh Anda dingin.',
       category: 'teknologi', author: 'sinta', date: '2026-11-03', readTime: 5,
       hero: false, editorsPick: false,
-      seed: 'yj-keamanan', imgAlt: 'Ilustrasi kunci dan perangkat rumah tangga',
+      seed: 'yj-keamanan', img: 'assets/img/articles/keamanan-digital-keluarga.jpg', imgAlt: 'Ilustrasi kunci dan perangkat rumah tangga',
       tags: ['Keamanan', 'Keluarga', 'Privasi'],
       content: [
         { t: 'p', x: 'Sebagian besar pembobolan akun bukanlah operasi film Hollywood, melainkan pintu yang dibiarkan tidak terkunci. Lima langkah berikut menutup risiko yang paling umum — dan semuanya selesai dalam kurang lebih 15 menit.' },
@@ -246,7 +246,7 @@ YJ.data = {
       excerpt: 'Sekolah mulai bergeser dari “mendeteksi AI” ke “mendesain ulang tugas”. Begini bentuk penilaian yang muncul — dan apa yang bisa ditiru orang tua di rumah.',
       category: 'pendidikan', author: 'laras', date: '2026-11-02', readTime: 7,
       hero: false, editorsPick: false,
-      seed: 'yj-guru-ai', imgAlt: 'Ruang kelas modern dengan papan tulis dan laptop',
+      seed: 'yj-guru-ai', img: 'assets/img/articles/ai-mengubah-guru-menilai-tugas.jpg', imgAlt: 'Ruang kelas modern dengan papan tulis dan laptop',
       tags: ['Pendidikan', 'AI', 'Guru'],
       content: [
         { t: 'p', x: 'Di sebuah SMA di Yogyakarta, guru Bahasa Indonesia kini membaca esai siswa dua kali: sekali untuk menilai isi, sekali untuk menebak mana yang dibuat AI. Skenario ini terjadi di mana-mana — dan sekolah mulai meresponsnya dengan cara yang lebih menarik daripada sekadar melarang.' },
@@ -270,7 +270,7 @@ YJ.data = {
       excerpt: 'Omzet warung kopi kecil di Semarang ini mentok di pelanggan itu-itu lagi. Dua tahun kemudian, 40 persen pendapatannya datang dari luar kota — lewat tiga keputusan sederhana.',
       category: 'bisnis', author: 'dafa', date: '2026-10-30', readTime: 8,
       hero: false, editorsPick: true,
-      seed: 'yj-umkm-kopi', imgAlt: 'Barista menyeduh kopi di warung kecil',
+      seed: 'yj-umkm-kopi', img: 'assets/img/articles/studi-kasus-umkm-kopi-online.jpg', imgAlt: 'Barista menyeduh kopi di warung kecil',
       tags: ['UMKM', 'Studi Kasus', 'Marketplace'],
       content: [
         { t: 'p', x: 'Kopi Kelana — nama samaran — adalah warung kopi kecil di gang dekat Simpang Lima, Semarang. Pada 2024, omzetnya mentok: pelanggan itu-itu lagi, harga bahan naik. Dua tahun kemudian, 40 persen pendapatannya datang dari pesanan luar kota. Perubahannya bukan aplikasi canggih, melainkan tiga keputusan sederhana.' },
@@ -295,7 +295,7 @@ YJ.data = {
       excerpt: 'Sepuluh pengaturan kecil yang membuat kuota dan baterai Anda bertahan sampai pekerjaan selesai — bukan sebaliknya.',
       category: 'tips', author: 'bimo', date: '2026-10-29', readTime: 4,
       hero: false, editorsPick: false,
-      seed: 'yj-hemat', imgAlt: 'Ponsel dan power bank di meja kafe',
+      seed: 'yj-hemat', img: 'assets/img/articles/hemat-kuota-baterai-bekerja-mobile.jpg', imgAlt: 'Ponsel dan power bank di meja kafe',
       tags: ['Tips', 'Mobile', 'Hemat'],
       content: [
         { t: 'p', x: 'Bekerja dari kafe, kereta, atau bandara punya dua musuh yang sama: kuota yang menipis dan baterai yang merah sebelum presentasi dimulai. Kabar baiknya, keduanya lebih banyak soal pengaturan daripada soal membeli perangkat baru.' },
@@ -324,7 +324,7 @@ YJ.data = {
       excerpt: 'Tanpa fanatisme, tanpa gengsi. Kami memakai keduanya sebulan penuh untuk bekerja — ini temuan yang sebenarnya penting.',
       category: 'teknologi', author: 'sinta', date: '2026-10-27', readTime: 8,
       hero: false, editorsPick: false,
-      seed: 'yj-iphone-android', imgAlt: 'Dua ponsel berdampingan di atas meja kerja',
+      seed: 'yj-iphone-android', img: 'assets/img/articles/iphone-vs-android-produktivitas.jpg', imgAlt: 'Dua ponsel berdampingan di atas meja kerja',
       tags: ['Ponsel', 'Perbandingan', 'Kerja Mobile'],
       content: [
         { t: 'p', x: 'Debat iPhone versus Android biasanya berakhir di gengsi, bukan fakta. Kami mencoba pendekatan lain: dua anggota redaksi bertukar ekosistem selama sebulan dan mencatat apa yang benar-benar berpengaruh pada pekerjaan.' },
@@ -352,7 +352,7 @@ YJ.data = {
       excerpt: 'Algoritma bisa berubah semalam dan jangkauan Anda ikut amblas. Daftar email tidak. Begini cara memulai dari 100 nama pertama.',
       category: 'bisnis', author: 'dafa', date: '2026-10-25', readTime: 7,
       hero: false, editorsPick: false,
-      seed: 'yj-newsletter-aset', imgAlt: 'Amplop dan surat kabar sebagai simbol newsletter',
+      seed: 'yj-newsletter-aset', img: 'assets/img/articles/newsletter-aset-audiens.jpg', imgAlt: 'Amplop dan surat kabar sebagai simbol newsletter',
       tags: ['Newsletter', 'Kreator', 'Strategi'],
       content: [
         { t: 'p', x: 'Jangkauan organik media sosial kerap di bawah lima persen — dan bisa berubah semalam karena keputusan yang tidak Anda kendalikan. Daftar email bekerja sebaliknya: setiap nama di dalamnya adalah orang yang benar-benar meminta Anda hadir.' },
@@ -375,7 +375,7 @@ YJ.data = {
       excerpt: 'Richard Feynman punya cara brutal menguji pemahaman: jelaskan seolah kepada anak 12 tahun. Di 2026, pasangan latihan terbaiknya adalah chatbot.',
       category: 'pendidikan', author: 'laras', date: '2026-10-23', readTime: 6,
       hero: false, editorsPick: false,
-      seed: 'yj-feynman', imgAlt: 'Papan tulis dengan diagram penjelasan sederhana',
+      seed: 'yj-feynman', img: 'assets/img/articles/metode-feynman-belajar-dengan-ai.jpg', imgAlt: 'Papan tulis dengan diagram penjelasan sederhana',
       tags: ['Belajar', 'Metode Feynman', 'AI'],
       content: [
         { t: 'p', x: 'Richard Feynman, fisikawan peraih Nobel, punya cara brutal untuk menguji pemahaman: jelaskan konsep itu seolah kepada anak berusia 12 tahun. Bagian yang Anda tutup-tutupi dengan jargon — di situlah Anda sebenarnya belum paham.' },
@@ -398,7 +398,7 @@ YJ.data = {
       excerpt: 'Bukan aplikasi baru yang Anda butuhkan — melainkan empat folder dan satu ritual Jumat. Selesaikan malam ini, rasakan bedanya Senin pagi.',
       category: 'tips', author: 'bimo', date: '2026-10-21', readTime: 5,
       hero: false, editorsPick: false,
-      seed: 'yj-folder', imgAlt: 'Layar komputer dengan susunan folder rapi',
+      seed: 'yj-folder', img: 'assets/img/articles/sistem-folder-30-menit.jpg', imgAlt: 'Layar komputer dengan susunan folder rapi',
       tags: ['Tips', 'Organisasi', 'Digital Minimalism'],
       content: [
         { t: 'p', x: 'Desktop yang penuh ikon bukan tanda sibuk — ia tanda tidak ada sistem. Kabar baiknya: Anda tidak butuh aplikasi baru. Anda butuh empat folder dan satu ritual sepuluh menit.' },
@@ -420,7 +420,7 @@ YJ.data = {
       excerpt: 'Rubrik mingguan kami: kabar teknologi yang sudah disaring sampai tinggal yang berdampak untuk pembaca Indonesia.',
       category: 'terkini', author: 'nadia', date: '2026-11-09', readTime: 4,
       hero: false, editorsPick: false,
-      seed: 'yj-rekap', imgAlt: 'Meja redaksi dengan tumpukan koran dan kopi',
+      seed: 'yj-rekap', img: 'assets/img/articles/rekap-teknologi-pekan-ini.jpg', imgAlt: 'Meja redaksi dengan tumpukan koran dan kopi',
       tags: ['Rekap', 'Berita', 'Mingguan'],
       content: [
         { t: 'p', x: 'Setiap pekan, ratusan kabar teknologi bersaing merebut perhatian Anda. Rubrik ini melakukan bagian yang membosankan — membaca semuanya — supaya Anda tinggal menyimak yang penting. Catatan: ini edisi contoh dari format rekap mingguan kami.' },

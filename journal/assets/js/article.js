@@ -91,7 +91,7 @@
         '<div class="overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900">' +
           '<img ' + YJ.fimg(a, 1600, 900) + ' alt="' + a.imgAlt + '" fetchpriority="high" class="w-full aspect-[16/9] object-cover">' +
         '</div>' +
-        '<figcaption class="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">' + a.imgAlt + ' — ' + (a.img ? 'Ilustrasi: Studio Yuosant' : 'Foto: Picsum') + '</figcaption>' +
+        '<figcaption class="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">' + a.imgAlt + ' — ' + 'Ilustrasi: Studio Yuosant' + '</figcaption>' +
       '</figure>' +
 
       /* ---- Isi ---- */
@@ -119,7 +119,7 @@
       /* ---- Profil penulis ---- */
       '<aside class="max-w-3xl mx-auto px-4 sm:px-6 mt-10" data-reveal="up">' +
         '<div class="flex gap-5 border border-neutral-200 dark:border-neutral-800 p-6 sm:p-8 bg-neutral-50 dark:bg-neutral-900/50">' +
-          '<img src="' + au.avatar.replace('/160/160', '/200/200') + '" alt="Foto ' + au.name + '" loading="lazy" class="rounded-full object-cover shrink-0 border border-neutral-200 dark:border-neutral-700" style="width:72px;height:72px">' +
+          '<img src="' + au.avatar + '" alt="Foto ' + au.name + '" loading="lazy" class="rounded-full object-cover shrink-0 border border-neutral-200 dark:border-neutral-700" style="width:72px;height:72px">' +
           '<div>' +
             '<p class="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">Ditulis oleh</p>' +
             '<p class="mt-1.5 font-display font-bold text-xl tracking-tight">' + au.name + '</p>' +

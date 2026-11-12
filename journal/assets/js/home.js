@@ -196,7 +196,7 @@
         '<div class="text-slate-300 dark:text-slate-700">' + YJ.icon('quote') + '</div>' +
         '<blockquote class="mt-4 font-display font-semibold italic text-xl sm:text-2xl lg:text-[1.7rem] leading-snug tracking-tight text-neutral-800 dark:text-neutral-100 max-w-3xl">“' + item.quote + '”</blockquote>' +
         '<figcaption class="mt-6 flex items-center gap-3">' +
-          '<img src="' + YJ.img(item.seed, 120, 120) + '" alt="Foto ' + item.name + '" loading="lazy" class="rounded-full object-cover border border-neutral-200 dark:border-neutral-700" style="width:44px;height:44px">' +
+          '<img src="' + 'assets/img/people/' + item.seed + '.jpg' + '" alt="Foto ' + item.name + '" loading="lazy" class="rounded-full object-cover border border-neutral-200 dark:border-neutral-700" style="width:44px;height:44px">' +
           '<span>' +
             '<span class="block text-sm font-semibold text-neutral-900 dark:text-white">' + item.name + '</span>' +
             '<span class="block font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mt-0.5">' + item.role + '</span>' +

@@ -41,10 +41,10 @@
   YJ.catLabel = function (key) { return (data.categories[key] || {}).label || key; };
   YJ.author = function (key) { return data.authors[key] || { name: 'Redaksi', role: 'Tim Yuosant', avatar: '' }; };
   YJ.articleUrl = function (a) { return 'article.html?id=' + encodeURIComponent(a.slug); };
-  YJ.img = function (seed, w, h) { return 'https://picsum.photos/seed/' + seed + '/' + w + '/' + h + '?grayscale'; };
-  /* Gambar artikel: pakai ilustrasi lokal bila tersedia, jika tidak fallback ke picsum */
+  YJ.img = function (seed, w, h) { return 'assets/img/placeholder.svg'; };
+  /* Gambar artikel: pakai ilustrasi lokal bila tersedia, jika tidak pakai placeholder lokal */
   YJ.imgFor = function (a, w, h) { return a.img ? a.img : YJ.img(a.seed, w, h); };
-  /* Atribut <img> lengkap dengan cadangan picsum bila berkas lokal belum ada */
+  /* Atribut <img> lengkap dengan cadangan placeholder lokal bila berkas lokal belum ada */
   YJ.fimg = function (a, w, h) {
     return 'src="' + (a.img || YJ.img(a.seed, w, h)) + '"' + (a.img ? ' data-fb="' + YJ.img(a.seed, w, h) + '"' : '');
   };
