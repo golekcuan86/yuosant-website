@@ -1,0 +1,213 @@
+/* =========================================================
+   Yuosant Journal — Gaya kustom di luar Tailwind
+   ========================================================= */
+
+/* ---------- Dasar ---------- */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background: #171717;
+  color: #ffffff;
+}
+.dark ::selection {
+  background: #e5e5e5;
+  color: #171717;
+}
+
+:focus-visible {
+  outline: 2px solid #64748B;
+  outline-offset: 3px;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+/* Scrollbar halus dan monokrom */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #a3a3a3; border-radius: 9999px; border: 2px solid transparent; background-clip: content-box; }
+.dark ::-webkit-scrollbar-thumb { background: #525252; border: 2px solid transparent; background-clip: content-box; }
+
+/* Skip link */
+.skip-link {
+  position: fixed; top: -100px; left: 16px; z-index: 100;
+  transition: top .3s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* ---------- Header ---------- */
+#utility-bar { max-height: 2rem; opacity: 1; transition: max-height .35s ease, opacity .3s ease; }
+#site-header.is-scrolled #utility-bar { max-height: 0; opacity: 0; border-bottom-width: 0; }
+#site-header.is-scrolled { box-shadow: 0 1px 0 0 rgb(23 23 23 / .06), 0 8px 24px -18px rgb(23 23 23 / .35); }
+.dark #site-header.is-scrolled { box-shadow: 0 1px 0 0 rgb(255 255 255 / .05), 0 8px 24px -18px rgb(0 0 0 / .8); }
+
+/* Garis bawah animasi untuk tautan navigasi */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; left: 0; bottom: -4px; height: 1.5px; width: 100%;
+  background: currentColor; transform: scaleX(0); transform-origin: right center;
+  transition: transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); transform-origin: left center; }
+.nav-link.is-active { color: #171717; }
+.dark .nav-link.is-active { color: #fafafa; }
+
+/* Hamburger */
+#menu-toggle .bar { display: block; width: 22px; height: 2px; background: currentColor; transition: transform .35s cubic-bezier(.22,1,.36,1), opacity .25s ease; }
+#menu-toggle .bar + .bar { margin-top: 5px; }
+#menu-toggle.is-open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#menu-toggle.is-open .bar:nth-child(2) { opacity: 0; }
+#menu-toggle.is-open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menu mobile */
+#mobile-menu { transition: clip-path .5s cubic-bezier(.22,1,.36,1); clip-path: inset(0 0 100% 0); pointer-events: none; }
+#mobile-menu.is-open { clip-path: inset(0 0 0% 0); pointer-events: auto; }
+#mobile-menu .menu-item { opacity: 0; transform: translateY(18px); transition: opacity .45s ease, transform .45s cubic-bezier(.22,1,.36,1); }
+#mobile-menu.is-open .menu-item { opacity: 1; transform: none; }
+#mobile-menu.is-open .menu-item:nth-child(1) { transition-delay: .08s; }
+#mobile-menu.is-open .menu-item:nth-child(2) { transition-delay: .14s; }
+#mobile-menu.is-open .menu-item:nth-child(3) { transition-delay: .2s; }
+#mobile-menu.is-open .menu-item:nth-child(4) { transition-delay: .26s; }
+#mobile-menu.is-open .menu-item:nth-child(5) { transition-delay: .32s; }
+#mobile-menu.is-open .menu-item:nth-child(6) { transition-delay: .38s; }
+#mobile-menu.is-open .menu-item:nth-child(7) { transition-delay: .44s; }
+
+/* ---------- Ticker / marquee ---------- */
+.marquee-track { display: flex; width: max-content; animation: marquee 42s linear infinite; }
+.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------- Animasi reveal saat scroll ---------- */
+.js [data-reveal] { opacity: 0; transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; }
+.js [data-reveal="up"]    { transform: translateY(28px); }
+.js [data-reveal="fade"]  { transform: none; }
+.js [data-reveal="left"]  { transform: translateX(-32px); }
+.js [data-reveal="right"] { transform: translateX(32px); }
+.js [data-reveal="zoom"]  { transform: scale(.94); }
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* ---------- Parallax ---------- */
+[data-parallax] { will-change: transform; }
+
+/* Kata raksasa ber-garis (outline) untuk lapisan parallax */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(23 23 23 / .14);
+  user-select: none; pointer-events: none;
+}
+.dark .text-outline { -webkit-text-stroke: 1.5px rgb(255 255 255 / .13); }
+
+/* ---------- Hero slider ---------- */
+.hero-slides { display: grid; }
+.hero-slide {
+  grid-area: 1 / 1; opacity: 0; visibility: hidden;
+  transition: opacity .8s ease, visibility 0s linear .8s;
+}
+.hero-slide.is-active { opacity: 1; visibility: visible; transition: opacity .8s ease, visibility 0s; pointer-events: auto; }
+.hero-slide:not(.is-active) { pointer-events: none; }
+
+.hero-slide .rise { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+.hero-slide.is-active .rise { opacity: 1; transform: none; }
+.hero-slide.is-active .rise.d1 { transition-delay: .10s; }
+.hero-slide.is-active .rise.d2 { transition-delay: .22s; }
+.hero-slide.is-active .rise.d3 { transition-delay: .34s; }
+.hero-slide.is-active .rise.d4 { transition-delay: .46s; }
+
+.hero-slide .hero-img { transform: translate3d(0,0,0) scale(1.08); transition: transform 6.5s cubic-bezier(.19,1,.22,1); }
+.hero-slide.is-active .hero-img { transform: translate3d(0,0,0) scale(1); }
+
+.hero-btn { transition: transform .25s ease, background-color .25s ease, color .25s ease; }
+.hero-btn:hover { transform: translateY(-2px); }
+.hero-btn:active { transform: translateY(0); }
+
+/* ---------- Slider testimoni ---------- */
+.testi-slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1), visibility 0s linear .6s; }
+.testi-slide.is-active { position: relative; opacity: 1; visibility: visible; transform: none; transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1); }
+
+/* ---------- Kartu ---------- */
+.card-img img { transition: transform .7s cubic-bezier(.22,1,.36,1), filter .7s ease; }
+.card-img:hover img, a:hover > .card-img img { transform: scale(1.045); }
+
+/* ---------- Tipografi badan artikel ---------- */
+.article-body { font-size: 1.0625rem; line-height: 1.85; }
+.article-body > * + * { margin-top: 1.5em; }
+.article-body > p:first-of-type::first-letter {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 900; float: left;
+  font-size: 4.4em; line-height: .82; padding: .06em .12em 0 0;
+}
+.article-body p { color: #262626; }
+.dark .article-body p { color: #d4d4d4; }
+.article-body h2 {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 800; letter-spacing: -0.01em;
+  font-size: 1.75rem; line-height: 1.2; margin-top: 2em; padding-top: .75em;
+  border-top: 1px solid #e5e5e5;
+}
+.dark .article-body h2 { border-color: #262626; color: #fafafa; }
+.article-body ul { display: flex; flex-direction: column; gap: .9em; padding-left: 0; list-style: none; }
+.article-body ul li { position: relative; padding-left: 1.9em; color: #262626; }
+.dark .article-body ul li { color: #d4d4d4; }
+.article-body ul li::before {
+  content: ''; position: absolute; left: 0; top: .62em; width: .55em; height: .55em;
+  background: #64748B;
+}
+.article-body blockquote { margin-top: 2.2em; margin-bottom: 2.2em; padding-left: 1.5em; border-left: 3px solid #171717; }
+.dark .article-body blockquote { border-color: #e5e5e5; }
+.article-body blockquote p {
+  font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 600;
+  font-size: 1.55rem; line-height: 1.35; letter-spacing: -0.01em; color: #171717;
+}
+.dark .article-body blockquote p { color: #fafafa; }
+.article-body blockquote footer { margin-top: .8em; font-family: 'JetBrains Mono', monospace; font-size: .72rem; text-transform: uppercase; letter-spacing: .18em; color: #64748B; }
+.article-body figure img { width: 100%; }
+.article-body figcaption { margin-top: .6em; font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: #64748B; }
+
+/* ---------- Peta monokrom ---------- */
+.map-embed iframe { filter: grayscale(1) contrast(1.05); width: 100%; height: 100%; border: 0; }
+.dark .map-embed iframe { filter: grayscale(1) invert(0.92) contrast(0.9); }
+
+/* ---------- Tombol kembali ke atas ---------- */
+#back-to-top { opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1), background-color .25s ease; }
+#back-to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+#back-to-top:hover { transform: translateY(-3px); }
+#back-to-top .ring { transition: stroke-dashoffset .1s linear; }
+
+/* ---------- Toast ---------- */
+#toast { transition: opacity .3s ease, transform .3s cubic-bezier(.22,1,.36,1); }
+
+/* ---------- Akordeon ---------- */
+.accordion-panel { max-height: 0; overflow: hidden; transition: max-height .45s cubic-bezier(.22,1,.36,1); }
+.accordion-btn .accordion-icon { transition: transform .35s cubic-bezier(.22,1,.36,1); }
+.accordion-btn[aria-expanded="true"] .accordion-icon { transform: rotate(45deg); }
+
+/* ---------- Form ---------- */
+.field-error { display: none; }
+.field.is-invalid .field-error { display: flex; }
+.field.is-invalid input, .field.is-invalid textarea, .field.is-invalid select { border-color: #dc2626; }
+
+/* ---------- Progress bar artikel ---------- */
+#read-progress { transform: scaleX(0); transform-origin: left center; }
+
+/* ---------- Detail kecil ---------- */
+.kicker-rule { display: inline-block; width: 2rem; height: 1px; background: #64748B; vertical-align: middle; }
+
+/* ---------- Mode Baca ---------- */
+body.focus-mode .focus-hide { display: none; }
+body.focus-mode .article-body { font-size: 1.1875rem; line-height: 1.9; }
+body.focus-mode #site-header #utility-bar { max-height: 0; opacity: 0; }
+[data-focus-toggle][aria-pressed="true"] { background: #171717; color: #fff; border-color: #171717; }
+.dark [data-focus-toggle][aria-pressed="true"] { background: #fff; color: #171717; border-color: #fff; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track { animation: none; }
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .hero-slide .rise { opacity: 1; transform: none; transition: none; }
+  .hero-slide, .hero-slide .hero-img, .hero-slide.is-active { transition-duration: .01s; }
+  [data-parallax] { transform: none !important; }
+  * { scroll-behavior: auto !important; }
+}
