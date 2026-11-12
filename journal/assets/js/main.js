@@ -141,7 +141,7 @@
   var todayEl = qs('#today-date');
   if (todayEl) {
     var full = new Intl.DateTimeFormat('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
-    todayEl.textContent = 'Semarang — ' + full;
+    todayEl.textContent = full;
   }
 
   /* ---------- Ticker berita ---------- */

@@ -8,7 +8,7 @@ YJ.data = {
   site: {
     name: 'Yuosant Journal',
     tagline: 'Learn something. Make it useful.',
-    city: 'Semarang, Indonesia',
+    city: 'Indonesia',
     edition: 128
   },
 
