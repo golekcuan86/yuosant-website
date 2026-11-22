@@ -1,11 +1,13 @@
 name: Yuosant Headquarters Preview QA
 on:
   push:
-    branches: [redesign-v2]
+    branches: [redesign-v2, feature/showcase-cinematic-bento]
     paths:
       - "index.html"
       - "headquarters.css"
       - "headquarters.js"
+      - "showcase-bento.*"
+      - "assets/showcase/cinematic-bento/**"
       - "assets/brand/**"
       - "tests/headquarters.smoke.mjs"
       - "tests/headquarters.browser.mjs"
@@ -25,8 +27,11 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
-      - name: Static integration checks
-        run: node --test tests/headquarters.smoke.mjs
+      - name: Static integration and JavaScript syntax checks
+        run: |
+          node --check headquarters.js
+          node --check showcase-bento.js
+          node --test tests/headquarters.smoke.mjs
       - name: Install browser test library
         run: npm install --no-save --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.56.1
       - name: Desktop and mobile Chromium checks

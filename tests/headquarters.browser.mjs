@@ -6,14 +6,14 @@ const browser = await chromium.launch({
   headless: true, args: ['--no-sandbox']
 });
 try {
-  for (const size of [{width:1440,height:900,label:'desktop'},{width:1024,height:768,label:'laptop'},{width:768,height:1024,label:'tablet'},{width:390,height:844,label:'phone-390'},{width:360,height:800,label:'mobile'}]) {
+  for (const size of [{width:1440,height:900,label:'desktop'},{width:1024,height:768,label:'laptop'},{width:768,height:1024,label:'tablet'},{width:430,height:900,label:'phone-430'},{width:390,height:844,label:'phone-390'},{width:360,height:800,label:'mobile'}]) {
     const page = await browser.newPage({viewport:size, hasTouch: size.width < 800});
     const errors = [];
     page.on('pageerror',error=>errors.push(error.message));
     await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
     assert.match(await page.title(),/Yuosant/);
     assert.equal(await page.locator('h1').count(),1);
-    assert.equal(await page.locator('.product-card').count(),7);
+    assert.equal(await page.locator('.bento-card').count(),7);
     const stats = page.locator('.overview-grid');
     assert.deepEqual(await stats.locator('dd [aria-label]').evaluateAll(nodes => nodes.map(node => node.ariaLabel)),
       ['250 or more', '500 or more', '2.4 million', '98 percent']);
@@ -69,11 +69,11 @@ try {
       assert.ok(introLayout.copyLeft >= introLayout.headingRight - 4,
         'About should use two editorial columns on desktop: ' + JSON.stringify(introLayout));
     }
-    const hrefs=await page.locator('.product-card a.card-foot').evaluateAll(nodes=>nodes.map(n=>n.href));
+    const hrefs=await page.locator('.bento-card a.bento-cta').evaluateAll(nodes=>nodes.map(n=>n.href));
     assert.deepEqual(hrefs, ['https://finlab.yuosant.com/', 'https://yuosant-digital-hacks.vercel.app/#harga',
       'http://127.0.0.1:4173/journal/', 'http://127.0.0.1:4173/tools/']);
-    assert.equal(await page.locator('.card-store img').getAttribute('src'), '/yuosant-digital-store-crystal.webp');
-    assert.equal(await page.locator('.card-aikobo a.card-foot').count(), 0);
+    assert.equal(await page.locator('.showcase-bento .card-store img').getAttribute('src'), '/yuosant-digital-store-crystal.webp');
+    assert.equal(await page.locator('.card-aikobo a.bento-cta').count(), 0);
     if (size.width <= 760) {
       const menu=page.locator('#menu-toggle');
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
@@ -83,7 +83,7 @@ try {
       await page.locator('#main-nav a[href="#ecosystem"]').click();
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
     }
-    const imageChecks = await page.locator('.product-illustration, .hero-atmosphere').evaluateAll(async (imgs) => {
+    const imageChecks = await page.locator('.showcase-bento .bento-art, .hero-atmosphere').evaluateAll(async (imgs) => {
       await Promise.all(imgs.map(async (img) => {
         img.loading = 'eager';
         try { await img.decode(); } catch {}
@@ -93,80 +93,80 @@ try {
       }));
     });
     assert.ok(imageChecks.every(img => img.ok), size.label + ' artwork failed ' + JSON.stringify(imageChecks));
-    const carousel = page.locator('#product-carousel');
+    const feature = page.locator('#showcase-feature');
+    const stage = page.locator('#showcase-stage');
     const next = page.locator('#carousel-next');
     const previous = page.locator('#carousel-prev');
-    const waitForCard = index => page.getByText(
-      String(index).padStart(2, '0') + ' / 07', {exact: true}
-    ).waitFor();
-
-    const selector = page.getByRole('group', {name: 'Pilih produk'});
-    assert.deepEqual(await selector.getByRole('button').allTextContents(),
-      ['AiKobo', 'Yuosant AI', 'FinLab', 'Digital Store', 'Journal', 'Tools', 'YCC']);
-    const digitalStore = selector.getByRole('button', {name: 'Digital Store'});
-    await digitalStore.click();
-    await waitForCard(4);
-    assert.equal(await digitalStore.getAttribute('aria-pressed'), 'true');
-    await carousel.press('Home');
-    await waitForCard(1);
+    const assertCard = async index => {
+      const count = String(index).padStart(2, '0') + ' / 07';
+      assert.equal(await page.locator('#carousel-count').textContent(), count);
+      await feature.locator('.spotlight-scene').evaluate(img => img.decode());
+      assert.ok(await feature.locator('.spotlight-visual .bento-art').evaluate(async img => {
+        await img.decode();
+        return img.naturalWidth > 0;
+      }));
+    };
+    const store = page.locator('.bento-card.card-store .bento-select');
+    await store.click();
+    await assertCard(4);
+    assert.equal(await store.getAttribute('aria-pressed'), 'true');
+    assert.equal(await feature.locator('a').getAttribute('href'), hrefs[1]);
+    await feature.press('Home');
+    await assertCard(1);
+    await previous.click();
+    await assertCard(7);
     await next.click();
-    await waitForCard(2);
+    await assertCard(1);
+    await stage.locator('.showcase-thumbs button').first().click();
+    await assertCard(2);
+    assert.equal(await motionState('.spotlight-copy'), 'bento-copy-in');
     await page.emulateMedia({reducedMotion: 'reduce'});
     assert.equal(await motionState('.ticker-track'), 'none');
     assert.equal(await motionState('.contact-symbol'), 'none');
-    assert.equal(await page.locator('.hero-atmosphere').evaluate(el => getComputedStyle(el).animationName), 'none');
+    assert.equal(await motionState('.spotlight-copy'), 'none');
+    assert.equal(await motionState('.hero-atmosphere'), 'none');
     for (let index = 3; index <= 7; index++) {
       await next.click();
-      await waitForCard(index);
+      await assertCard(index);
     }
-    assert.equal(await next.getAttribute('aria-disabled'), 'true');
-    await previous.click();
-    await waitForCard(6);
-    await carousel.press('ArrowLeft');
-    await waitForCard(5);
-    await carousel.press('End');
-    await waitForCard(7);
-    await carousel.press('Home');
-    await waitForCard(1);
-    assert.equal(await previous.getAttribute('aria-disabled'), 'true');
-    await carousel.press('ArrowRight');
-    await waitForCard(2);
-    await carousel.press('Home');
-    await waitForCard(1);
+    await feature.press('ArrowRight');
+    await assertCard(1);
 
     if (size.width < 800) {
-      await carousel.evaluate(el => el.scrollIntoView({block: 'center'}));
-      const box = await carousel.boundingBox();
+      await feature.evaluate(el => el.scrollIntoView({block: 'center', behavior: 'instant'}));
+      const box = await feature.boundingBox();
       const client = await page.context().newCDPSession(page);
-      const x = Math.round(box.x + Math.min(300, box.width - 15));
-      const y = Math.round(box.y + 100);
+      const x = Math.round(box.x + box.width * .8);
+      const y = Math.round(box.y + 75);
       await client.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x, y}]});
-      for (let distance = 25; distance <= 250; distance += 25) {
+      for (let distance = 25; distance <= 175; distance += 25) {
         await client.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: x - distance, y}]});
       }
       await client.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
-      await page.getByText(/0[2-7] \/ 07/).waitFor();
+      await assertCard(2);
       await client.detach();
     }
 
+    const grid = page.locator('.showcase-bento');
+    const columns = await grid.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+    assert.equal(columns, size.width >= 980 ? 12 : size.width >= 640 ? 2 : 1);
+    if ([390, 1440].includes(size.width)) {
+      await feature.press('Home');
+      await assertCard(1);
+      const showcase = page.locator('#ecosystem > .shell');
+      await showcase.screenshot({path:'headquarters-'+(size.width === 1440 ? 'desktop' : 'mobile')+'.png',
+        animations:'disabled', style:'.header { visibility: hidden; }'});
+    }
     const faq = page.locator('.faq-items details').first();
     await faq.locator('summary').click();
     assert.equal(await faq.locator('p').isVisible(), true);
     await faq.locator('summary').press('Enter');
     assert.equal(await faq.locator('p').isVisible(), false);
     assert.deepEqual(errors, [], size.label + ' runtime errors');
-    // Capture the actual top-of-page layout; full-page screenshots otherwise
-    // place the fixed header at the final scroll position.
-    await page.locator('#product-carousel').evaluate(el => el.scrollTo({left:0,behavior:'instant'}));
-    await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
-    await page.waitForTimeout(220);
-    if (size.label === 'mobile' || size.label === 'desktop') {
-      await page.screenshot({path:'headquarters-'+size.label+'.png',fullPage:true,animations:'disabled'});
-    }
     if (size.width === 1440) {
       for (const [name, title] of [['journal', /Yuosant Journal/], ['tools', /Yuosant Tools/]]) {
         const responsePromise = page.waitForResponse(response => response.url().endsWith('/' + name + '/'));
-        await page.locator('.card-' + name + ' a.card-foot').click();
+        await page.locator('.card-' + name + ' a.bento-cta').click();
         assert.ok((await responsePromise).ok(), name + ' route must return HTTP 2xx');
         assert.match(await page.title(), title);
         await page.goBack();

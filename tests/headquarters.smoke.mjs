@@ -4,12 +4,12 @@ import { test } from 'node:test';
 
 const html = readFileSync('index.html','utf8');
 const css = readFileSync('headquarters.css','utf8');
-const js = readFileSync('headquarters.js','utf8');
+const js = readFileSync('showcase-bento.js','utf8');
 
 test('homepage has essential sections and unique anchors', () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(new Set(ids).size, ids.length, 'duplicate DOM id');
-  for (const id of ['content','home','about','ecosystem','solutions','contact','product-carousel']) {
+  for (const id of ['content','home','about','ecosystem','solutions','contact','showcase-stage']) {
     assert.ok(ids.includes(id), 'missing anchor '+id);
   }
   assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
@@ -40,7 +40,7 @@ test('FinLab and Digital Store retain their destinations and Journal and Tools u
     'https://finlab.yuosant.com/',
     'https://yuosant-digital-hacks.vercel.app/#harga'
   ]);
-  assert.ok(html.includes('class="product-card card-store"'));
+  assert.ok(html.includes('class="bento-card card-store"'));
   assert.ok(html.includes('src="/yuosant-digital-store-crystal.webp"'));
   assert.ok(html.includes('Temukan e-book, materi belajar, template, dan sumber daya digital yang dirancang untuk langsung digunakan.'));
   // Payments remain the responsibility of the existing Digital Store application.
@@ -79,21 +79,21 @@ test('each product has a distinct original artwork and the hero has an illustrat
     assert.match(svg, /<\/svg>$/);
     assert.ok(html.includes('/' + file), 'artwork not referenced in homepage: ' + file);
   }
-  assert.equal([...html.matchAll(/class="product-illustration"/g)].length, 7);
+  assert.equal([...html.matchAll(/class="bento-art"/g)].length, 7);
   assert.ok(html.includes('class="hero-atmosphere"'));
 });
 
 test('carousel order, legacy artwork and destination links stay consistent', () => {
-  assert.deepEqual([...html.matchAll(/class="product-card card-([a-z]+)"/g)].map(match => match[1]), [
+  assert.deepEqual([...html.matchAll(/class="bento-card card-([a-z]+)"/g)].map(match => match[1]), [
     'aikobo', 'ai', 'finlab', 'store', 'journal', 'tools', 'ycc'
   ]);
-  assert.match(html, /id="carousel-count">01 \/ 07/);
+  assert.match(html, /id="carousel-count" aria-hidden="true">01 \/ 07/);
   assert.doesNotMatch(html, /choco[ -]?house/i);
   for (const [name, artwork] of [
     ['journal', '/yuosant-journal-crystal.webp'],
     ['tools', '/assets/yuosant-tools-1536x1024-green-1.jpg']
   ]) {
-    const card = html.split('class="product-card card-' + name + '"')[1].split('</article>')[0];
+    const card = html.split('class="bento-card card-' + name + '"')[1].split('</article>')[0];
     assert.ok(card.includes('src="' + artwork + '"'));
     assert.ok(card.includes('href="/' + name + '/"'));
   }
