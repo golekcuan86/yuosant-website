@@ -30,8 +30,11 @@ test('logo variants and brand tokens available', () => {
   assert.match(css, /#00c99b/i);
   assert.match(css, /prefers-reduced-motion/);
 });
-test('showroom links to independent apps and does not require authentication', () => {
-  for (const url of ['https://build.yuosant.com/', 'https://ai.yuosant.com/', 'https://finlab.yuosant.com/']) assert.ok(html.includes(url));
+test('FinLab is the only linked application; other products remain showcase-only', () => {
+  const outbound = [...html.matchAll(/<a\\b[^>]*href="(https?:\\/\\/[^\"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(outbound, ['https://finlab.yuosant.com/']);
+  assert.ok(html.includes('AIKOBO SHOWCASE'));
+  assert.ok(html.includes('YUOSANT AI SHOWCASE'));
   assert.ok(!html.includes('/auth/?service='));
   assert.ok(!html.includes('href="/auth/"'));
   for (const tag of html.match(/<a\b[^>]+target="_blank"[^>]*>/g) ?? []) {
