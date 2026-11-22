@@ -23,6 +23,30 @@
   const motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const scrollBehavior = () => motionReduced.matches ? 'instant' : 'smooth';
 
+  const overview = document.querySelector('.overview-grid');
+  if (overview && 'IntersectionObserver' in window && !motionReduced.matches) {
+    const counters = Array.from(overview.querySelectorAll('[data-count]'), node => {
+      const label = node.textContent;
+      return {node, target: Number(label), decimals: (label.split('.')[1] ?? '').length};
+    });
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      if (motionReduced.matches) return;
+      const started = performance.now();
+      function render(now) {
+        const progress = motionReduced.matches ? 1 : Math.min(1, (now - started) / 1350);
+        const eased = 1 - (1 - progress) ** 2;
+        for (const {node, target, decimals} of counters) {
+          node.textContent = (target * eased).toFixed(decimals);
+        }
+        if (progress < 1) requestAnimationFrame(render);
+      }
+      render(started);
+    }, {threshold: .25});
+    observer.observe(overview);
+  }
+
   const setHeader = () => header?.classList.toggle('scrolled', window.scrollY > 20);
   setHeader();
   window.addEventListener('scroll', setHeader, {passive: true});

@@ -451,7 +451,8 @@ p{letter-spacing:-.012em}
 }
 .overview-grid > div { display: flex; flex-direction: column-reverse; gap: 6px; }
 .overview-grid dd { margin: 0; font: 800 clamp(34px, 5vw, 58px)/1 var(--font-head); }
-.overview-grid dd span { color: var(--teal); }
+.overview-grid .stat-value { font-variant-numeric: tabular-nums; }
+.overview-grid .stat-suffix { color: var(--teal); }
 .overview-grid dt { color: #b7cec9; font-size: .85rem; line-height: 1.55; }
 
 .audiences { background: radial-gradient(ellipse at 85% 100%, #12473f, transparent 62%), var(--ink); }

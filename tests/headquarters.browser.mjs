@@ -14,7 +14,21 @@ try {
     assert.match(await page.title(),/Yuosant/);
     assert.equal(await page.locator('h1').count(),1);
     assert.equal(await page.locator('.product-card').count(),7);
-    assert.deepEqual(await page.locator('.overview-grid dd').allTextContents(), ['120K+', '45+', '2.4M', '98%']);
+    const stats = page.locator('.overview-grid');
+    assert.deepEqual(await stats.locator('dd [aria-label]').evaluateAll(nodes => nodes.map(node => node.ariaLabel)),
+      ['250 or more', '500 or more', '2.4 million', '98 percent']);
+    if (size.width === 390) {
+      await stats.evaluate(el => el.scrollIntoView({block: 'center', behavior: 'instant'}));
+      await page.waitForFunction(() => {
+        const value = Number(document.querySelector('.overview-grid [data-count]').textContent);
+        return value > 0 && value < 250;
+      });
+    }
+    await stats.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => {
+      return Array.from(document.querySelectorAll('.overview-grid dd'), node => node.textContent).join(',')
+        === '250+,500+,2.4M,98%';
+    });
     assert.equal(await page.locator('.ticker-track ul:not([aria-hidden]) li').count(), 7);
     const motionState = selector => page.locator(selector).evaluate(el => getComputedStyle(el).animationName);
     assert.equal(await motionState('.ticker-track'), 'product-marquee');
