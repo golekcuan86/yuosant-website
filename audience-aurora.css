@@ -109,6 +109,7 @@
   z-index: -2;
   inset: 0 0 0 27%;
   pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent, #000 29%);
 }
 #audiences .audience-card-photo img {
   display: block;
@@ -123,8 +124,11 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, transparent 12px, #062124db 69px, #062124eb 100%),
-    linear-gradient(90deg, #113236 0%, #0a2c2dcc 21%, #09282b1a 65%, #0a262915 100%);
+    linear-gradient(180deg, transparent 25px, #06212435 69px, #06212494 120px, #062124c4 100%),
+    linear-gradient(90deg, #0a2c2de0, #0a2c2d73 30%, transparent 76%);
+}
+#audiences .audience-grid > article > :is(h3, p) {
+  text-shadow: 0 1px 5px #021719b3;
 }
 #audiences .audience-grid > article:nth-child(6) .audience-card-photo img {
   object-position: 72% 38%;
