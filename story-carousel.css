@@ -51,3 +51,44 @@
 @media (min-width: 1050px) {
   #user-stories .story-track { grid-auto-columns: calc((100% - 2 * var(--story-gap)) / 3); }
 }
+
+/* Mint particles stay behind the quote and never capture a swipe. */
+#user-stories .story-track > .story-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+#user-stories .story-card::before,
+#user-stories .story-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+#user-stories .story-card::before {
+  background:
+    radial-gradient(ellipse at 100% 0%, #54e6b832, transparent 46%),
+    radial-gradient(ellipse at 0% 100%, #53e8b527, transparent 40%);
+}
+#user-stories .story-card::after {
+  background:
+    radial-gradient(circle at 90% 12%, #edfff8 0 1px, #24c08dbf 1.8px, #36d79f44 3.2px, transparent 7px),
+    radial-gradient(circle at 80% 17%, #40cc9ab8 0 1.3px, #4ce5ae49 2.6px, transparent 5px),
+    radial-gradient(circle at 94% 25%, #34bd91b3 0 1.5px, transparent 4px),
+    radial-gradient(circle at 75% 7%, #5acfa684 0 1px, transparent 3px),
+    radial-gradient(circle at 97% 40%, #39c69c8a 0 1px, transparent 3px),
+    radial-gradient(circle at 8% 74%, #30bf9580 0 1px, transparent 3px),
+    radial-gradient(circle at 5% 88%, #eafff5 0 1px, #27c595b8 1.8px, #36d79f44 3.2px, transparent 7px),
+    radial-gradient(circle at 18% 94%, #2bbb8da6 0 1.3px, #4ce5ae40 2.6px, transparent 5px),
+    radial-gradient(circle at 31% 97%, #38bf9275 0 1px, transparent 3px),
+    radial-gradient(circle at 92% 91%, #2bbb8d99 0 1.2px, #4ce5ae40 2.6px, transparent 5px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #user-stories .story-card::after { animation: story-particle-shimmer 5.8s ease-in-out infinite alternate; }
+  #user-stories .story-card:nth-child(even)::after { animation-delay: -2.9s; }
+  @keyframes story-particle-shimmer {
+    from { opacity: .64; }
+    to { opacity: 1; }
+  }
+}
