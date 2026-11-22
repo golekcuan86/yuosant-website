@@ -31,7 +31,7 @@ test('logo variants and brand tokens available', () => {
   assert.match(css, /prefers-reduced-motion/);
 });
 test('FinLab is the only linked application; other products remain showcase-only', () => {
-  const outbound = [...html.matchAll(/<a\\b[^>]*href="(https?:\\/\\/[^\"]+)"/g)].map(match => match[1]);
+  const outbound = [...html.matchAll(/<a[^>]*href="(https?:[^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(outbound, ['https://finlab.yuosant.com/']);
   assert.ok(html.includes('AIKOBO SHOWCASE'));
   assert.ok(html.includes('YUOSANT AI SHOWCASE'));
