@@ -72,7 +72,7 @@ try {
     const hrefs=await page.locator('.bento-card a.bento-cta').evaluateAll(nodes=>nodes.map(n=>n.href));
     assert.deepEqual(hrefs, ['https://finlab.yuosant.com/', 'https://yuosant-digital-hacks.vercel.app/#harga',
       'http://127.0.0.1:4173/journal/', 'http://127.0.0.1:4173/tools/']);
-    assert.equal(await page.locator('.showcase-bento .card-store img').getAttribute('src'), '/yuosant-digital-store-crystal.webp');
+    assert.equal(await page.locator('.showcase-bento .card-store img').getAttribute('src'), '/assets/showcase/product-illustrations/digital-store.webp');
     assert.equal(await page.locator('.card-aikobo a.bento-cta').count(), 0);
     if (size.width <= 760) {
       const menu=page.locator('#menu-toggle');
@@ -83,6 +83,8 @@ try {
       await page.locator('#main-nav a[href="#ecosystem"]').click();
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
     }
+    const productArtwork = await page.locator('.showcase-bento .bento-art').evaluateAll(images => images.map(image => image.getAttribute('src')));
+    assert.equal(new Set(productArtwork).size, 7);
     const imageChecks = await page.locator('.showcase-bento .bento-art, .hero-atmosphere').evaluateAll(async (imgs) => {
       await Promise.all(imgs.map(async (img) => {
         img.loading = 'eager';
@@ -100,7 +102,7 @@ try {
     const assertCard = async index => {
       const count = String(index).padStart(2, '0') + ' / 07';
       assert.equal(await page.locator('#carousel-count').textContent(), count);
-      await feature.locator('.spotlight-scene').evaluate(img => img.decode());
+      assert.equal(await feature.locator('.spotlight-visual .bento-art').getAttribute('src'), productArtwork[index - 1]);
       assert.ok(await feature.locator('.spotlight-visual .bento-art').evaluate(async img => {
         await img.decode();
         return img.naturalWidth > 0;

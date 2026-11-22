@@ -27,14 +27,9 @@
     const visual = document.createElement('div');
     visual.className = 'spotlight-visual';
     visual.setAttribute('aria-hidden', 'true');
-    const scene = document.createElement('img');
-    scene.className = 'spotlight-scene';
-    scene.alt = '';
-    scene.src = '/assets/showcase/cinematic-bento/' + format(active + 1) + '.webp';
-    scene.decoding = 'async';
     const image = product.image.cloneNode();
     image.loading = 'eager';
-    visual.append(scene, image);
+    visual.append(image);
 
     const copy = product.content.cloneNode(true);
     copy.classList.add('spotlight-copy');
