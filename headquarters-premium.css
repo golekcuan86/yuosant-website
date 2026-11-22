@@ -315,9 +315,12 @@ p{letter-spacing:-.012em}
 .solution-story-stacked {
   width: min(100%, 680px);
   margin-inline: auto;
-  padding-bottom: var(--solution-travel, 0px);
-  overflow-x: clip;
-  overflow-clip-margin: 14px;
+}
+.solution-story-stacked::after {
+  /* Keep the scroll distance inside the sticky stage's containing block. */
+  content: "";
+  display: block;
+  height: var(--solution-travel, 0px);
 }
 .solution-story-stacked .solution-list {
   position: sticky;
