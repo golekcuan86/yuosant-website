@@ -28,13 +28,17 @@ test('logo variants and brand tokens available', () => {
   }
   assert.ok(existsSync('assets/brand/yuosant-app-icon.svg'));
   assert.match(css, /#00c99b/i);
+  const premium = readFileSync('headquarters-premium.css','utf8');
+  assert.match(premium, /Manrope/);
+  assert.match(premium, /Plus Jakarta Sans/);
+  assert.match(html, /Plus\+Jakarta\+Sans/);
   assert.match(css, /prefers-reduced-motion/);
 });
 test('FinLab is the only linked application; other products remain showcase-only', () => {
   const outbound = [...html.matchAll(/<a[^>]*href="(https?:[^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(outbound, ['https://finlab.yuosant.com/']);
-  assert.ok(html.includes('AIKOBO SHOWCASE'));
-  assert.ok(html.includes('YUOSANT AI SHOWCASE'));
+  assert.ok(html.includes('DISCOVER AIKOBO'));
+  assert.ok(html.includes('DISCOVER YUOSANT AI'));
   assert.ok(!html.includes('/auth/?service='));
   assert.ok(!html.includes('href="/auth/"'));
   for (const tag of html.match(/<a\b[^>]+target="_blank"[^>]*>/g) ?? []) {
