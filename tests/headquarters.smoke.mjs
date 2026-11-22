@@ -34,9 +34,17 @@ test('logo variants and brand tokens available', () => {
   assert.match(html, /Plus\+Jakarta\+Sans/);
   assert.match(css, /prefers-reduced-motion/);
 });
-test('FinLab is the only linked application; other products remain showcase-only', () => {
+test('FinLab and unchanged legacy Digital Store are linked; other products stay showroom-only', () => {
   const outbound = [...html.matchAll(/<a[^>]*href="(https?:[^"]+)"/g)].map(match => match[1]);
-  assert.deepEqual(outbound, ['https://finlab.yuosant.com/']);
+  assert.deepEqual(outbound, [
+    'https://finlab.yuosant.com/',
+    'https://yuosant-digital-hacks.vercel.app/#harga'
+  ]);
+  assert.ok(html.includes('class="product-card card-store"'));
+  assert.ok(html.includes('src="/yuosant-digital-store-crystal.webp"'));
+  assert.ok(html.includes('Temukan e-book, materi belajar, template, dan sumber daya digital yang dirancang untuk langsung digunakan.'));
+  // Payments remain the responsibility of the existing Digital Store application.
+  assert.ok(!html.includes('myscalev.com'));
   assert.ok(html.includes('AIKOBO SHOWCASE'));
   assert.ok(html.includes('YUOSANT AI SHOWCASE'));
   assert.ok(!html.includes('/auth/?service='));
@@ -72,6 +80,6 @@ test('each product has a distinct original artwork and the hero has an illustrat
     assert.match(svg, /<\/svg>$/);
     assert.ok(html.includes('/' + file), 'artwork not referenced in homepage: ' + file);
   }
-  assert.equal([...html.matchAll(/class="product-illustration"/g)].length, 5);
+  assert.equal([...html.matchAll(/class="product-illustration"/g)].length, 6);
   assert.ok(html.includes('class="hero-atmosphere"'));
 });
