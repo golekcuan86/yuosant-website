@@ -1,0 +1,28 @@
+name: Yuosant Headquarters Preview QA
+on:
+  push:
+    branches: [redesign-v2]
+    paths:
+      - "index.html"
+      - "headquarters.css"
+      - "headquarters.js"
+      - "assets/brand/**"
+      - "tests/headquarters.smoke.mjs"
+      - ".github/workflows/headquarters-preview-checks.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@11bd71901bbe85bbbccebdc0618b83f5d2efb9a5 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+      - name: Static integration checks
+        run: node --test tests/headquarters.smoke.mjs
