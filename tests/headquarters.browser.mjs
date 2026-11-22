@@ -17,8 +17,7 @@ try {
     }));
     assert.ok(width.scroll <= width.viewport + 2, size.label+' horizontal overflow '+JSON.stringify(width));
     const hrefs=await page.locator('.product-card a.card-foot').evaluateAll(nodes=>nodes.map(n=>n.href));
-    assert.ok(hrefs.some(h=>h.startsWith('https://build.yuosant.com/')));
-    assert.ok(hrefs.some(h=>h.startsWith('https://ai.yuosant.com/')));
+    assert.deepEqual(hrefs, ['https://finlab.yuosant.com/']);
     if (size.label==='mobile') {
       const menu=page.locator('#menu-toggle');
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
