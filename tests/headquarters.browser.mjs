@@ -40,7 +40,7 @@ try {
     assert.ok((await page.request.get(new URL('/assets/showcase/yuosant-story-portraits.webp', page.url()).href)).ok());
     assert.match(await page.locator('.story-disclosure').innerText(), /fictional profiles/);
     assert.equal(await page.locator('.audience-grid article').count(), 6);
-    assert.equal(await page.locator('.use-case-grid article').count(), 3);
+    assert.equal(await page.locator('.use-case-grid article').count(), 5);
     assert.equal(await page.locator('.footer-directory nav').count(), 4);
     assert.match(await page.locator('.contact-actions .primary').getAttribute('href'), /^mailto:hello@yuosant\.com\?/);
     const header = await page.locator('.header').boundingBox();

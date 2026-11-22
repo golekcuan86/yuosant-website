@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="/headquarters-premium.css?v=solutions-sticky-track">
 <link rel="stylesheet" href="/showcase-bento.css?v=showcase-motion">
 <link rel="stylesheet" href="/audience-aurora.css">
+<link rel="stylesheet" href="/story-carousel.css">
 <title>Yuosant — Where Technology Meets Possibility</title>
 </head>
 <body>
@@ -168,7 +169,7 @@
     </div>
   </section>
 
-  <section class="use-cases section-pad" aria-labelledby="use-cases-title" lang="en">
+  <section class="use-cases section-pad" id="user-stories" aria-labelledby="use-cases-title" lang="en">
     <div class="shell">
       <div class="story-heading">
         <p class="story-kicker">YUOSANT IN ACTION</p>
@@ -176,7 +177,7 @@
         <p class="showcase-lead">Help build a community of 500+ entrepreneurs, creators, professionals and learners exploring what they can do with Yuosant.</p>
         <p class="story-disclosure">Illustrative stories · fictional profiles and AI-generated portraits</p>
       </div>
-      <div class="use-case-grid">
+      <div class="use-case-grid story-track" id="story-track" tabindex="0" role="region" aria-label="Illustrative user stories">
         <article class="story-card">
           <span class="story-quote" aria-hidden="true">“</span>
           <blockquote><p>I start with one campaign idea. In AiKobo, I can explore the visual direction and shape the copy before picking what fits the brand.</p></blockquote>
@@ -192,6 +193,21 @@
           <blockquote><p>FinLab gives me a place to start with the fundamentals. I can revisit a lesson and try the exercises at my own pace.</p></blockquote>
           <div class="story-person"><span class="story-avatar avatar-nadia" aria-hidden="true"></span><div><h3>Nadia Rahmani</h3><p>Educator · Yuosant FinLab</p></div></div>
         </article>
+        <article class="story-card">
+          <span class="story-quote" aria-hidden="true">“</span>
+          <blockquote><p>I look through the Digital Store for study materials and templates. A ready-made template helps me organize my coursework before I start writing.</p></blockquote>
+          <div class="story-person"><span class="story-avatar story-avatar-initials" aria-hidden="true">RK</span><div><h3>Raka Kurniawan</h3><p>University student · Yuosant Digital Store</p></div></div>
+        </article>
+        <article class="story-card">
+          <span class="story-quote" aria-hidden="true">“</span>
+          <blockquote><p>When I launch a new snack, I use AiKobo to explore poster ideas and draft captions. I can choose a direction that fits my shop before sharing the promotion.</p></blockquote>
+          <div class="story-person"><span class="story-avatar story-avatar-initials" aria-hidden="true">SR</span><div><h3>Sari Ramadhani</h3><p>Small-business owner (UMKM) · AiKobo</p></div></div>
+        </article>
+      </div>
+      <div class="story-controls" hidden>
+        <button type="button" data-story-step="-1" aria-label="Previous story" aria-controls="story-track">←</button>
+        <span class="story-position" role="status"></span>
+        <button type="button" data-story-step="1" aria-label="Next story" aria-controls="story-track">→</button>
       </div>
     </div>
   </section>
@@ -246,4 +262,5 @@
 <script src="/solutions-takeover.js?v=2" defer></script>
 <script src="/showcase-bento.js?v=showcase-motion" defer></script>
 <script src="/audience-aurora.js" defer></script>
+<script src="/story-carousel.js" defer></script>
 </body></html>
