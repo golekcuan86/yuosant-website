@@ -52,43 +52,47 @@
   #user-stories .story-track { grid-auto-columns: calc((100% - 2 * var(--story-gap)) / 3); }
 }
 
-/* Mint particles stay behind the quote and never capture a swipe. */
-#user-stories .story-track > .story-card {
+/* Green pinpoints frame the introduction without covering its copy. */
+#user-stories .story-heading {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
 }
-#user-stories .story-card::before,
-#user-stories .story-card::after {
+#user-stories .story-heading::before,
+#user-stories .story-heading::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -24px 0 -18px;
   z-index: -1;
   pointer-events: none;
 }
-#user-stories .story-card::before {
+#user-stories .story-heading::before {
+  opacity: .66;
   background:
-    radial-gradient(ellipse at 100% 0%, #54e6b832, transparent 46%),
-    radial-gradient(ellipse at 0% 100%, #53e8b527, transparent 40%);
+    radial-gradient(circle at 8% 12%, #17cf86 0 1.6px, #31eaa45c 2.8px, transparent 8px),
+    radial-gradient(circle at 19% 5%, #36cf98 0 1px, #53e3ad40 2.5px, transparent 5px),
+    radial-gradient(circle at 91% 21%, #00c981 0 1.8px, #31eaa469 3px, transparent 9px),
+    radial-gradient(circle at 97% 49%, #25d393 0 1.4px, #31eaa45c 2.6px, transparent 6px),
+    radial-gradient(circle at 5% 78%, #20d28d 0 1.4px, #31eaa45c 2.6px, transparent 7px),
+    radial-gradient(circle at 84% 96%, #15c783 0 1.6px, #31eaa460 3px, transparent 8px);
 }
-#user-stories .story-card::after {
+#user-stories .story-heading::after {
+  opacity: .63;
   background:
-    radial-gradient(circle at 90% 12%, #edfff8 0 1px, #24c08dbf 1.8px, #36d79f44 3.2px, transparent 7px),
-    radial-gradient(circle at 80% 17%, #40cc9ab8 0 1.3px, #4ce5ae49 2.6px, transparent 5px),
-    radial-gradient(circle at 94% 25%, #34bd91b3 0 1.5px, transparent 4px),
-    radial-gradient(circle at 75% 7%, #5acfa684 0 1px, transparent 3px),
-    radial-gradient(circle at 97% 40%, #39c69c8a 0 1px, transparent 3px),
-    radial-gradient(circle at 8% 74%, #30bf9580 0 1px, transparent 3px),
-    radial-gradient(circle at 5% 88%, #eafff5 0 1px, #27c595b8 1.8px, #36d79f44 3.2px, transparent 7px),
-    radial-gradient(circle at 18% 94%, #2bbb8da6 0 1.3px, #4ce5ae40 2.6px, transparent 5px),
-    radial-gradient(circle at 31% 97%, #38bf9275 0 1px, transparent 3px),
-    radial-gradient(circle at 92% 91%, #2bbb8d99 0 1.2px, #4ce5ae40 2.6px, transparent 5px);
+    radial-gradient(circle at 4% 29%, #13cf8b 0 1.4px, #50ecaa63 3px, transparent 7px),
+    radial-gradient(circle at 83% 8%, #1bd18d 0 1.6px, #50ecaa63 3px, transparent 8px),
+    radial-gradient(circle at 96% 10%, #43d8a2 0 1px, #50ecaa45 2px, transparent 5px),
+    radial-gradient(circle at 95% 74%, #14cb82 0 1.5px, #50ecaa60 2.8px, transparent 8px),
+    radial-gradient(circle at 13% 96%, #15ca86 0 1.6px, #50ecaa5c 3px, transparent 8px),
+    radial-gradient(circle at 25% 91%, #43d8a2 0 1px, #50ecaa43 2px, transparent 5px);
 }
 @media (prefers-reduced-motion: no-preference) {
-  #user-stories .story-card::after { animation: story-particle-shimmer 5.8s ease-in-out infinite alternate; }
-  #user-stories .story-card:nth-child(even)::after { animation-delay: -2.9s; }
+  #user-stories .story-heading::before,
+  #user-stories .story-heading::after {
+    animation: story-particle-shimmer 3.6s ease-in-out infinite alternate;
+  }
+  #user-stories .story-heading::after { animation-delay: -3.6s; }
   @keyframes story-particle-shimmer {
-    from { opacity: .64; }
+    from { opacity: .28; }
     to { opacity: 1; }
   }
 }
