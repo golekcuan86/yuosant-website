@@ -61,8 +61,8 @@ try {
     await page.locator('#carousel-next').click();
     await page.waitForTimeout(450);
     const current=await page.locator('#carousel-count').innerText();
-    assert.match(current, /\\/ 06$/);
-    assert.notEqual(current.trim(),'01 / 05',size.label+' carousel did not advance');
+    assert.ok(current.endsWith("/ 06"), "carousel total must be six: "+current);
+    assert.notEqual(current.trim(),'01 / 06',size.label+' carousel did not advance');
     assert.deepEqual(errors,[],size.label+' runtime errors');
     // Capture the actual top-of-page layout; full-page screenshots otherwise
     // place the fixed header at the final scroll position.
