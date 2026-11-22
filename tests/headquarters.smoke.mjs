@@ -54,3 +54,24 @@ test('accessible navigation and carousel controls exist', () => {
   assert.match(js, /addEventListener\('keydown'/);
   assert.match(css, /focus-visible/);
 });
+
+test('each product has a distinct original artwork and the hero has an illustration', () => {
+  const paths = [
+    'hero-digital-atmosphere.svg',
+    'aikobo-creative.svg',
+    'yuosant-ai-neural.svg',
+    'finlab-markets.svg',
+    'ycc-orchestra.svg',
+    'chocohouse-business.svg'
+  ];
+  for (const filename of paths) {
+    const file = 'assets/showcase/' + filename;
+    assert.ok(existsSync(file), 'missing artwork ' + file);
+    const svg = readFileSync(file, 'utf8');
+    assert.match(svg, /^<svg\b/);
+    assert.match(svg, /<\/svg>$/);
+    assert.ok(html.includes('/' + file), 'artwork not referenced in homepage: ' + file);
+  }
+  assert.equal([...html.matchAll(/class="product-illustration"/g)].length, 5);
+  assert.ok(html.includes('class="hero-atmosphere"'));
+});
