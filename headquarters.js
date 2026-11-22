@@ -41,6 +41,26 @@
     requestAnimationFrame(typeHeroLead);
   }
 
+  const solutionCards = document.querySelectorAll('.solution-list > article');
+  if (solutionCards.length && 'IntersectionObserver' in window && !motionReduced.matches) {
+    const observer = new IntersectionObserver(entries => {
+      let delay = 0;
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const card = entry.target;
+        card.style.setProperty('--solution-reveal-delay', delay + 'ms');
+        card.classList.replace('solution-awaiting-reveal', 'solution-revealing');
+        observer.unobserve(card);
+        delay += 85;
+      }
+    }, {threshold: 0.15});
+
+    for (const card of solutionCards) {
+      card.classList.add('solution-awaiting-reveal');
+      observer.observe(card);
+    }
+  }
+
   const overview = document.querySelector('.overview-grid');
   if (overview && 'IntersectionObserver' in window && !motionReduced.matches) {
     const counters = Array.from(overview.querySelectorAll('[data-count]'), node => {
