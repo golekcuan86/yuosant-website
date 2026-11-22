@@ -1,0 +1,42 @@
+/* The mask uses the same official lockup as the visible navbar image. */
+@supports (mask-image: url("/assets/brand/yuosant-primary-light.svg")) {
+  @media (prefers-reduced-motion: no-preference) {
+    #header .site-brand { position: relative; }
+    #header .site-brand::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mask: url("/assets/brand/yuosant-primary-light.svg") center / contain no-repeat;
+      background: linear-gradient(108deg, transparent 43%, #cbfff06b 48%, #faffffe0 50%, #9fffe276 53%, transparent 57%) 100% 50% / 260% 100% no-repeat;
+      animation: yuosant-brand-sweep 7.2s linear infinite;
+    }
+  }
+
+  @keyframes yuosant-brand-sweep {
+    0%, 21% { background-position: 100% 50%; opacity: 0; }
+    24%, 34% { opacity: 1; }
+    37%, 100% { background-position: 0% 50%; opacity: 0; }
+  }
+}
+
+#home .hero-visual::after {
+  inset: 5% -3% -10%;
+  background: radial-gradient(ellipse at 50% 55%, #26e4a74f, #00c99b2b 33%, #00a6860d 57%, transparent 74%);
+  filter: none;
+  opacity: .84;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #home.hero-energy-running .hero-visual::after {
+    animation: yuosant-orbital-breath 6s ease-in-out infinite;
+  }
+  @keyframes yuosant-orbital-breath {
+    0%, 100% { opacity: .68; transform: scale(.95); }
+    50% { opacity: 1; transform: scale(1.06); }
+  }
+}
+
+@media (min-width: 761px) {
+  #home .hero-visual::after { inset: 8% 5% -6%; }
+}
