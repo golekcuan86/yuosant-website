@@ -631,3 +631,18 @@ p{letter-spacing:-.012em}
 .avatar-maya { background-position: left center; }
 .avatar-dimas { background-position: center; }
 .avatar-nadia { background-position: right center; }
+
+.hero-lead.is-typing { display: grid; }
+.hero-lead.is-typing > span { grid-area: 1 / 1; }
+.hero-lead.is-typing > :first-child { color: transparent; }
+.hero-lead-remaining { visibility: hidden; }
+.hero-lead-caret { position: relative; }
+.hero-lead-caret::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: -2px;
+  inset-block-start: .15em;
+  width: 2px;
+  height: 1em;
+  background: var(--teal);
+}

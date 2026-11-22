@@ -5,6 +5,42 @@
   const nav = document.getElementById('main-nav');
   const motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  const heroLead = document.querySelector('.hero-lead');
+  if (heroLead && !motionReduced.matches) {
+    const original = document.createElement('span');
+    const preview = document.createElement('span');
+    const typed = document.createElement('span');
+    const caret = document.createElement('span');
+    const remaining = document.createElement('span');
+    const text = heroLead.textContent;
+    original.textContent = text;
+    preview.setAttribute('aria-hidden', 'true');
+    caret.className = 'hero-lead-caret';
+    remaining.className = 'hero-lead-remaining';
+    remaining.textContent = text;
+    preview.append(typed, caret, remaining);
+    heroLead.replaceChildren(original, preview);
+    heroLead.classList.add('is-typing');
+
+    const started = performance.now();
+    let shown = 0;
+    function typeHeroLead(now) {
+      const next = Math.floor((now - started) / 28);
+      if (motionReduced.matches || next >= text.length) {
+        heroLead.replaceChildren(text);
+        heroLead.classList.remove('is-typing');
+        return;
+      }
+      if (shown !== next) {
+        shown = next;
+        typed.textContent = text.slice(0, shown);
+        remaining.textContent = text.slice(shown);
+      }
+      requestAnimationFrame(typeHeroLead);
+    }
+    requestAnimationFrame(typeHeroLead);
+  }
+
   const overview = document.querySelector('.overview-grid');
   if (overview && 'IntersectionObserver' in window && !motionReduced.matches) {
     const counters = Array.from(overview.querySelectorAll('[data-count]'), node => {
