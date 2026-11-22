@@ -8,6 +8,7 @@ on:
       - "headquarters.js"
       - "assets/brand/**"
       - "tests/headquarters.smoke.mjs"
+      - "tests/headquarters.browser.mjs"
       - ".github/workflows/headquarters-preview-checks.yml"
   workflow_dispatch:
 permissions:
