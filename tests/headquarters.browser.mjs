@@ -153,6 +153,7 @@ try {
     if ([390, 1440].includes(size.width)) {
       await feature.press('Home');
       await assertCard(1);
+      await feature.blur();
       const showcase = page.locator('#ecosystem > .shell');
       await showcase.screenshot({path:'headquarters-'+(size.width === 1440 ? 'desktop' : 'mobile')+'.png',
         animations:'disabled', style:'.header { visibility: hidden; }'});

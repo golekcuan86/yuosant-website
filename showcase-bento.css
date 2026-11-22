@@ -186,6 +186,9 @@ a.bento-cta:hover { text-decoration: underline; }
   .spotlight-visual .bento-art { width: 83%; height: 80%; }
   .showcase-thumbs { height: 68px; align-items: end; margin-top: -30px; }
   .showcase-thumbs button { height: 72px; box-shadow: 0 10px 18px #011719a8; }
+  .showcase-thumbs button:first-child { z-index: 1; }
+  .showcase-thumbs button + button { margin-left: -22px; }
+  .showcase-thumbs button:hover, .showcase-thumbs button:focus-visible { z-index: 2; }
   .showcase-bento { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 13px; }
   .bento-card { grid-column: span 3; }
   .bento-card:nth-child(-n+3) { grid-column: span 3; display: flex; flex-direction: column; gap: 12px; }
