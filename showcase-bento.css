@@ -203,3 +203,6 @@ a.bento-cta:hover { text-decoration: underline; }
   .spotlight-scene, .spotlight-copy, .spotlight-visual .bento-art { animation: none; }
   .showcase-thumbs button { transition: none; }
 }
+
+/* Keep the product directory available as a fallback until the slider initializes. */
+.showcase-stage:not([hidden]) ~ :is(.bento-heading, .showcase-bento) { display: none; }

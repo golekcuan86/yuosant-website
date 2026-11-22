@@ -106,11 +106,9 @@ try {
         return img.naturalWidth > 0;
       }));
     };
-    const store = page.locator('.bento-card.card-store .bento-select');
-    await store.click();
-    await assertCard(4);
-    assert.equal(await store.getAttribute('aria-pressed'), 'true');
-    assert.equal(await feature.locator('a').getAttribute('href'), hrefs[1]);
+    await stage.waitFor({state: 'visible'});
+    assert.equal(await page.getByRole('heading', {name: 'All products'}).count(), 0);
+    assert.equal(await page.locator('.showcase-bento').isVisible(), false);
     await feature.press('Home');
     await assertCard(1);
     await previous.click();
@@ -128,6 +126,9 @@ try {
     for (let index = 3; index <= 7; index++) {
       await next.click();
       await assertCard(index);
+      if (index >= 3 && index <= 6) {
+        assert.equal(await feature.locator('a').evaluate(link => link.href), hrefs[index - 3]);
+      }
     }
     await feature.press('ArrowRight');
     await assertCard(1);
@@ -147,9 +148,6 @@ try {
       await client.detach();
     }
 
-    const grid = page.locator('.showcase-bento');
-    const columns = await grid.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
-    assert.equal(columns, size.width >= 980 ? 12 : size.width >= 640 ? 2 : 1);
     if ([390, 1440].includes(size.width)) {
       await feature.press('Home');
       await assertCard(1);
@@ -166,8 +164,10 @@ try {
     assert.deepEqual(errors, [], size.label + ' runtime errors');
     if (size.width === 1440) {
       for (const [name, title] of [['journal', /Yuosant Journal/], ['tools', /Yuosant Tools/]]) {
+        await feature.press('Home');
+        for (let index = 1; index < (name === 'journal' ? 5 : 6); index++) await next.click();
         const responsePromise = page.waitForResponse(response => response.url().endsWith('/' + name + '/'));
-        await page.locator('.card-' + name + ' a.bento-cta').click();
+        await feature.locator('a.bento-cta').click();
         assert.ok((await responsePromise).ok(), name + ' route must return HTTP 2xx');
         assert.match(await page.title(), title);
         await page.goBack();
