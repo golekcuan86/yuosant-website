@@ -16,6 +16,24 @@ try {
       viewport:window.innerWidth
     }));
     assert.ok(width.scroll <= width.viewport + 2, size.label+' horizontal overflow '+JSON.stringify(width));
+    const introLayout = await page.locator('.intro-grid').evaluate(grid => {
+      const heading = grid.querySelector('h2').getBoundingClientRect();
+      const copy = grid.querySelector(':scope > div').getBoundingClientRect();
+      return {
+        headingLeft: heading.left, headingRight: heading.right, headingBottom: heading.bottom,
+        copyLeft: copy.left, copyTop: copy.top, copyWidth: copy.width,
+        columns: getComputedStyle(grid).gridTemplateColumns
+      };
+    });
+    if (size.label === 'mobile') {
+      assert.ok(introLayout.copyTop >= introLayout.headingBottom - 3,
+        'About must stack vertically on mobile: ' + JSON.stringify(introLayout));
+      assert.ok(introLayout.copyWidth >= 300,
+        'About text too narrow for 360px phones: ' + JSON.stringify(introLayout));
+    } else {
+      assert.ok(introLayout.copyLeft >= introLayout.headingRight - 4,
+        'About should use two editorial columns on desktop: ' + JSON.stringify(introLayout));
+    }
     const hrefs=await page.locator('.product-card a.card-foot').evaluateAll(nodes=>nodes.map(n=>n.href));
     assert.deepEqual(hrefs, ['https://finlab.yuosant.com/']);
     if (size.label==='mobile') {
@@ -43,6 +61,11 @@ try {
     const current=await page.locator('#carousel-count').innerText();
     assert.notEqual(current.trim(),'01 / 05',size.label+' carousel did not advance');
     assert.deepEqual(errors,[],size.label+' runtime errors');
+    // Capture the actual top-of-page layout; full-page screenshots otherwise
+    // place the fixed header at the final scroll position.
+    await page.locator('#product-carousel').evaluate(el => el.scrollTo({left:0,behavior:'instant'}));
+    await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
+    await page.waitForTimeout(220);
     await page.screenshot({path:'headquarters-'+size.label+'.png',fullPage:true,animations:'disabled'});
     console.log('PASS '+size.label+'; carousel '+current.trim());
     await page.close();
