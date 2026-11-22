@@ -1,0 +1,96 @@
+/* About only. The art sits entirely outside the content flow. */
+#about {
+  position: relative;
+  isolation: isolate;
+}
+#about .about-energy-art {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: .34;
+  mask-image: linear-gradient(90deg, transparent 24%, #000 82%);
+}
+#about .about-energy-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right 62%;
+}
+#about #intro-title span {
+  position: relative;
+  isolation: isolate;
+}
+#about #intro-title span::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: auto 0 .08em;
+  height: .21em;
+  border-radius: 20px;
+  background: #9bedda66;
+  transform-origin: left center;
+}
+#about .intro-grid > div { position: relative; isolation: isolate; }
+#about .intro-grid > div::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  inset: 0;
+  background: #f6f8f5c7;
+  box-shadow: 0 0 22px 13px #f6f8f5a6;
+  border-radius: 16px;
+}
+#about .text-link { position: relative; isolation: isolate; }
+#about .text-link::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  inset: 0;
+  background: #f6f8f5;
+  box-shadow: 0 0 10px 6px #f6f8f5;
+}
+#about .text-link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+  background: #00846b;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+#about .text-link:hover::after,
+#about .text-link:focus-visible::after { opacity: 1; transform: scaleX(1); }
+
+@media (max-width: 760px) {
+  #about .about-energy-art {
+    inset: 24% 0 0;
+    opacity: .22;
+    mask-image: linear-gradient(145deg, transparent 16%, #000 87%);
+  }
+  #about .about-energy-art img { object-position: right bottom; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #about.about-energy-seen .about-energy-art { animation: about-energy-reveal 950ms ease-out; }
+  #about.about-energy-seen #intro-title { animation: about-energy-title 720ms ease-out; }
+  #about.about-energy-seen #intro-title span::after {
+    animation: about-energy-highlight 680ms ease-out 210ms backwards;
+  }
+  #about.about-energy-seen .about-energy-art img {
+    animation: about-energy-drift 16s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+  #about.about-energy-in-view .about-energy-art img { animation-play-state: running; }
+  #about .text-link::after { transition: opacity 240ms ease, transform 280ms ease; }
+
+  @keyframes about-energy-reveal { from { opacity: .06; } }
+  @keyframes about-energy-title { from { opacity: .82; transform: translateY(7px); } }
+  @keyframes about-energy-highlight { from { transform: scaleX(.12); opacity: 0; } }
+  @keyframes about-energy-drift { to { transform: scale(1.04) translate(-.45%, .5%); } }
+}
