@@ -68,6 +68,15 @@ try {
       String(index).padStart(2, '0') + ' / 07', {exact: true}
     ).waitFor();
 
+    const selector = page.getByRole('group', {name: 'Pilih produk'});
+    assert.deepEqual(await selector.getByRole('button').allTextContents(),
+      ['AiKobo', 'Yuosant AI', 'FinLab', 'Digital Store', 'Journal', 'Tools', 'YCC']);
+    const digitalStore = selector.getByRole('button', {name: 'Digital Store'});
+    await digitalStore.click();
+    await waitForCard(4);
+    assert.equal(await digitalStore.getAttribute('aria-pressed'), 'true');
+    await carousel.press('Home');
+    await waitForCard(1);
     await next.click();
     await waitForCard(2);
     await page.emulateMedia({reducedMotion: 'reduce'});
@@ -106,6 +115,11 @@ try {
       await client.detach();
     }
 
+    const faq = page.locator('.faq-items details').first();
+    await faq.locator('summary').click();
+    assert.equal(await faq.locator('p').isVisible(), true);
+    await faq.locator('summary').press('Enter');
+    assert.equal(await faq.locator('p').isVisible(), false);
     assert.deepEqual(errors, [], size.label + ' runtime errors');
     // Capture the actual top-of-page layout; full-page screenshots otherwise
     // place the fixed header at the final scroll position.
