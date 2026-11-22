@@ -52,7 +52,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  animation: bento-visual-in var(--showcase-motion) both;
+  animation: bento-visual-in var(--showcase-motion) both, spotlight-drift 7s ease-in-out infinite alternate;
 }
 .spotlight-copy {
   min-width: 0;
@@ -111,6 +111,11 @@ a.bento-cta:hover { text-decoration: underline; }
   font: 750 1.1rem var(--font-head);
   cursor: pointer;
 }
+#carousel-rotation[hidden] { display: none; }
+#carousel-rotation span { font-size: .8rem; }
+.showcase-stage[data-rotation-paused] .spotlight-visual .bento-art {
+  animation-play-state: running, paused;
+}
 .showcase-controls button:hover, .bento-select:hover { background: #316060; }
 .showcase-thumbs { display: flex; justify-content: flex-end; min-width: 0; margin-left: auto; perspective: 420px; }
 .showcase-thumbs button {
@@ -159,6 +164,10 @@ a.bento-cta:hover { text-decoration: underline; }
 .bento-card .bento-select[hidden] { display: none; }
 
 @keyframes bento-visual-in { from { opacity: .42; transform: translateX(calc(var(--slide-direction) * 1%)) scale(1.035); } }
+@keyframes spotlight-drift {
+  from { scale: 1; }
+  to { scale: 1.045; }
+}
 @keyframes bento-copy-in { from { opacity: .15; transform: translate3d(0, 10px, 0); } }
 
 @media (min-width: 640px) {
