@@ -10,7 +10,7 @@ try {
     await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
     assert.match(await page.title(),/Yuosant/);
     assert.equal(await page.locator('h1').count(),1);
-    assert.equal(await page.locator('.product-card').count(),5);
+    assert.equal(await page.locator('.product-card').count(),6);
     const width = await page.evaluate(() => ({
       scroll:document.documentElement.scrollWidth,
       viewport:window.innerWidth
@@ -35,7 +35,9 @@ try {
         'About should use two editorial columns on desktop: ' + JSON.stringify(introLayout));
     }
     const hrefs=await page.locator('.product-card a.card-foot').evaluateAll(nodes=>nodes.map(n=>n.href));
-    assert.deepEqual(hrefs, ['https://finlab.yuosant.com/']);
+    assert.deepEqual(hrefs, ['https://finlab.yuosant.com/', 'https://yuosant-digital-hacks.vercel.app/#harga']);
+    assert.equal(await page.locator('.card-store img').getAttribute('src'), '/yuosant-digital-store-crystal.webp');
+    assert.equal(await page.locator('.card-aikobo a.card-foot').count(), 0);
     if (size.width <= 760) {
       const menu=page.locator('#menu-toggle');
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
@@ -59,6 +61,7 @@ try {
     await page.locator('#carousel-next').click();
     await page.waitForTimeout(450);
     const current=await page.locator('#carousel-count').innerText();
+    assert.match(current, /\\/ 06$/);
     assert.notEqual(current.trim(),'01 / 05',size.label+' carousel did not advance');
     assert.deepEqual(errors,[],size.label+' runtime errors');
     // Capture the actual top-of-page layout; full-page screenshots otherwise
