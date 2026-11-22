@@ -34,7 +34,7 @@ test('logo variants and brand tokens available', () => {
   assert.match(html, /Plus\+Jakarta\+Sans/);
   assert.match(css, /prefers-reduced-motion/);
 });
-test('FinLab and unchanged legacy Digital Store are linked; other products stay showroom-only', () => {
+test('FinLab and Digital Store retain their destinations and Journal and Tools use legacy routes', () => {
   const outbound = [...html.matchAll(/<a[^>]*href="(https?:[^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(outbound, [
     'https://finlab.yuosant.com/',
@@ -70,7 +70,6 @@ test('each product has a distinct original artwork and the hero has an illustrat
     'yuosant-ai-neural.svg',
     'finlab-markets.svg',
     'ycc-orchestra.svg',
-    'chocohouse-business.svg'
   ];
   for (const filename of paths) {
     const file = 'assets/showcase/' + filename;
@@ -80,6 +79,22 @@ test('each product has a distinct original artwork and the hero has an illustrat
     assert.match(svg, /<\/svg>$/);
     assert.ok(html.includes('/' + file), 'artwork not referenced in homepage: ' + file);
   }
-  assert.equal([...html.matchAll(/class="product-illustration"/g)].length, 6);
+  assert.equal([...html.matchAll(/class="product-illustration"/g)].length, 7);
   assert.ok(html.includes('class="hero-atmosphere"'));
+});
+
+test('carousel order, legacy artwork and destination links stay consistent', () => {
+  assert.deepEqual([...html.matchAll(/class="product-card card-([a-z]+)"/g)].map(match => match[1]), [
+    'aikobo', 'ai', 'finlab', 'store', 'journal', 'tools', 'ycc'
+  ]);
+  assert.match(html, /id="carousel-count">01 \/ 07/);
+  assert.doesNotMatch(html, /choco[ -]?house/i);
+  for (const [name, artwork] of [
+    ['journal', '/yuosant-journal-crystal.webp'],
+    ['tools', '/assets/yuosant-tools-1536x1024-green-1.jpg']
+  ]) {
+    const card = html.split('class="product-card card-' + name + '"')[1].split('</article>')[0];
+    assert.ok(card.includes('src="' + artwork + '"'));
+    assert.ok(card.includes('href="/' + name + '/"'));
+  }
 });

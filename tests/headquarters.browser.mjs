@@ -1,16 +1,19 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
-const browser = await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});
+const browser = await chromium.launch({
+  ...(process.env.CHROMIUM_PATH ? {executablePath: process.env.CHROMIUM_PATH} : {channel: 'chrome'}),
+  headless: true, args: ['--no-sandbox']
+});
 try {
   for (const size of [{width:1440,height:900,label:'desktop'},{width:1024,height:768,label:'laptop'},{width:768,height:1024,label:'tablet'},{width:390,height:844,label:'phone-390'},{width:360,height:800,label:'mobile'}]) {
-    const page = await browser.newPage({viewport:size});
+    const page = await browser.newPage({viewport:size, hasTouch: size.width < 800});
     const errors = [];
     page.on('pageerror',error=>errors.push(error.message));
     await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
     assert.match(await page.title(),/Yuosant/);
     assert.equal(await page.locator('h1').count(),1);
-    assert.equal(await page.locator('.product-card').count(),6);
+    assert.equal(await page.locator('.product-card').count(),7);
     const width = await page.evaluate(() => ({
       scroll:document.documentElement.scrollWidth,
       viewport:window.innerWidth
@@ -35,7 +38,8 @@ try {
         'About should use two editorial columns on desktop: ' + JSON.stringify(introLayout));
     }
     const hrefs=await page.locator('.product-card a.card-foot').evaluateAll(nodes=>nodes.map(n=>n.href));
-    assert.deepEqual(hrefs, ['https://finlab.yuosant.com/', 'https://yuosant-digital-hacks.vercel.app/#harga']);
+    assert.deepEqual(hrefs, ['https://finlab.yuosant.com/', 'https://yuosant-digital-hacks.vercel.app/#harga',
+      'http://127.0.0.1:4173/journal/', 'http://127.0.0.1:4173/tools/']);
     assert.equal(await page.locator('.card-store img').getAttribute('src'), '/yuosant-digital-store-crystal.webp');
     assert.equal(await page.locator('.card-aikobo a.card-foot').count(), 0);
     if (size.width <= 760) {
@@ -57,13 +61,52 @@ try {
       }));
     });
     assert.ok(imageChecks.every(img => img.ok), size.label + ' artwork failed ' + JSON.stringify(imageChecks));
-    await page.locator('#ecosystem').scrollIntoViewIfNeeded();
-    await page.locator('#carousel-next').click();
-    await page.waitForTimeout(450);
-    const current=await page.locator('#carousel-count').innerText();
-    assert.ok(current.endsWith("/ 06"), "carousel total must be six: "+current);
-    assert.notEqual(current.trim(),'01 / 06',size.label+' carousel did not advance');
-    assert.deepEqual(errors,[],size.label+' runtime errors');
+    const carousel = page.locator('#product-carousel');
+    const next = page.locator('#carousel-next');
+    const previous = page.locator('#carousel-prev');
+    const waitForCard = index => page.getByText(
+      String(index).padStart(2, '0') + ' / 07', {exact: true}
+    ).waitFor();
+
+    await next.click();
+    await waitForCard(2);
+    await page.emulateMedia({reducedMotion: 'reduce'});
+    assert.equal(await page.locator('.hero-atmosphere').evaluate(el => getComputedStyle(el).animationName), 'none');
+    for (let index = 3; index <= 7; index++) {
+      await next.click();
+      await waitForCard(index);
+    }
+    assert.equal(await next.getAttribute('aria-disabled'), 'true');
+    await previous.click();
+    await waitForCard(6);
+    await carousel.press('ArrowLeft');
+    await waitForCard(5);
+    await carousel.press('End');
+    await waitForCard(7);
+    await carousel.press('Home');
+    await waitForCard(1);
+    assert.equal(await previous.getAttribute('aria-disabled'), 'true');
+    await carousel.press('ArrowRight');
+    await waitForCard(2);
+    await carousel.press('Home');
+    await waitForCard(1);
+
+    if (size.width < 800) {
+      await carousel.evaluate(el => el.scrollIntoView({block: 'center'}));
+      const box = await carousel.boundingBox();
+      const client = await page.context().newCDPSession(page);
+      const x = Math.round(box.x + Math.min(300, box.width - 15));
+      const y = Math.round(box.y + 100);
+      await client.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x, y}]});
+      for (let distance = 25; distance <= 250; distance += 25) {
+        await client.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: x - distance, y}]});
+      }
+      await client.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+      await page.getByText(/0[2-7] \/ 07/).waitFor();
+      await client.detach();
+    }
+
+    assert.deepEqual(errors, [], size.label + ' runtime errors');
     // Capture the actual top-of-page layout; full-page screenshots otherwise
     // place the fixed header at the final scroll position.
     await page.locator('#product-carousel').evaluate(el => el.scrollTo({left:0,behavior:'instant'}));
@@ -72,7 +115,16 @@ try {
     if (size.label === 'mobile' || size.label === 'desktop') {
       await page.screenshot({path:'headquarters-'+size.label+'.png',fullPage:true,animations:'disabled'});
     }
-    console.log('PASS '+size.label+'; carousel '+current.trim());
+    if (size.width === 1440) {
+      for (const [name, title] of [['journal', /Yuosant Journal/], ['tools', /Yuosant Tools/]]) {
+        const responsePromise = page.waitForResponse(response => response.url().endsWith('/' + name + '/'));
+        await page.locator('.card-' + name + ' a.card-foot').click();
+        assert.ok((await responsePromise).ok(), name + ' route must return HTTP 2xx');
+        assert.match(await page.title(), title);
+        await page.goBack();
+      }
+    }
+    console.log('PASS ' + size.label + ' — artwork, controls and layout');
     await page.close();
   }
 } finally {

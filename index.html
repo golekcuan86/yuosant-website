@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/headquarters.css?v=20261122v2">
-<link rel="stylesheet" href="/headquarters-premium.css?v=20261122v3">
+<link rel="stylesheet" href="/headquarters.css?v=20261122v4">
+<link rel="stylesheet" href="/headquarters-premium.css?v=20261122v4">
 <title>Yuosant — Where Technology Meets Possibility</title>
 </head>
 <body>
@@ -69,8 +69,8 @@
       <div class="section-ident">02 / DISCOVER THE ECOSYSTEM</div>
       <div class="section-head">
         <div><p class="section-kicker">OUR DIGITAL UNIVERSE</p><h2 id="eco-title">The future is<br><span>made to create.</span></h2></div>
-        <div class="section-head-aside"><p>Satu ekosistem, banyak ruang untuk berkembang. Temukan produk dan solusi Yuosant — FinLab dan Digital Store dapat dibuka langsung, sementara produk lainnya hadir sebagai showroom.</p>
-        <div class="carousel-controls"><button class="arrow" type="button" id="carousel-prev" aria-label="Produk sebelumnya">←</button><button class="arrow" type="button" id="carousel-next" aria-label="Produk berikutnya">→</button></div></div>
+        <div class="section-head-aside"><p>Jelajahi produk AI, buka FinLab dan Digital Store, baca Yuosant Journal, atau gunakan utilitas gratis di Yuosant Tools.</p>
+        <div class="carousel-controls"><button class="arrow" type="button" id="carousel-prev" aria-controls="product-carousel" aria-disabled="true" aria-label="Produk sebelumnya">←</button><button class="arrow" type="button" id="carousel-next" aria-controls="product-carousel" aria-label="Produk berikutnya">→</button></div></div>
       </div>
       <div class="product-carousel" id="product-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Katalog produk Yuosant">
         <article class="product-card card-aikobo">
@@ -93,18 +93,23 @@
           <div class="product-art artwork-store" aria-hidden="true"><img class="product-illustration" src="/yuosant-digital-store-crystal.webp" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
           <div class="product-body"><p class="product-type">DISCOVER · DOWNLOAD · DO</p><h3>Digital <span>Store.</span></h3><p>Temukan e-book, materi belajar, template, dan sumber daya digital yang dirancang untuk langsung digunakan.</p><a class="card-foot" href="https://yuosant-digital-hacks.vercel.app/#harga" target="_blank" rel="noopener noreferrer">JELAJAHI PRODUK <span aria-hidden="true">↗</span></a></div>
         </article>
+        <article class="product-card card-journal">
+          <div class="product-top"><span>05 / IDEAS &amp; INSIGHTS</span></div>
+          <div class="product-art" aria-hidden="true"><img class="product-illustration" src="/yuosant-journal-crystal.webp" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
+          <div class="product-body"><p class="product-type">READ · REFLECT · REIMAGINE</p><h3>Yuosant <span>Journal.</span></h3><p>Catatan tentang teknologi, AI, pendidikan, produktivitas, dan ide praktis untuk kehidupan digital.</p><a class="card-foot" href="/journal/">Baca Journal <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <article class="product-card card-tools">
+          <div class="product-top"><span>06 / FREE DIGITAL UTILITIES</span></div>
+          <div class="product-art" aria-hidden="true"><img class="product-illustration" src="/assets/yuosant-tools-1536x1024-green-1.jpg" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
+          <div class="product-body"><p class="product-type">CALCULATE · CREATE · SIMPLIFY</p><h3>Yuosant <span>Tools.</span></h3><p>Gunakan utilitas digital praktis untuk menghitung, mengolah teks, membuat password, dan menghasilkan barcode.</p><a class="card-foot" href="/tools/">Gunakan Tools <span aria-hidden="true">↗</span></a></div>
+        </article>
         <article class="product-card card-ycc">
-          <div class="product-top"><span>05 / AI ORCHESTRATION</span><span class="product-state">IN DEVELOPMENT</span></div>
+          <div class="product-top"><span>07 / AI ORCHESTRATION</span><span class="product-state">IN DEVELOPMENT</span></div>
           <div class="product-art artwork-4" aria-hidden="true"><img class="product-illustration" src="/assets/showcase/ycc-orchestra.svg" width="800" height="530" loading="lazy" decoding="async" alt=""></div>
           <div class="product-body"><p class="product-type">MULTI-PROVIDER AI COMMAND CENTER</p><h3>YCC<span>.</span></h3><p>Konsep orkestrasi AI, agen spesialis, dan engine mandiri untuk kebutuhan bisnis digital.</p><span class="card-foot">YCC SHOWCASE <span aria-hidden="true">↗</span></span></div>
         </article>
-        <article class="product-card card-choco">
-          <div class="product-top"><span>06 / BUSINESS SOLUTIONS</span><span class="product-state">ECOSYSTEM</span></div>
-          <div class="product-art artwork-5" aria-hidden="true"><img class="product-illustration" src="/assets/showcase/chocohouse-business.svg" width="800" height="530" loading="lazy" decoding="async" alt=""></div>
-          <div class="product-body"><p class="product-type">DIGITAL BUSINESS APPLICATION</p><h3>Choco <span>House.</span></h3><p>Contoh pengembangan pengalaman digital untuk kebutuhan usaha dan layanan pelanggan.</p><span class="card-foot">CHOCO HOUSE SHOWCASE <span aria-hidden="true">✧</span></span></div>
-        </article>
       </div>
-      <div class="carousel-bottom"><span id="carousel-count">01 / 06</span><div class="carousel-rail"><span id="carousel-progress"></span></div><span>SWIPE TO EXPLORE</span></div>
+      <div class="carousel-bottom"><span id="carousel-count">01 / 07</span><div class="carousel-rail"><span id="carousel-progress" aria-hidden="true"></span></div><span>GESER UNTUK MENJELAJAHI</span></div>
     </div>
   </section>
 
@@ -136,5 +141,5 @@
 <footer class="footer"><div class="shell footer-inner"><a href="#home" class="footer-brand" aria-label="Yuosant beranda"><img src="/assets/brand/yuosant-primary-dark.svg" alt="YUOSANT" width="192" height="42"></a>
   <p>Building Smarter Digital Solutions.</p><nav aria-label="Navigasi footer"><a href="#ecosystem">Ecosystem</a><a href="#solutions">Solutions</a><a href="#about">About</a><a href="/journal/">Journal</a><a href="/tools/">Tools</a></nav>
   <small>© 2026 Yuosant · Independent Digital Studio</small></div></footer>
-<script src="/headquarters.js?v=20261122v3" defer></script>
+<script src="/headquarters.js?v=20261122v4" defer></script>
 </body></html>
