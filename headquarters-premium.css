@@ -487,16 +487,6 @@ p{letter-spacing:-.012em}
 
 .use-cases { color: var(--ink); background: #fff; }
 .use-case-grid article { display: flex; flex-direction: column; background: #eef5f2; border-color: #c9ddd5; }
-.case-mark {
-  align-self: flex-start;
-  padding: 6px 10px;
-  border-radius: 100px;
-  background: #d0efe4;
-  color: #006550;
-  font-weight: 800;
-}
-.case-products { margin-top: auto; padding-top: 24px; color: #006550; font-size: .8rem; font-weight: 750; }
-
 .contact { background: var(--ivory); padding-block: clamp(30px, 6vw, 78px); border: 0; }
 .contact-frame {
   position: relative;
@@ -505,14 +495,6 @@ p{letter-spacing:-.012em}
   border-radius: 28px;
   background: radial-gradient(ellipse at 15% 10%, #176c58, transparent 70%), var(--ink);
   padding: clamp(30px, 8vw, 108px) clamp(16px, 5vw, 72px);
-}
-.contact-frame::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: url('/assets/brand/yuosant-symbol-dark.svg') no-repeat right -8% center / min(58%, 680px);
-  opacity: .075;
 }
 .contact-frame .contact-inner { max-width: 760px; margin: auto; }
 .contact-frame .contact-actions { flex-wrap: wrap; }
@@ -547,3 +529,104 @@ p{letter-spacing:-.012em}
 @media (max-width: 420px) {
   .contact-frame .contact-actions .button { flex-basis: 100%; justify-content: center; }
 }
+
+.brand-ticker { position: relative; margin-block: 0 clamp(35px, 7vw, 84px); text-align: center; }
+.ticker-window { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.ticker-track { display: flex; width: max-content; animation: product-marquee 34s linear infinite; }
+.ticker-track ul {
+  display: flex;
+  flex: none;
+  gap: clamp(26px, 6vw, 90px);
+  margin: 0;
+  padding: 14px clamp(26px, 6vw, 90px) 14px 0;
+  list-style: none;
+  white-space: nowrap;
+  color: #a2c4be;
+  font: 750 clamp(19px, 3vw, 32px)/1.35 var(--font-head);
+}
+@keyframes product-marquee { to { transform: translateX(-50%); } }
+.ticker-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  min-height: 36px;
+  color: #a5bdb8;
+  font-size: .75rem;
+  cursor: pointer;
+}
+.ticker-toggle input { accent-color: var(--teal); }
+.brand-ticker:has(input:checked) .ticker-track, .brand-ticker:hover .ticker-track { animation-play-state: paused; }
+.preview-label { margin: 0 0 8px; color: #b7cec9; font-size: .75rem; text-align: center; }
+
+.story-heading { max-width: 780px; margin-inline: auto; text-align: center; }
+.story-heading .showcase-lead { margin-inline: auto; color: #4c6b66; }
+.story-kicker, .story-disclosure {
+  font-weight: 750;
+  color: #0a6152;
+  font-size: .78rem;
+}
+.story-kicker { display: inline-block; border-radius: 30px; padding: 8px 14px; letter-spacing: .12em; background: #dff5ee; }
+.story-heading h2 em { color: #00846b; font-style: normal; }
+.story-card .story-quote { color: #008d74; font: 800 4rem/.65 var(--font-head); }
+.story-card blockquote { margin: 16px 0 22px; color: #345651; }
+.story-person { display: flex; gap: 13px; align-items: center; margin-top: auto; }
+.story-person h3 { margin: 0; font-size: 1rem; }
+.story-person p { margin: 3px 0 0; color: #4c6b66; font-size: .8rem; line-height: 1.45; }
+.story-avatar {
+  display: grid;
+  flex: 0 0 52px;
+  height: 52px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #006d5b;
+  color: #fff;
+  font-weight: 750;
+}
+
+.contact-frame::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  opacity: .13;
+  background-image: linear-gradient(#8bdfcc3f 1px, transparent 1px), linear-gradient(90deg, #8bdfcc3f 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.contact-symbol {
+  position: absolute;
+  z-index: -1;
+  right: -6%;
+  top: 6%;
+  width: clamp(300px, 63%, 820px);
+  height: auto;
+  opacity: .19;
+  pointer-events: none;
+  animation: contact-symbol-drift 12s ease-in-out infinite alternate;
+}
+@keyframes contact-symbol-drift {
+  from { transform: translate(-6%, 4%) rotate(-16deg); }
+  to { transform: translate(4%, 14%) rotate(11deg) scale(1.11); }
+}
+@media (max-width: 760px) {
+  .contact-symbol { width: 115%; top: 15%; right: -32%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-toggle, .ticker-track ul[aria-hidden="true"] { display: none; }
+  .ticker-window { mask-image: none; }
+  .ticker-track { width: auto; display: block; animation: none; }
+  .ticker-track ul { justify-content: center; flex-wrap: wrap; white-space: normal; gap: 9px 20px; padding: 0; }
+  .contact-symbol { animation: none; }
+}
+
+.brand-ticker { display: flex; flex-direction: column; align-items: stretch; }
+.ticker-toggle { order: 1; align-self: center; }
+.story-avatar {
+  background-image: url('/assets/showcase/yuosant-story-portraits.webp');
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+}
+.avatar-maya { background-position: left center; }
+.avatar-dimas { background-position: center; }
+.avatar-nadia { background-position: right center; }

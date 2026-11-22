@@ -14,7 +14,17 @@ try {
     assert.match(await page.title(),/Yuosant/);
     assert.equal(await page.locator('h1').count(),1);
     assert.equal(await page.locator('.product-card').count(),7);
-    assert.equal(await page.locator('.overview-grid dd').count(), 4);
+    assert.deepEqual(await page.locator('.overview-grid dd').allTextContents(), ['120K+', '45+', '2.4M', '98%']);
+    assert.equal(await page.locator('.ticker-track ul:not([aria-hidden]) li').count(), 7);
+    const motionState = selector => page.locator(selector).evaluate(el => getComputedStyle(el).animationName);
+    assert.equal(await motionState('.ticker-track'), 'product-marquee');
+    assert.equal(await motionState('.contact-symbol'), 'contact-symbol-drift');
+    const pause = page.getByRole('checkbox', {name: 'Jeda animasi'});
+    await pause.check();
+    assert.equal(await page.locator('.ticker-track').evaluate(el => getComputedStyle(el).animationPlayState), 'paused');
+    await pause.uncheck();
+    assert.ok((await page.request.get(new URL('/assets/showcase/yuosant-story-portraits.webp', page.url()).href)).ok());
+    assert.match(await page.locator('.story-disclosure').innerText(), /fictional profiles/);
     assert.equal(await page.locator('.audience-grid article').count(), 6);
     assert.equal(await page.locator('.use-case-grid article').count(), 3);
     assert.equal(await page.locator('.footer-directory nav').count(), 4);
@@ -88,6 +98,8 @@ try {
     await next.click();
     await waitForCard(2);
     await page.emulateMedia({reducedMotion: 'reduce'});
+    assert.equal(await motionState('.ticker-track'), 'none');
+    assert.equal(await motionState('.contact-symbol'), 'none');
     assert.equal(await page.locator('.hero-atmosphere').evaluate(el => getComputedStyle(el).animationName), 'none');
     for (let index = 3; index <= 7; index++) {
       await next.click();
