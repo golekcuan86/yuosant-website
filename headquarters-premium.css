@@ -147,7 +147,10 @@ p{letter-spacing:-.012em}
   .visual-shape{width:210px;border-radius:34%}
   .hero-footer{margin-top:30px;gap:10px}
   .intro h2,.section-head h2,.solutions h2{font-size:clamp(40px,9vw,62px)}
-  .intro-grid{gap:22px}
+  /* Desktop editorial split must become a single readable column on phones. */
+  .intro-grid{grid-template-columns:minmax(0,1fr);gap:22px}
+  .intro-grid > div{min-width:0}
+  .intro-grid > div > p{max-width:65ch;overflow-wrap:break-word}
   .intro-grid>div>p{font-size:15px;line-height:1.85}
   .product-carousel{gap:14px;margin-top:30px}
   .product-card{flex-basis:min(84vw,370px);min-height:540px}
