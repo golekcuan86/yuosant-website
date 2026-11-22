@@ -1,0 +1,3137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Toolbox — 30 Tools Ringan, Jalan di Browser</title>
+<meta name="description" content="30 tools ringan yang langsung berfungsi di browser: JSON formatter, QR generator, konverter gambar, color tools, kalkulator, dan banyak lagi. Tanpa upload, tanpa akun, offline-ready." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧰</text></svg>" />
+<style>
+:root{
+  --bg:#08090f;
+  --bg-2:#0d0e18;
+  --surface:#12131f;
+  --surface-2:#191a2a;
+  --surface-3:#20213a;
+  --line:rgba(255,255,255,.075);
+  --line-2:rgba(255,255,255,.14);
+  --text:#f2f2fb;
+  --dim:#a5a6c4;
+  --muted:#70718f;
+  --accent:#7c6cff;
+  --accent-2:#ff6b9d;
+  --mint:#4ee39b;
+  --gold:#ffd166;
+  --cyan:#4fd8ff;
+  --rose:#ff7a7a;
+  --ok:#4ee39b;
+  --bad:#ff6b81;
+  --r:16px;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(900px 500px at 12% -8%,rgba(124,108,255,.18),transparent 60%),
+    radial-gradient(800px 500px at 92% 4%,rgba(255,107,157,.12),transparent 60%),
+    radial-gradient(700px 600px at 50% 110%,rgba(79,216,255,.09),transparent 60%);
+}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+::selection{background:rgba(124,108,255,.38)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:99px;border:2px solid var(--bg)}
+
+/* ---------- layout ---------- */
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 20px}
+
+header.top{
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);
+  background:rgba(8,9,15,.82);border-bottom:1px solid var(--line);
+}
+.top-in{display:flex;align-items:center;gap:14px;height:64px;max-width:1180px;margin:0 auto;padding:0 20px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:-.03em;font-size:1.08rem;text-decoration:none;flex-shrink:0}
+.logo .mark{
+  width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:1rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(124,108,255,.4)
+}
+.logo small{display:block;font-size:.64rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;line-height:1}
+.top-search{flex:1;max-width:420px;margin-left:auto;position:relative}
+.top-search input{
+  width:100%;height:38px;padding:0 34px 0 34px;border-radius:11px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);font-size:.88rem;outline:none;transition:.18s
+}
+.top-search input:focus{border-color:rgba(124,108,255,.6);background:rgba(255,255,255,.07);box-shadow:0 0 0 3px rgba(124,108,255,.14)}
+.top-search .ic{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:.82rem;opacity:.55;pointer-events:none}
+.top-search kbd{
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:.66rem;
+  color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 5px;pointer-events:none
+}
+.top-meta{font-size:.74rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
+
+@media (max-width:780px){
+  .top-in{gap:10px;padding:0 14px;height:58px}
+  .top-meta{display:none}
+  .top-search{max-width:none;margin-left:0}
+  .top-search kbd{display:none}
+  .logo small{display:none}
+  .chips{top:58px;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .hero{padding:34px 0 20px}
+  .wrap{padding:0 14px}
+  .panel{padding:16px;border-radius:16px}
+  .wtitle h2{font-size:1rem}
+  .wtitle span{font-size:.72rem}
+  .esc-hint{display:none}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 30px;text-align:center}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.1rem);font-weight:900;letter-spacing:-.04em;line-height:1.06;margin-bottom:14px;
+  background:linear-gradient(120deg,#fff 30%,#c9c2ff 62%,#ffb6cf 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent
+}
+.hero p{color:var(--dim);max-width:600px;margin:0 auto;font-size:1rem}
+.pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.pill{
+  font-size:.74rem;font-weight:600;color:var(--dim);padding:5px 11px;border-radius:99px;
+  border:1px solid var(--line);background:rgba(255,255,255,.035)
+}
+.pill b{color:var(--text)}
+
+/* ---------- filters ---------- */
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:26px 0 8px;position:sticky;top:64px;z-index:20;
+  background:linear-gradient(var(--bg) 62%,transparent);
+}
+.chip{
+  border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--dim);
+  padding:6px 13px;border-radius:99px;font-size:.82rem;font-weight:600;cursor:pointer;transition:.16s;white-space:nowrap
+}
+.chip:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.chip.active{background:linear-gradient(135deg,rgba(124,108,255,.9),rgba(255,107,157,.78));color:#fff;border-color:transparent;box-shadow:0 6px 20px rgba(124,108,255,.28)}
+.chip .n{opacity:.6;font-size:.72rem;margin-left:4px;font-family:var(--mono)}
+
+/* ---------- grid ---------- */
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px;
+  padding:18px 0 70px;align-content:start
+}
+.card{
+  position:relative;display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer;
+  background:linear-gradient(165deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:var(--r);padding:16px;transition:.2s;overflow:hidden
+}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:.25s;
+  background:radial-gradient(320px 140px at var(--mx,50%) var(--my,0%),rgba(124,108,255,.16),transparent 70%)}
+.card:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.card:hover::after{opacity:1}
+.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card .head{display:flex;align-items:flex-start;gap:10px}
+.card .ico{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;
+  background:rgba(255,255,255,.06);border:1px solid var(--line)
+}
+.card h3{font-size:.94rem;font-weight:700;letter-spacing:-.01em;line-height:1.3;padding-top:2px}
+.card .cat{font-size:.68rem;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.card p{font-size:.82rem;color:var(--dim);line-height:1.5}
+.card .go{
+  margin-top:auto;padding-top:10px;display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;
+  color:var(--accent);opacity:.85
+}
+.card:hover .go{opacity:1;gap:9px}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+
+/* ---------- workspace ---------- */
+#work{display:none;padding:22px 0 70px;animation:fade .22s ease}
+#work.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.wbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.back{
+  display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--line);
+  padding:8px 14px;border-radius:11px;font-size:.83rem;font-weight:600;cursor:pointer;transition:.16s
+}
+.back:hover{background:rgba(255,255,255,.1);border-color:var(--line-2)}
+.wtitle{display:flex;align-items:center;gap:11px}
+.wtitle .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:1.2rem;
+  background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.wtitle h2{font-size:1.18rem;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.wtitle span{font-size:.76rem;color:var(--muted)}
+.panel{
+  background:linear-gradient(170deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35)
+}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+
+/* ---------- controls ---------- */
+label.f{display:block;font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+textarea,input[type=text],input[type=number],input[type=url],input[type=password],select{
+  width:100%;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:11px;
+  padding:10px 12px;font-size:.88rem;outline:none;transition:.15s
+}
+textarea{resize:vertical;min-height:120px;line-height:1.55}
+textarea:focus,input:focus,select:focus{border-color:rgba(124,108,255,.65);box-shadow:0 0 0 3px rgba(124,108,255,.13)}
+textarea.code,.mono,input.mono{font-family:var(--mono);font-size:.82rem}
+select{appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+  padding-right:32px}
+input[type=range]{-webkit-appearance:none;width:100%;height:22px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:var(--surface-3)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-5.5px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));border:2px solid #fff2;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+input[type=range]::-moz-range-track{height:5px;border-radius:99px;background:var(--surface-3)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:var(--accent)}
+input[type=color]{-webkit-appearance:none;appearance:none;width:100%;height:38px;border:1px solid var(--line);
+  border-radius:10px;background:transparent;cursor:pointer;padding:3px}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+input[type=color]::-webkit-color-swatch{border:none;border-radius:7px}
+input[type=checkbox],input[type=radio]{accent-color:var(--accent);width:15px;height:15px;cursor:pointer}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row.tight{gap:7px}
+.field{margin-bottom:13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:560px){.grid4{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr}}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);
+  background:rgba(255,255,255,.06);padding:9px 15px;border-radius:10px;font-size:.84rem;font-weight:650;
+  cursor:pointer;transition:.16s;white-space:nowrap
+}
+.btn:hover{background:rgba(255,255,255,.12);border-color:var(--line-2);transform:translateY(-1px)}
+.btn:active{transform:none}
+.btn.p{background:linear-gradient(135deg,var(--accent),#8f5cff);border-color:transparent;color:#fff;box-shadow:0 6px 18px rgba(124,108,255,.3)}
+.btn.p:hover{filter:brightness(1.1)}
+.btn.g{background:linear-gradient(135deg,#2fbf71,#4ee39b);border-color:transparent;color:#04150c}
+.btn.sm{padding:6px 11px;font-size:.78rem;border-radius:9px}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.seg{display:inline-flex;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:11px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:none;background:transparent;color:var(--dim);padding:6px 12px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;transition:.14s}
+.seg button.on{background:rgba(255,255,255,.13);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.seg button:hover:not(.on){color:var(--text)}
+
+.out{
+  position:relative;background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:12px;
+  padding:12px 13px;font-family:var(--mono);font-size:.82rem;line-height:1.6;white-space:pre-wrap;
+  word-break:break-word;max-height:440px;overflow:auto;min-height:44px
+}
+.out:empty::before{content:"— hasil muncul di sini —";color:var(--muted);font-style:italic}
+.outbox{position:relative}
+.outbox .copybtn{position:absolute;top:7px;right:7px;z-index:2}
+.hint{font-size:.74rem;color:var(--muted);margin-top:6px;line-height:1.5}
+.hint b{color:var(--dim)}
+.err{color:var(--bad);font-size:.8rem;font-family:var(--mono);margin-top:8px;white-space:pre-wrap}
+.okmsg{color:var(--ok);font-size:.8rem;font-family:var(--mono);margin-top:8px}
+
+textarea.grow{min-height:210px}
+.mt{margin-top:14px}.mt-s{margin-top:8px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.stat{background:rgba(0,0,0,.26);border:1px solid var(--line);border-radius:11px;padding:9px 11px}
+.stat .v{font-family:var(--mono);font-size:1.02rem;font-weight:700;line-height:1.25}
+.stat .k{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
+.badge.good{color:#0b2e1c;background:var(--ok);border-color:transparent}
+.badge.bad{color:#3a0a10;background:var(--bad);border-color:transparent}
+.badge.mid{color:#2c2200;background:var(--gold);border-color:transparent}
+.pass{color:var(--ok)}.fail{color:var(--bad)}
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);z-index:200;
+  background:#1c1d2e;border:1px solid var(--line-2);color:var(--text);padding:10px 17px;border-radius:12px;
+  font-size:.84rem;font-weight:600;box-shadow:0 16px 40px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:.22s
+}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+footer.f{position:relative;z-index:1;border-top:1px solid var(--line);padding:30px 0 40px;color:var(--muted);font-size:.8rem;text-align:center}
+footer.f b{color:var(--dim)}
+
+/* tool specific bits */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
+.sw{border-radius:10px;border:1px solid var(--line);overflow:hidden;cursor:pointer;background:var(--surface)}
+.sw .c{height:46px}
+.sw .l{font-family:var(--mono);font-size:.7rem;padding:4px 6px;text-align:center;color:var(--dim)}
+.sw:hover .l{color:var(--text)}
+.lap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.8rem;padding:6px 2px;border-bottom:1px dashed var(--line)}
+.time{font-family:var(--mono);font-size:clamp(2rem,7vw,3.4rem);font-weight:700;letter-spacing:-.03em;text-align:center;line-height:1.1}
+.diffline{font-family:var(--mono);font-size:.79rem;padding:1px 7px;white-space:pre-wrap;word-break:break-word;border-radius:4px}
+.diffline.add{background:rgba(78,227,155,.14);color:#8df0bb}
+.diffline.del{background:rgba(255,107,129,.14);color:#ffa3b0}
+.diffline.same{color:var(--muted)}
+.previewbox{border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;padding:22px;min-height:130px;background:rgba(0,0,0,.22)}
+canvas.preview{max-width:100%;max-height:300px;border-radius:8px;image-rendering:auto}
+.ring-wrap{display:grid;place-items:center;position:relative}
+.ring-wrap .txt{position:absolute;text-align:center}
+.ring-wrap .txt b{font-family:var(--mono);font-size:1.5rem;display:block;line-height:1.1}
+.ring-wrap .txt span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+table.mini{width:100%;border-collapse:collapse;font-size:.82rem}
+table.mini td,table.mini th{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left}
+table.mini th{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+table.mini tr:last-child td{border-bottom:none}
+table.mini td.mono{font-family:var(--mono)}
+kbd.k{font-family:var(--mono);font-size:.7rem;border:1px solid var(--line-2);border-radius:5px;padding:1px 5px;color:var(--dim)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#" onclick="showHome();return false">
+      <span class="mark">🧰</span>
+      <span>Toolbox<small>30 tools ringan</small></span>
+    </a>
+    <div class="top-search">
+      <span class="ic">🔍</span>
+      <input id="q" type="text" placeholder="Cari tool… (tekan /)" autocomplete="off" aria-label="Cari tool" />
+      <kbd>/</kbd>
+    </div>
+    <div class="top-meta" id="topMeta">30 tools · 100% lokal</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="home">
+    <div class="hero">
+      <h1>30 tools ringan,<br />langsung jalan di browser.</h1>
+      <p>Semua benar-benar berfungsi — tanpa upload ke server, tanpa akun, tanpa iklan. Data kamu tidak pernah keluar dari perangkat.</p>
+      <div class="pill-row">
+        <span class="pill"><b>0</b> upload</span>
+        <span class="pill"><b>0</b> akun</span>
+        <span class="pill"><b>0</b> iklan</span>
+        <span class="pill">bisa <b>offline</b></span>
+      </div>
+    </div>
+
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+  </section>
+
+  <section id="work" aria-live="polite">
+    <div class="wbar">
+      <button class="back" onclick="showHome()">← Semua tools</button>
+      <div class="wtitle"><div class="ico" id="wIco">🔧</div><div><h2 id="wName">Tool</h2><span id="wDesc"></span></div></div>
+      <div style="margin-left:auto" class="row tight esc-hint">
+        <kbd class="k">Esc</kbd><span style="font-size:.74rem;color:var(--muted)">tutup</span>
+      </div>
+    </div>
+    <div class="panel" id="wPanel"></div>
+  </section>
+
+</div>
+
+<footer class="f">
+  <div class="wrap">
+    <b>Toolbox</b> — 30 utilitas kecil, satu halaman, tanpa dependensi eksternal.<br />
+    <span id="footNote">Semua proses berjalan di browser kamu.</span>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* ==========================================================
+   TOOLBOX — core + registry
+   ========================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+const TOOLS = [];
+function tool(def) { TOOLS.push(def); }
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('on'), 1900);
+}
+async function copyText(text, label = 'Disalin') {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      if (!ok) throw new Error('blocked');
+    }
+    toast('✓ ' + label);
+  } catch (e) {
+    toast('Clipboard diblokir browser — salin manual');
+  }
+}
+function download(name, content, mime = 'text/plain;charset=utf-8') {
+  const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast('⬇ ' + name);
+}
+function downloadDataURL(name, dataURL) {
+  const a = document.createElement('a');
+  a.href = dataURL; a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  toast('⬇ ' + name);
+}
+function loadImage(src) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.onload = () => res(img);
+    img.onerror = () => rej(new Error('Gagal memuat gambar'));
+    img.src = src;
+  });
+}
+function readFile(file, as = 'dataURL') {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = () => rej(new Error('Gagal membaca file'));
+    as === 'text' ? r.readAsText(file) : r.readAsDataURL(file);
+  });
+}
+function fmtBytes(n) {
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+function safeNum(v, d = 0) { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : d; }
+const pad2 = n => String(n).padStart(2, '0');
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+
+/* mount helper: returns a cleanup registrar */
+function trackCleanup(fn) { window._tbCleanup = fn; }
+
+/* ==========================================================
+   TOOLS: Teks & Dev
+   ========================================================== */
+
+/* ---------- 1. JSON ---------- */
+tool({
+  id: 'json', name: 'JSON Formatter', cat: 'dev', icon: '{ }', color: 'mint',
+  desc: 'Rapikan, minify, urutkan key, dan validasi JSON lengkap dengan pesan error posisi.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:12px">
+        <div class="seg" id="jmode">
+          <button class="on" data-m="2">2 spasi</button><button data-m="4">4 spasi</button>
+          <button data-m="tab">Tab</button><button data-m="min">Minify</button>
+        </div>
+        <button class="btn sm" id="jsort">⇅ Urutkan key</button>
+        <button class="btn sm" id="jfix">✧ Perbaiki otomatis</button>
+        <button class="btn sm" id="jload">Contoh</button>
+        <button class="btn sm p" id="jrun">Format ▶</button>
+      </div>
+      <div class="split">
+        <div>
+          <label class="f">Input JSON</label>
+          <textarea id="jin" class="code grow" spellcheck="false" placeholder='{"nama":"Budi","tools":30}'></textarea>
+          <div id="jerr" class="err"></div>
+          <div id="jstats" class="statgrid mt"></div>
+        </div>
+        <div>
+          <label class="f">Hasil</label>
+          <div class="outbox"><button class="btn sm copybtn" id="jcopy">Salin</button><div class="out" id="jout"></div></div>
+          <div class="row mt"><button class="btn sm" id="jdl">⬇ Unduh .json</button></div>
+        </div>
+      </div>`;
+    let mode = '2';
+    $('#jmode').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#jmode button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); mode = b.dataset.m; run();
+    };
+    const run = () => {
+      const raw = $('#jin').value.trim();
+      $('#jerr').textContent = ''; $('#jstats').innerHTML = '';
+      if (!raw) { $('#jout').textContent = ''; return; }
+      try {
+        let v = JSON.parse(raw);
+        if ($('#jsort').dataset.on === '1') v = sortKeys(v);
+        const ind = mode === 'min' ? 0 : mode === 'tab' ? '\t' : Number(mode);
+        const txt = JSON.stringify(v, null, ind);
+        $('#jout').textContent = txt;
+        const st = jsonStats(v);
+        $('#jstats').innerHTML = [
+          ['Valid', '✓ ya'], ['Bytes', fmtBytes(new Blob([txt]).size)],
+          ['Keys', st.keys], ['Kedalaman', st.depth], ['Array', st.arr], ['Nilai', st.leaf]
+        ].map(([k, v]) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`).join('');
+      } catch (e) {
+        const loc = jsonLocate(raw);
+        if (loc) {
+          const lines = raw.split('\n');
+          const snippet = lines[loc.line - 1] ?? '';
+          const caret = ' '.repeat(Math.max(0, loc.col - 1)) + '^';
+          $('#jerr').innerHTML = `✗ Baris ${loc.line}, kolom ${loc.col} — ${esc(loc.msg)}
+<pre style="margin-top:6px;color:var(--dim);white-space:pre-wrap">${esc(snippet)}\n${esc(caret)}</pre>`;
+        } else {
+          $('#jerr').textContent = '✗ JSON tidak valid: ' + e.message;
+        }
+      }
+    };
+    $('#jrun').onclick = run;
+    $('#jsort').onclick = () => { const b = $('#jsort'); b.dataset.on = b.dataset.on === '1' ? '0' : '1'; b.classList.toggle('p', b.dataset.on === '1'); run(); };
+    $('#jcopy').onclick = () => copyText($('#jout').textContent, 'JSON disalin');
+    $('#jdl').onclick = () => { if ($('#jout').textContent) download('data.json', $('#jout').textContent, 'application/json'); };
+    $('#jload').onclick = () => { $('#jin').value = '{"app":"toolbox","version":2,"tools":[{"id":"json","aktif":true},{"id":"qr","aktif":false}],"meta":{"gratis":true,"iklan":null}}'; run(); };
+    $('#jfix').onclick = () => {
+      let t = $('#jin').value.trim();
+      t = t.replace(/,\s*([}\]])/g, '$1').replace(/'/g, '"').replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":');
+      $('#jin').value = t; run();
+      if (!$('#jerr').textContent) toast('Diperbaiki: quote tunggal & koma berlebih');
+    };
+    $('#jin').oninput = run;
+  }
+});
+function sortKeys(v) {
+  if (Array.isArray(v)) return v.map(sortKeys);
+  if (v && typeof v === 'object') {
+    const o = {};
+    Object.keys(v).sort().forEach(k => o[k] = sortKeys(v[k]));
+    return o;
+  }
+  return v;
+}
+function jsonStats(v) {
+  let keys = 0, arr = 0, leaf = 0, depth = 0;
+  (function walk(x, d) {
+    depth = Math.max(depth, d);
+    if (Array.isArray(x)) { arr++; x.forEach(i => walk(i, d + 1)); }
+    else if (x && typeof x === 'object') {
+      const ks = Object.keys(x); keys += ks.length;
+      if (!ks.length) leaf++;
+      ks.forEach(k => walk(x[k], d + 1));
+    } else leaf++;
+  })(v, 0);
+  return { keys, arr, leaf, depth };
+}
+
+
+/* validator JSON dengan posisi baris/kolom (untuk pesan error yang berguna) */
+function jsonLocate(raw) {
+  let i = 0;
+  const n = raw.length;
+  const err = msg => {
+    const before = raw.slice(0, i);
+    const line = before.split('\n').length;
+    const col = i - before.lastIndexOf('\n');
+    return { i, line, col, msg };
+  };
+  const ws = () => { while (i < n && /[ \t\n\r]/.test(raw[i])) i++; };
+  function value(depth) {
+    ws();
+    if (i >= n) return err('Input berakhir terlalu cepat — kurang tanda tutup');
+    const c = raw[i];
+    if (c === '{') {
+      i++; ws();
+      if (raw[i] === '}') { i++; return null; }
+      for (;;) {
+        ws();
+        if (raw[i] !== '"') return err('Nama properti harus dibungkus tanda kutip ganda (")');
+        str();
+        ws();
+        if (raw[i] !== ':') return err('Kurang tanda titik dua (:) setelah nama properti');
+        i++;
+        const e = value(depth + 1); if (e) return e;
+        ws();
+        if (raw[i] === ',') { i++; ws(); if (raw[i] === '}') return err('Koma berlebih sebelum tanda tutup }'); continue; }
+        if (raw[i] === '}') { i++; return null; }
+        return err('Perlu koma (,) atau tanda tutup kurung kurawal }');
+      }
+    }
+    if (c === '[') {
+      i++; ws();
+      if (raw[i] === ']') { i++; return null; }
+      for (;;) {
+        const e = value(depth + 1); if (e) return e;
+        ws();
+        if (raw[i] === ',') { i++; ws(); if (raw[i] === ']') return err('Koma berlebih sebelum tanda tutup ]'); continue; }
+        if (raw[i] === ']') { i++; return null; }
+        return err('Perlu koma (,) atau tanda tutup kurung siku ]');
+      }
+    }
+    if (c === '"') { str(); return null; }
+    if (/[-0-9]/.test(c)) {
+      const m = /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.exec(raw.slice(i));
+      if (!m) return err('Angka tidak valid');
+      i += m[0].length; return null;
+    }
+    for (const lit of ['true', 'false', 'null']) {
+      if (raw.startsWith(lit, i)) { i += lit.length; return null; }
+    }
+    if (c === "'") return err("Gunakan tanda kutip ganda (\") menggantikan kutip tunggal (')");
+    return err(`Karakter tak terduga '${c}'`);
+  }
+  function str() {
+    i++;
+    while (i < n) {
+      const c = raw[i];
+      if (c === '\\') { i += 2; continue; }
+      if (c === '"') { i++; return; }
+      if (c === '\n') return err('Tanda kutip belum ditutup sebelum akhir baris');
+      i++;
+    }
+    return err('Tanda kutip belum ditutup');
+  }
+  const e = value(0);
+  if (e) return e;
+  ws();
+  if (i < n) return err('Ada teks tambahan setelah data JSON selesai');
+  return null;
+}
+
+/* ---------- 2. Base64 ---------- */
+tool({
+  id: 'base64', name: 'Base64 Encoder', cat: 'dev', icon: 'b64', color: 'violet',
+  desc: 'Encode & decode Base64 untuk teks UTF-8 (aman untuk emoji) plus mode URL-safe.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:12px">
+        <div class="seg" id="bmode"><button class="on" data-m="enc">Encode</button><button data-m="dec">Decode</button></div>
+        <label class="row tight" style="font-size:.82rem;color:var(--dim)"><input type="checkbox" id="burl" /> URL-safe</label>
+        <button class="btn sm" id="bswap">⇄ Tukar</button>
+        <button class="btn sm" id="bclear">Bersihkan</button>
+      </div>
+      <div class="split">
+        <div><label class="f">Input</label><textarea id="bin" class="code grow" spellcheck="false" placeholder="Halo dunia 👋"></textarea>
+          <div id="berr" class="err"></div></div>
+        <div><label class="f">Hasil</label>
+          <div class="outbox"><button class="btn sm copybtn" id="bcopy">Salin</button><div class="out" id="bout"></div></div>
+          <div class="hint">Base64 bukan enkripsi — jangan pakai untuk menyimpan password.</div></div>
+      </div>`;
+    let mode = 'enc';
+    const enc = s => {
+      const bytes = new TextEncoder().encode(s);
+      let bin = '';
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      let o = btoa(bin);
+      if ($('#burl').checked) o = o.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      return o;
+    };
+    const dec = s => {
+      let t = s.trim().replace(/\s+/g, '');
+      if ($('#burl').checked || /[-_]/.test(t)) t = t.replace(/-/g, '+').replace(/_/g, '/');
+      t = t.replace(/=+$/, '');
+      while (t.length % 4) t += '=';
+      const bin = atob(t);
+      const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+      return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    };
+    const run = () => {
+      $('#berr').textContent = '';
+      const v = $('#bin').value;
+      try { $('#bout').textContent = v ? (mode === 'enc' ? enc(v) : dec(v)) : ''; }
+      catch (e) { $('#bout').textContent = ''; $('#berr').textContent = '✗ Input bukan Base64 yang valid untuk UTF-8'; }
+    };
+    $('#bmode').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#bmode button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+      mode = b.dataset.m; run();
+    };
+    $('#burl').onchange = run;
+    $('#bin').oninput = run;
+    $('#bcopy').onclick = () => copyText($('#bout').textContent, 'Base64 disalin');
+    $('#bswap').onclick = () => { $('#bin').value = $('#bout').textContent; mode = mode === 'enc' ? 'dec' : 'enc'; $$('#bmode button').forEach(x => x.classList.toggle('on', x.dataset.m === mode)); run(); };
+    $('#bclear').onclick = () => { $('#bin').value = ''; $('#bout').textContent = ''; $('#berr').textContent = ''; };
+  }
+});
+
+/* ---------- 3. URL ---------- */
+tool({
+  id: 'url', name: 'URL Encoder', cat: 'dev', icon: '🔗', color: 'cyan',
+  desc: 'Encode/decode URL component, bongkar query string jadi tabel, dan ambil path.',
+  mount(root) {
+    root.innerHTML = `
+      <label class="f">Input</label>
+      <textarea id="uin" class="code" spellcheck="false" style="min-height:90px" placeholder="https://contoh.id/cari?q=tools ringan&page=2"></textarea>
+      <div class="row mt">
+        <button class="btn sm p" id="uenc">Encode</button>
+        <button class="btn sm" id="udec">Decode</button>
+        <button class="btn sm" id="uparse">Bongkar URL</button>
+        <button class="btn sm" id="uclear">Bersihkan</button>
+      </div>
+      <div class="outbox mt"><button class="btn sm copybtn" id="ucopy">Salin</button><div class="out" id="uout"></div></div>
+      <div id="utable" class="mt"></div>`;
+    const out = t => { $('#uout').textContent = t; };
+    $('#uenc').onclick = () => out(encodeURIComponent($('#uin').value));
+    $('#udec').onclick = () => { try { out(decodeURIComponent($('#uin').value)); } catch { out('✗ Persen-encoding tidak valid'); } };
+    $('#uclear').onclick = () => { $('#uin').value = ''; out(''); $('#utable').innerHTML = ''; };
+    $('#ucopy').onclick = () => copyText($('#uout').textContent, 'Disalin');
+    $('#uparse').onclick = () => {
+      const raw = $('#uin').value.trim();
+      try {
+        const u = new URL(raw.startsWith('http') ? raw : 'https://' + raw);
+        let rows = [['protokol', u.protocol], ['host', u.hostname], ['port', u.port || '(default)'],
+          ['path', u.pathname], ['hash', u.hash || '—']];
+        const params = [...u.searchParams.entries()];
+        $('#utable').innerHTML = `
+          <table class="mini"><tbody>${rows.map(([k, v]) => `<tr><th style="width:110px">${k}</th><td class="mono">${esc(v)}</td></tr>`).join('')}</tbody></table>
+          <label class="f mt">Query params (${params.length})</label>
+          ${params.length ? `<table class="mini"><thead><tr><th>key</th><th>value</th></tr></thead><tbody>
+            ${params.map(([k, v]) => `<tr><td class="mono">${esc(k)}</td><td class="mono">${esc(v)}</td></tr>`).join('')}
+          </tbody></table>` : `<div class="hint">Tidak ada query string.</div>`}`;
+        out(raw);
+      } catch (e) { $('#utable').innerHTML = ''; out('✗ URL tidak valid: ' + e.message); }
+    };
+  }
+});
+
+/* ---------- 4. Hash (MD5 + SHA) ---------- */
+tool({
+  id: 'hash', name: 'Hash Generator', cat: 'dev', icon: '#', color: 'gold',
+  desc: 'MD5, SHA-1, SHA-256, SHA-384, SHA-512 untuk teks atau file — semua lokal.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid2">
+        <div><label class="f">Teks</label><textarea id="hin" class="code" style="min-height:110px" placeholder="ketik apa saja…"></textarea></div>
+        <div><label class="f">atau File (di-hash di browser)</label>
+          <input type="file" id="hfile" style="font-size:.82rem;color:var(--dim)" />
+          <div class="hint" id="hfinfo">Tidak ada file dipilih.</div></div>
+      </div>
+      <div class="row mt"><button class="btn sm p" id="hrun">Hitung hash</button>
+        <button class="btn sm" id="hup">UPPERCASE</button>
+        <button class="btn sm" id="hclear">Bersihkan</button></div>
+      <div id="hout" class="mt"></div>`;
+    let upper = false, fileBuf = null, fileName = '';
+    $('#hfile').onchange = async e => {
+      const f = e.target.files[0]; if (!f) return;
+      fileName = f.name; fileBuf = await f.arrayBuffer();
+      $('#hfinfo').innerHTML = `<b>${esc(fileName)}</b> · ${fmtBytes(f.size)}`;
+    };
+    $('#hin').oninput = () => { fileBuf = null; };
+    $('#hup').onclick = () => { upper = !upper; run(); };
+    $('#hclear').onclick = () => { $('#hin').value = ''; fileBuf = null; $('#hfile').value = ''; $('#hfinfo').textContent = 'Tidak ada file dipilih.'; $('#hout').innerHTML = ''; };
+    $('#hrun').onclick = run;
+    async function run() {
+      const algo = ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
+      let data;
+      if (fileBuf) data = new Uint8Array(fileBuf);
+      else data = new TextEncoder().encode($('#hin').value);
+      const res = [];
+      res.push(['MD5', md5(data)]);
+      const subtle = window.crypto && crypto.subtle;
+      if (!subtle) {
+        $('#hout').innerHTML = `<div class="err">Web Crypto tidak tersedia (butuh HTTPS/localhost). MD5 tetap bisa dipakai di atas.</div>
+          <div class="outbox mt"><div class="out">MD5: ${md5(data)}</div></div>`;
+        return;
+      }
+      for (const a of algo.slice(1)) {
+        try {
+          const buf = await crypto.subtle.digest(a, data);
+          res.push([a, [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('')]);
+        } catch { res.push([a, '(tidak didukung)']); }
+      }
+      $('#hout').innerHTML = `<table class="mini"><tbody>${res.map(([k, v]) => {
+        const val = upper ? v.toUpperCase() : v;
+        return `<tr><th style="width:100px">${k}</th><td class="mono" style="word-break:break-all">${val}
+          <button class="btn sm" style="float:right;margin-left:8px" data-c="${val}">Salin</button></td></tr>`;
+      }).join('')}</tbody></table>
+      <div class="hint">Sumber: ${fileBuf ? 'file <b>' + esc(fileName) + '</b>' : 'teks ' + data.length + ' byte'}. Hash satu arah — tidak bisa dibalik.</div>`;
+      $$('#hout [data-c]').forEach(b => b.onclick = () => copyText(b.dataset.c, 'Hash disalin'));
+    }
+  }
+});
+/* --- MD5 (byte array -> hex) --- */
+function md5(bytes) {
+  const s = [7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+    5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
+    4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
+    6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21];
+  const K = new Array(64);
+  for (let i = 0; i < 64; i++) K[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) >>> 0;
+  const len = bytes.length;
+  const withOne = len + 1;
+  const padded = new Uint8Array(Math.ceil((withOne + 8) / 64) * 64);
+  padded.set(bytes); padded[len] = 0x80;
+  const bitLen = len * 8;
+  const dv = new DataView(padded.buffer);
+  dv.setUint32(padded.length - 8, bitLen >>> 0, true);
+  dv.setUint32(padded.length - 4, Math.floor(bitLen / 4294967296), true);
+  let a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+  const rotl = (x, c) => ((x << c) | (x >>> (32 - c))) >>> 0;
+  for (let off = 0; off < padded.length; off += 64) {
+    const M = new Array(16);
+    for (let i = 0; i < 16; i++) M[i] = dv.getUint32(off + i * 4, true);
+    let A = a0, B = b0, C = c0, D = d0;
+    for (let i = 0; i < 64; i++) {
+      let F, g;
+      if (i < 16) { F = (B & C) | (~B & D); g = i; }
+      else if (i < 32) { F = (D & B) | (~D & C); g = (5 * i + 1) % 16; }
+      else if (i < 48) { F = B ^ C ^ D; g = (3 * i + 5) % 16; }
+      else { F = C ^ (B | ~D); g = (7 * i) % 16; }
+      F = (F + A + K[i] + M[g]) >>> 0;
+      A = D; D = C; C = B;
+      B = (B + rotl(F, s[i])) >>> 0;
+    }
+    a0 = (a0 + A) >>> 0; b0 = (b0 + B) >>> 0; c0 = (c0 + C) >>> 0; d0 = (d0 + D) >>> 0;
+  }
+  const out = new DataView(new ArrayBuffer(16));
+  out.setUint32(0, a0, true); out.setUint32(4, b0, true);
+  out.setUint32(8, c0, true); out.setUint32(12, d0, true);
+  let hex = '';
+  for (let i = 0; i < 16; i++) hex += out.getUint8(i).toString(16).padStart(2, '0');
+  return hex;
+}
+
+/* ---------- 5. QR Code ---------- */
+const QR_RS = {"1":[[[1,26,19]],[[1,26,16]],[[1,26,13]],[[1,26,9]]],"2":[[[1,44,34]],[[1,44,28]],[[1,44,22]],[[1,44,16]]],"3":[[[1,70,55]],[[1,70,44]],[[2,35,17]],[[2,35,13]]],"4":[[[1,100,80]],[[2,50,32]],[[2,50,24]],[[4,25,9]]],"5":[[[1,134,108]],[[2,67,43]],[[2,33,15],[2,34,16]],[[2,33,11],[2,34,12]]],"6":[[[2,86,68]],[[4,43,27]],[[4,43,19]],[[4,43,15]]],"7":[[[2,98,78]],[[4,49,31]],[[2,32,14],[4,33,15]],[[4,39,13],[1,40,14]]],"8":[[[2,121,97]],[[2,60,38],[2,61,39]],[[4,40,18],[2,41,19]],[[4,40,14],[2,41,15]]],"9":[[[2,146,116]],[[3,58,36],[2,59,37]],[[4,36,16],[4,37,17]],[[4,36,12],[4,37,13]]],"10":[[[2,86,68],[2,87,69]],[[4,69,43],[1,70,44]],[[6,43,19],[2,44,20]],[[6,43,15],[2,44,16]]],"11":[[[4,101,81]],[[1,80,50],[4,81,51]],[[4,50,22],[4,51,23]],[[3,36,12],[8,37,13]]],"12":[[[2,116,92],[2,117,93]],[[6,58,36],[2,59,37]],[[4,46,20],[6,47,21]],[[7,42,14],[4,43,15]]],"13":[[[4,133,107]],[[8,59,37],[1,60,38]],[[8,44,20],[4,45,21]],[[12,33,11],[4,34,12]]],"14":[[[3,145,115],[1,146,116]],[[4,64,40],[5,65,41]],[[11,36,16],[5,37,17]],[[11,36,12],[5,37,13]]],"15":[[[5,109,87],[1,110,88]],[[5,65,41],[5,66,42]],[[5,54,24],[7,55,25]],[[11,36,12],[7,37,13]]],"16":[[[5,122,98],[1,123,99]],[[7,73,45],[3,74,46]],[[15,43,19],[2,44,20]],[[3,45,15],[13,46,16]]],"17":[[[1,135,107],[5,136,108]],[[10,74,46],[1,75,47]],[[1,50,22],[15,51,23]],[[2,42,14],[17,43,15]]],"18":[[[5,150,120],[1,151,121]],[[9,69,43],[4,70,44]],[[17,50,22],[1,51,23]],[[2,42,14],[19,43,15]]],"19":[[[3,141,113],[4,142,114]],[[3,70,44],[11,71,45]],[[17,47,21],[4,48,22]],[[9,39,13],[16,40,14]]],"20":[[[3,135,107],[5,136,108]],[[3,67,41],[13,68,42]],[[15,54,24],[5,55,25]],[[15,43,15],[10,44,16]]],"21":[[[4,144,116],[4,145,117]],[[17,68,42]],[[17,50,22],[6,51,23]],[[19,46,16],[6,47,17]]],"22":[[[2,139,111],[7,140,112]],[[17,74,46]],[[7,54,24],[16,55,25]],[[34,37,13]]],"23":[[[4,151,121],[5,152,122]],[[4,75,47],[14,76,48]],[[11,54,24],[14,55,25]],[[16,45,15],[14,46,16]]],"24":[[[6,147,117],[4,148,118]],[[6,73,45],[14,74,46]],[[11,54,24],[16,55,25]],[[30,46,16],[2,47,17]]],"25":[[[8,132,106],[4,133,107]],[[8,75,47],[13,76,48]],[[7,54,24],[22,55,25]],[[22,45,15],[13,46,16]]],"26":[[[10,142,114],[2,143,115]],[[19,74,46],[4,75,47]],[[28,50,22],[6,51,23]],[[33,46,16],[4,47,17]]],"27":[[[8,152,122],[4,153,123]],[[22,73,45],[3,74,46]],[[8,53,23],[26,54,24]],[[12,45,15],[28,46,16]]],"28":[[[3,147,117],[10,148,118]],[[3,73,45],[23,74,46]],[[4,54,24],[31,55,25]],[[11,45,15],[31,46,16]]],"29":[[[7,146,116],[7,147,117]],[[21,73,45],[7,74,46]],[[1,53,23],[37,54,24]],[[19,45,15],[26,46,16]]],"30":[[[5,145,115],[10,146,116]],[[19,75,47],[10,76,48]],[[15,54,24],[25,55,25]],[[23,45,15],[25,46,16]]],"31":[[[13,145,115],[3,146,116]],[[2,74,46],[29,75,47]],[[42,54,24],[1,55,25]],[[23,45,15],[28,46,16]]],"32":[[[17,145,115]],[[10,74,46],[23,75,47]],[[10,54,24],[35,55,25]],[[19,45,15],[35,46,16]]],"33":[[[17,145,115],[1,146,116]],[[14,74,46],[21,75,47]],[[29,54,24],[19,55,25]],[[11,45,15],[46,46,16]]],"34":[[[13,145,115],[6,146,116]],[[14,74,46],[23,75,47]],[[44,54,24],[7,55,25]],[[59,46,16],[1,47,17]]],"35":[[[12,151,121],[7,152,122]],[[12,75,47],[26,76,48]],[[39,54,24],[14,55,25]],[[22,45,15],[41,46,16]]],"36":[[[6,151,121],[14,152,122]],[[6,75,47],[34,76,48]],[[46,54,24],[10,55,25]],[[2,45,15],[64,46,16]]],"37":[[[17,152,122],[4,153,123]],[[29,74,46],[14,75,47]],[[49,54,24],[10,55,25]],[[24,45,15],[46,46,16]]],"38":[[[4,152,122],[18,153,123]],[[13,74,46],[32,75,47]],[[48,54,24],[14,55,25]],[[42,45,15],[32,46,16]]],"39":[[[20,147,117],[4,148,118]],[[40,75,47],[7,76,48]],[[43,54,24],[22,55,25]],[[10,45,15],[67,46,16]]],"40":[[[19,148,118],[6,149,119]],[[18,75,47],[31,76,48]],[[34,54,24],[34,55,25]],[[20,45,15],[61,46,16]]]};
+const QR_ECL = { L: 0, M: 1, Q: 2, H: 3 };
+const QR_ECL_BITS = { L: 1, M: 0, Q: 3, H: 2 };
+const QR_GF = (() => {
+  const exp = new Array(512), log = new Array(256);
+  let x = 1;
+  for (let i = 0; i < 255; i++) { exp[i] = x; log[x] = i; x <<= 1; if (x & 0x100) x ^= 0x11d; }
+  for (let i = 255; i < 512; i++) exp[i] = exp[i - 255];
+  return { exp, log };
+})();
+function rsGenPoly(n) {
+  let poly = [1];
+  for (let i = 0; i < n; i++) {
+    const next = new Array(poly.length + 1).fill(0);
+    for (let j = 0; j < poly.length; j++) {
+      next[j] ^= poly[j];
+      next[j + 1] ^= QR_GF.exp[(QR_GF.log[poly[j]] + i) % 255];
+    }
+    poly = next;
+  }
+  return poly;
+}
+function rsEncode(data, ecLen) {
+  const gen = rsGenPoly(ecLen);
+  const res = new Array(ecLen).fill(0);
+  for (const d of data) {
+    const factor = d ^ res[0];
+    res.shift(); res.push(0);
+    if (factor) for (let i = 0; i < ecLen; i++) res[i] ^= QR_GF.exp[(QR_GF.log[gen[i + 1]] + QR_GF.log[factor]) % 255];
+  }
+  return res;
+}
+const qrSpec = (v, ecl) => QR_RS[v][QR_ECL[ecl]];
+function qrDataCw(v, ecl) { return qrSpec(v, ecl).reduce((a, b) => a + b[0] * b[2], 0); }
+function qrVersion(bytes, ecl) {
+  for (let v = 1; v <= 40; v++) {
+    const lenBits = v <= 9 ? 8 : 16;
+    const need = 4 + lenBits + bytes * 8;
+    if (need <= qrDataCw(v, ecl) * 8) return v;
+  }
+  throw new Error('Data terlalu panjang untuk QR (maks ±2953 byte)');
+}
+function qrEncode(text, ecl) {
+  const bytes = new TextEncoder().encode(text);
+  const V = qrVersion(bytes.length, ecl);
+  const spec = qrSpec(V, ecl);
+  const totalData = qrDataCw(V, ecl);
+  const bits = [];
+  const push = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+  push(4, 4);
+  push(bytes.length, V <= 9 ? 8 : 16);
+  bytes.forEach(b => push(b, 8));
+  for (let i = 0; i < 4 && bits.length < totalData * 8; i++) bits.push(0);
+  while (bits.length % 8) bits.push(0);
+  const dwords = [];
+  for (let i = 0; i < bits.length; i += 8) { let v = 0; for (let j = 0; j < 8; j++) v = (v << 1) | bits[i + j]; dwords.push(v); }
+  let pad = true;
+  while (dwords.length < totalData) { dwords.push(pad ? 0xEC : 0x11); pad = !pad; }
+  const blocks = []; let p = 0;
+  for (const [count, total, dlen] of spec) {
+    for (let i = 0; i < count; i++) {
+      const d = dwords.slice(p, p + dlen); p += dlen;
+      blocks.push({ d, e: rsEncode(d, total - dlen) });
+    }
+  }
+  const final = [];
+  const maxD = Math.max(...blocks.map(b => b.d.length));
+  for (let i = 0; i < maxD; i++) for (const b of blocks) if (i < b.d.length) final.push(b.d[i]);
+  const maxE = Math.max(...blocks.map(b => b.e.length));
+  for (let i = 0; i < maxE; i++) for (const b of blocks) if (i < b.e.length) final.push(b.e[i]);
+
+  const size = V * 4 + 17;
+  const m = Array.from({ length: size }, () => new Array(size).fill(0));
+  const fn = Array.from({ length: size }, () => new Array(size).fill(false));
+  const set = (r, c, v) => { if (r >= 0 && c >= 0 && r < size && c < size) { m[r][c] = v; fn[r][c] = true; } };
+  const finder = (r0, c0) => {
+    for (let r = -1; r <= 7; r++) for (let c = -1; c <= 7; c++) {
+      const rr = r0 + r, cc = c0 + c;
+      if (rr < 0 || cc < 0 || rr >= size || cc >= size) continue;
+      const inside = r >= 0 && r <= 6 && c >= 0 && c <= 6;
+      const dark = inside && (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4));
+      set(rr, cc, dark ? 1 : 0);
+    }
+  };
+  finder(0, 0); finder(0, size - 7); finder(size - 7, 0);
+  for (let i = 8; i < size - 8; i++) { set(6, i, i % 2 === 0 ? 1 : 0); set(i, 6, i % 2 === 0 ? 1 : 0); }
+  if (V > 1) {
+    const pos = qrAlignPos(V);
+    for (const r of pos) for (const c of pos) {
+      // lewati hanya 3 kombinasi yang menabrak pola finder di sudut
+      if ((r === 6 && c === 6) || (r === 6 && c === size - 7) || (r === size - 7 && c === 6)) continue;
+      for (let dr = -2; dr <= 2; dr++) for (let dc = -2; dc <= 2; dc++) {
+        const dark = Math.max(Math.abs(dr), Math.abs(dc)) !== 1;
+        set(r + dr, c + dc, dark ? 1 : 0);
+      }
+    }
+  }
+  for (let i = 0; i < 9; i++) { if (!fn[8][i]) set(8, i, 0); if (!fn[i][8]) set(i, 8, 0); }
+  set(size - 8, 8, 1);
+  for (let i = 0; i < 8; i++) { if (!fn[8][size - 1 - i]) set(8, size - 1 - i, 0); if (!fn[size - 1 - i][8]) set(size - 1 - i, 8, 0); }
+  if (V >= 7) {
+    let rem = V;
+    for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1f25);
+    const vbits = (V << 12) | rem;
+    for (let i = 0; i < 18; i++) {
+      const bit = (vbits >>> i) & 1;
+      const a = Math.floor(i / 3), b = size - 11 + (i % 3);
+      set(b, a, bit); set(a, b, bit);
+    }
+  }
+  const rawData = [];
+  let up = true;
+  for (let col = size - 1; col > 0; col -= 2) {
+    if (col === 6) col--;
+    for (let i = 0; i < size; i++) {
+      const row = up ? size - 1 - i : i;
+      for (const c of [col, col - 1]) {
+        if (!fn[row][c]) rawData.push([row, c]);
+      }
+    }
+    up = !up;
+  }
+  const dataBits = [];
+  final.forEach(b => { for (let i = 7; i >= 0; i--) dataBits.push((b >>> i) & 1); });
+  const MASKS = [
+    (r, c) => (r + c) % 2 === 0,
+    (r, c) => r % 2 === 0,
+    (r, c) => c % 3 === 0,
+    (r, c) => (r + c) % 3 === 0,
+    (r, c) => (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0,
+    (r, c) => ((r * c) % 2 + (r * c) % 3) === 0,
+    (r, c) => (((r * c) % 2 + (r * c) % 3) % 2) === 0,
+    (r, c) => (((r + c) % 2 + (r * c) % 3) % 2) === 0
+  ];
+  const buildFormat = mask => {
+    const data = (QR_ECL_BITS[ecl] << 3) | mask;
+    let rem = data;
+    for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+    return ((data << 10) | rem) ^ 0x5412;
+  };
+  const drawFormat = (mm, mask) => {
+    const f = buildFormat(mask);
+    // salinan 1: vertikal di kolom 8 (bit 0-8) lalu horizontal di baris 8 (bit 9-14)
+    for (let i = 0; i <= 5; i++) mm[i][8] = (f >>> i) & 1;
+    mm[7][8] = (f >>> 6) & 1;
+    mm[8][8] = (f >>> 7) & 1;
+    mm[8][7] = (f >>> 8) & 1;
+    for (let i = 9; i < 15; i++) mm[8][14 - i] = (f >>> i) & 1;
+    // salinan 2: baris 8 (bit 0-7) dan kolom 8 bawah (bit 8-14)
+    for (let i = 0; i < 8; i++) mm[8][size - 1 - i] = (f >>> i) & 1;
+    for (let i = 8; i < 15; i++) mm[size - 15 + i][8] = (f >>> i) & 1;
+    mm[size - 8][8] = 1; // dark module
+  };
+  let best = null;
+  for (let mask = 0; mask < 8; mask++) {
+    const mm = m.map(r => r.slice());
+    rawData.forEach(([r, c], idx) => {
+      const bit = idx < dataBits.length ? dataBits[idx] : 0;
+      mm[r][c] = bit ^ (MASKS[mask](r, c) ? 1 : 0);
+    });
+    drawFormat(mm, mask);
+    const score = qrPenalty(mm);
+    if (!best || score < best.score) best = { mm, score, mask };
+  }
+  return { modules: best.mm, size, version: V, mask: best.mask };
+}
+function qrAlignPos(V) {
+  if (V === 1) return [];
+  const num = Math.floor(V / 7) + 2;
+  const step = V === 32 ? 26 : Math.ceil((V * 4 + 4) / (num * 2 - 2)) * 2;
+  const res = [6];
+  for (let i = 1, pos = V * 4 + 10; i < num; i++, pos -= step) res.splice(1, 0, pos);
+  return res;
+}
+function qrPenalty(m) {
+  const n = m.length;
+  let score = 0;
+  for (let i = 0; i < n; i++) {
+    let run = 1;
+    for (let j = 1; j < n; j++) {
+      if (m[i][j] === m[i][j - 1]) run++; else { if (run >= 5) score += 3 + (run - 5); run = 1; }
+    }
+    if (run >= 5) score += 3 + (run - 5);
+    run = 1;
+    for (let j = 1; j < n; j++) {
+      if (m[j][i] === m[j - 1][i]) run++; else { if (run >= 5) score += 3 + (run - 5); run = 1; }
+    }
+    if (run >= 5) score += 3 + (run - 5);
+  }
+  for (let r = 0; r < n - 1; r++) for (let c = 0; c < n - 1; c++) {
+    const v = m[r][c];
+    if (v === m[r][c + 1] && v === m[r + 1][c] && v === m[r + 1][c + 1]) score += 3;
+  }
+  const pat = [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0];
+  const patR = pat.slice().reverse();
+  const checkLine = arr => {
+    for (let i = 0; i + 11 <= arr.length; i++) {
+      let a = true, b = true;
+      for (let k = 0; k < 11; k++) { if (arr[i + k] !== pat[k]) a = false; if (arr[i + k] !== patR[k]) b = false; }
+      if (a || b) score += 40;
+    }
+  };
+  for (let i = 0; i < n; i++) { checkLine(m[i]); checkLine(m.map(r => r[i])); }
+  let dark = 0;
+  for (const row of m) for (const v of row) dark += v;
+  const pct = dark * 100 / (n * n);
+  score += Math.floor(Math.abs(pct - 50) / 5) * 10;
+  return score;
+}
+tool({
+  id: 'qr', name: 'QR Code Generator', cat: 'dev', icon: '▦', color: 'violet',
+  desc: 'Buat QR untuk teks/URL, atur ukuran & warna, unduh PNG. Dibuat dari nol tanpa API.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="split">
+        <div>
+          <div class="field"><label class="f">Isi QR (teks / URL / WiFi / vCard)</label>
+            <textarea id="qtxt" style="min-height:100px" placeholder="https://arena.ai">https://arena.ai</textarea></div>
+          <div class="row" style="margin-bottom:12px">
+            <div class="seg" id="qtype"><button class="on" data-t="text">Teks</button><button data-t="wifi">WiFi</button><button data-t="kontak">Kontak</button></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label class="f">Koreksi error</label>
+              <select id="qecl"><option value="L">L — 7%</option><option value="M" selected>M — 15%</option><option value="Q">Q — 25%</option><option value="H">H — 30%</option></select></div>
+            <div class="field"><label class="f">Ukuran (px)</label>
+              <select id="qsize"><option>256</option><option selected>512</option><option>1024</option></select></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label class="f">Warna modul</label><input type="color" id="qfg" value="#0b0b14" /></div>
+            <div class="field"><label class="f">Latar</label><input type="color" id="qbg" value="#ffffff" /></div>
+          </div>
+          <div id="qerr" class="err"></div>
+          <div class="row mt"><button class="btn sm p" id="qdl">⬇ Unduh PNG</button>
+            <button class="btn sm" id="qcopyimg">Salin gambar</button>
+            <span class="hint" id="qinfo" style="margin:0"></span></div>
+        </div>
+        <div>
+          <label class="f">Preview</label>
+          <div class="previewbox"><canvas id="qcv" class="preview" style="max-height:340px"></canvas></div>
+          <div class="hint" id="qver"></div>
+        </div>
+      </div>`;
+    $('#qtxt').oninput = render;
+    ['qecl', 'qsize', 'qfg', 'qbg'].forEach(id => $('#' + id).oninput = render);
+    $('#qtype').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#qtype button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+      const t = b.dataset.t;
+      if (t === 'wifi') $('#qtxt').value = 'WIFI:T:WPA;S:NamaWiFi;P:password123;;';
+      if (t === 'kontak') $('#qtxt').value = 'BEGIN:VCARD\nVERSION:3.0\nFN:Budi Santoso\nORG:Toolbox\nTEL:+628123456789\nEMAIL:budi@contoh.id\nEND:VCARD';
+      if (t === 'text') $('#qtxt').value = 'https://arena.ai';
+      render();
+    };
+    $('#qdl').onclick = () => {
+      const c = $('#qcv');
+      downloadDataURL('qrcode.png', c.toDataURL('image/png'));
+    };
+    $('#qcopyimg').onclick = async () => {
+      try {
+        const blob = await new Promise(r => $('#qcv').toBlob(r, 'image/png'));
+        if (!navigator.clipboard || !window.ClipboardItem) throw new Error();
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        toast('✓ Gambar disalin');
+      } catch { toast('Browser tidak mengizinkan — pakai Unduh PNG'); }
+    };
+    render();
+    function render() {
+      const txt = $('#qtxt').value;
+      $('#qerr').textContent = '';
+      if (!txt.trim()) { const c = $('#qcv'); c.width = c.height = 8; return; }
+      try {
+        const qr = qrEncode(txt, $('#qecl').value);
+        const scale = Math.max(1, Math.floor(Number($('#qsize').value) / (qr.size + 8)));
+        const px = (qr.size + 8) * scale;
+        const c = $('#qcv');
+        c.width = c.height = px;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = $('#qbg').value; ctx.fillRect(0, 0, px, px);
+        ctx.fillStyle = $('#qfg').value;
+        for (let r = 0; r < qr.size; r++) for (let col = 0; col < qr.size; col++) {
+          if (qr.modules[r][col]) ctx.fillRect((col + 4) * scale, (r + 4) * scale, scale, scale);
+        }
+        $('#qver').innerHTML = `Versi <b>${qr.version}</b> · ${qr.size}×${qr.size} modul · mask ${qr.mask} · ECL ${$('#qecl').value}`;
+        $('#qinfo').textContent = `${px}×${px} px`;
+      } catch (e) {
+        $('#qerr').textContent = '✗ ' + e.message;
+        const c = $('#qcv'); c.width = c.height = 8;
+        $('#qver').textContent = '';
+      }
+    }
+  }
+});
+
+/* ---------- 6. Password generator ---------- */
+tool({
+  id: 'pass', name: 'Password Generator', cat: 'dev', icon: '🔑', color: 'rose',
+  desc: 'Acak kuat dengan crypto.getRandomValues, ukur entropi, dan cek kekuatan.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="field"><label class="f">Password</label>
+        <div class="outbox"><div class="out" id="pout" style="font-size:1.05rem;letter-spacing:.04em;min-height:52px"></div></div></div>
+      <div class="grid2">
+        <div class="field"><label class="f">Panjang: <span id="plenV">20</span></label>
+          <input type="range" id="plen" min="6" max="64" value="20" /></div>
+        <div class="field"><label class="f">Jumlah</label><input type="number" id="pcount" value="1" min="1" max="20" /></div>
+      </div>
+      <div class="grid2" style="margin-bottom:12px">
+        <label class="row tight" style="font-size:.85rem"><input type="checkbox" id="pupper" checked /> Huruf besar (A-Z)</label>
+        <label class="row tight" style="font-size:.85rem"><input type="checkbox" id="plower" checked /> Huruf kecil (a-z)</label>
+        <label class="row tight" style="font-size:.85rem"><input type="checkbox" id="pdigit" checked /> Angka (0-9)</label>
+        <label class="row tight" style="font-size:.85rem"><input type="checkbox" id="psym" checked /> Simbol (!@#$)</label>
+        <label class="row tight" style="font-size:.85rem"><input type="checkbox" id="pamb" /> Hindari mirip (l1IO0)</label>
+        <label class="row tight" style="font-size:.85rem"><input type="checkbox" id="pwords" /> Mode frasa sandi</label>
+      </div>
+      <div id="pmeter" class="mt"></div>
+      <div class="row mt"><button class="btn p" id="pgen">⟳ Generate</button>
+        <button class="btn" id="pcopy">Salin yang pertama</button></div>
+      <div class="outbox mt"><div class="out" id="plist" style="min-height:auto"></div></div>
+      <div class="hint">Semua dibuat di perangkat kamu. Panjang ≥16 + campur simbol = jauh lebih aman.</div>`;
+    const strip = s => s.replace(/[il1IO0o]/g, '');
+    const rnd = n => {
+      const a = new Uint32Array(1);
+      const lim = Math.floor(4294967296 / n) * n;
+      let v;
+      do { crypto.getRandomValues(a); v = a[0]; } while (v >= lim);
+      return v % n;
+    };
+    function genOne(len, pool, requiredSets) {
+      let out = '';
+      requiredSets.forEach(set => out += set[rnd(set.length)]);
+      while (out.length < len) out += pool[rnd(pool.length)];
+      return out.split('').sort(() => rnd(3) - 1).join('');
+    }
+    function run() {
+      let upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', lower = 'abcdefghijklmnopqrstuvwxyz',
+        digit = '0123456789', sym = '!@#$%^&*()-_=+[]{};:,.?/';
+      if ($('#pamb').checked) { upper = strip(upper); lower = strip(lower); digit = strip(digit); }
+      const sets = [];
+      let pool = '';
+      if ($('#pupper').checked) { pool += upper; sets.push(upper); }
+      if ($('#plower').checked) { pool += lower; sets.push(lower); }
+      if ($('#pdigit').checked) { pool += digit; sets.push(digit); }
+      if ($('#psym').checked) { pool += sym; sets.push(sym); }
+      const n = clamp(+$('#pcount').value || 1, 1, 20);
+      const len = +$('#plen').value;
+      if (!pool) { $('#plist').textContent = 'Pilih minimal satu jenis karakter.'; $('#pout').textContent = ''; return; }
+      if ($('#pwords').checked) {
+        const words = ['kopi', 'senja', 'badai', 'lampu', 'rawa', 'gajah', 'pesawat', 'merpati', 'kaktus', 'pelangi',
+          'gunting', 'sabun', 'cermin', 'layang', 'jendela', 'kereta', 'bambu', 'samudra', 'bintang', 'kelinci',
+          'pasar', 'kompas', 'pantai', 'batu', 'hujan', 'api', 'tanah', 'angin', 'sepatu', 'lilin'];
+        const list = [];
+        for (let i = 0; i < n; i++) {
+          const parts = [];
+          const count = Math.max(3, Math.round(len / 6));
+          for (let j = 0; j < count; j++) parts.push(words[rnd(words.length)]);
+          list.push(parts.join('-') + (($('#pdigit').checked) ? '-' + rnd(100) : ''));
+        }
+        render(list);
+        return;
+      }
+      const list = [];
+      for (let i = 0; i < n; i++) list.push(genOne(len, pool, sets));
+      render(list);
+    }
+    function render(list) {
+      $('#pout').textContent = list[0];
+      $('#plist').textContent = list.length > 1 ? list.map((p, i) => `${String(i + 1).padStart(2, '0')}. ${p}`).join('\n') : '';
+      const poolSize = (() => {
+        let s = 0;
+        if ($('#pupper').checked) s += 26; if ($('#plower').checked) s += 26;
+        if ($('#pdigit').checked) s += 10; if ($('#psym').checked) s += 18;
+        return s || 1;
+      })();
+      const bits = Math.round(list[0].length * Math.log2(poolSize));
+      let label, cls;
+      if (bits < 45) { label = 'Lemah'; cls = 'bad'; }
+      else if (bits < 70) { label = 'Layak'; cls = 'mid'; }
+      else if (bits < 100) { label = 'Kuat'; cls = 'good'; }
+      else { label = 'Sangat kuat'; cls = 'good'; }
+      $('#pmeter').innerHTML = `<div class="row"><span class="badge ${cls}">${label}</span>
+        <span class="hint" style="margin:0">≈ ${bits} bit entropi · ${list[0].length} karakter</span></div>
+        <div style="height:6px;border-radius:99px;background:var(--surface-3);margin-top:8px;overflow:hidden">
+        <div style="height:100%;width:${clamp(bits / 128 * 100, 6, 100)}%;background:linear-gradient(90deg,var(--rose),var(--gold),var(--mint))"></div></div>`;
+    }
+    $('#plen').oninput = () => { $('#plenV').textContent = $('#plen').value; run(); };
+    ['pupper', 'plower', 'pdigit', 'psym', 'pamb', 'pwords'].forEach(id => $('#' + id).onchange = run);
+    $('#pcount').oninput = run;
+    $('#pgen').onclick = run;
+    $('#pcopy').onclick = () => copyText($('#pout').textContent, 'Password disalin');
+    run();
+  }
+});
+
+/* ---------- 7. UUID ---------- */
+tool({
+  id: 'uuid', name: 'UUID & ID Generator', cat: 'dev', icon: '⊕', color: 'cyan',
+  desc: 'UUID v4 acak, UUID v7 berurutan waktu, NanoID, dan bulk generate siap tempel.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:12px">
+        <div class="seg" id="utype"><button class="on" data-t="v4">UUID v4</button><button data-t="v7">UUID v7</button><button data-t="nano">NanoID</button></div>
+        <div class="row tight"><label class="f" style="margin:0">Jumlah</label>
+          <input type="number" id="ucount" value="5" min="1" max="200" style="width:82px" /></div>
+        <button class="btn sm p" id="ugen">⟳ Generate</button>
+      </div>
+      <div class="outbox"><button class="btn sm copybtn" id="ucopy">Salin semua</button><div class="out" id="uout" style="max-height:380px"></div></div>
+      <div class="row mt"><button class="btn sm" id="udl">⬇ Unduh .txt</button><button class="btn sm" id="ujson">⬇ Unduh .json</button></div>
+      <div class="hint">UUID v4 = 122 bit acak. UUID v7 = prefiks timestamp (baik untuk primary key database karena tetap terurut).</div>`;
+    let type = 'v4';
+    const hex = n => {
+      const a = new Uint8Array(n); crypto.getRandomValues(a);
+      return [...a].map(b => b.toString(16).padStart(2, '0')).join('');
+    };
+    const v4 = () => {
+      const h = hex(16).split('');
+      h[12] = '4';
+      h[16] = '89ab'[parseInt(h[16], 16) % 4];
+      const s = h.join('');
+      return `${s.slice(0, 8)}-${s.slice(8, 12)}-${s.slice(12, 16)}-${s.slice(16, 20)}-${s.slice(20)}`;
+    };
+    const v7 = () => {
+      const ms = BigInt(Date.now());
+      const ts = ms.toString(16).padStart(12, '0');
+      const r = hex(10).split('');
+      r[3] = '7';
+      const s = ts + r.join('');
+      const variant = ((parseInt(s[16], 16) & 3) | 8).toString(16);
+      return `${s.slice(0, 8)}-${s.slice(8, 12)}-7${s.slice(13, 16)}-${variant}${s.slice(17, 20)}-${s.slice(20, 32)}`;
+    };
+    const nanoAlphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
+    const nano = () => {
+      const a = new Uint8Array(21); crypto.getRandomValues(a);
+      return [...a].map(b => nanoAlphabet[b % 64]).join('');
+    };
+    function run() {
+      const n = clamp(+$('#ucount').value || 1, 1, 200);
+      const f = type === 'v4' ? v4 : type === 'v7' ? v7 : nano;
+      const list = Array.from({ length: n }, f);
+      $('#uout').textContent = list.join('\n');
+      $('#uout').dataset.list = JSON.stringify(list);
+    }
+    $('#utype').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#utype button').forEach(x => x.classList.remove('on')); b.classList.add('on'); type = b.dataset.t; run();
+    };
+    $('#ugen').onclick = run;
+    $('#ucopy').onclick = () => copyText($('#uout').textContent, 'ID disalin');
+    $('#udl').onclick = () => download('ids.txt', $('#uout').textContent);
+    $('#ujson').onclick = () => download('ids.json', JSON.stringify(JSON.parse($('#uout').dataset.list || '[]'), null, 2), 'application/json');
+    run();
+  }
+});
+
+/* ---------- 8. Regex tester ---------- */
+tool({
+  id: 'regex', name: 'Regex Tester', cat: 'dev', icon: '.*', color: 'gold',
+  desc: 'Uji regex dengan highlight, daftar match + grup, dan referensi token cepat.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid2">
+        <div class="field"><label class="f">Pattern</label><input type="text" id="rpat" class="mono" value="(\\w+)@(\\w+)\\.com" spellcheck="false" /></div>
+        <div class="field"><label class="f">Flags</label><input type="text" id="rflags" class="mono" value="gi" spellcheck="false" /></div>
+      </div>
+      <div class="field"><label class="f">Teks uji</label>
+        <textarea id="rtext" class="grow">Hubungi budi@contoh.com dan sari@mail.com atau admin@toolbox.com untuk info.</textarea></div>
+      <div id="rerr" class="err"></div>
+      <div id="rstats" class="row mt" style="gap:8px"></div>
+      <div class="outbox mt"><label class="f">Highlight</label><div class="out" id="rhl" style="white-space:pre-wrap;font-family:inherit;font-size:.9rem"></div></div>
+      <div id="rmatches" class="mt"></div>
+      <details class="mt"><summary style="cursor:pointer;font-size:.84rem;color:var(--dim)">Cheat sheet token</summary>
+      <table class="mini mt-s"><tbody>
+        <tr><td class="mono">\\d \\w \\s</td><td>digit, kata, spasi</td></tr>
+        <tr><td class="mono">. * + ? {n,m}</td><td>karakter apa pun, kuantifier</td></tr>
+        <tr><td class="mono">[abc] [^abc]</td><td>set / negasi set</td></tr>
+        <tr><td class="mono">^ $ \\b</td><td>awal, akhir, batas kata</td></tr>
+        <tr><td class="mono">( ) (?&lt;nama&gt; )</td><td>grup &amp; named group</td></tr>
+        <tr><td class="mono">(?= ) (?! )</td><td>lookahead positif / negatif</td></tr>
+        <tr><td class="mono">g i m s u y</td><td>global, ignore case, multiline, dotall, unicode, sticky</td></tr>
+      </tbody></table></details>`;
+    const run = () => {
+      $('#rerr').textContent = ''; $('#rstats').innerHTML = ''; $('#rmatches').innerHTML = '';
+      const pat = $('#rpat').value, flags = $('#rflags').value.replace(/[^gimsuy]/g, '');
+      const text = $('#rtext').value;
+      let re;
+      try { re = new RegExp(pat, flags.includes('g') ? flags : flags + 'g'); }
+      catch (e) { $('#rerr').textContent = '✗ ' + e.message; $('#rhl').textContent = text; return; }
+      const matches = [];
+      let m, guard = 0;
+      if (pat === '') { $('#rhl').textContent = text; return; }
+      while ((m = re.exec(text)) !== null && guard++ < 5000) {
+        matches.push({ i: m.index, s: m[0], g: m.slice(1), groups: m.groups });
+        if (m[0] === '') re.lastIndex++;
+      }
+      let html = '', last = 0;
+      matches.forEach(mt => {
+        html += esc(text.slice(last, mt.i));
+        html += `<mark style="background:rgba(124,108,255,.42);color:#fff;border-radius:3px;padding:0 1px">${esc(mt.s) || '∅'}</mark>`;
+        last = mt.i + mt.s.length;
+      });
+      html += esc(text.slice(last));
+      $('#rhl').innerHTML = html;
+      $('#rstats').innerHTML = `<span class="badge ${matches.length ? 'good' : 'mid'}">${matches.length} match</span>
+        <span class="hint" style="margin:0">${text.length} karakter diuji</span>`;
+      if (matches.length) {
+        $('#rmatches').innerHTML = `<table class="mini"><thead><tr><th>#</th><th>Match</th><th>Posisi</th><th>Grup</th></tr></thead><tbody>
+          ${matches.slice(0, 200).map((mt, i) => `<tr><td class="mono">${i + 1}</td><td class="mono">${esc(mt.s)}</td>
+            <td class="mono">${mt.i}–${mt.i + mt.s.length}</td>
+            <td class="mono">${mt.groups ? Object.entries(mt.groups).map(([k, v]) => `${k}: ${esc(v ?? '')}`).join(', ') : mt.g.map((g, j) => `$${j + 1}: ${esc(g ?? '—')}`).join(', ') || '—'}</td></tr>`).join('')}
+        </tbody></table>`;
+      }
+    };
+    ['rpat', 'rflags', 'rtext'].forEach(id => $('#' + id).oninput = run);
+    run();
+  }
+});
+
+/* ---------- 9. Diff ---------- */
+tool({
+  id: 'diff', name: 'Diff Checker', cat: 'dev', icon: '±', color: 'mint',
+  desc: 'Bandingkan dua teks per baris atau per kata, lihat tambahan & penghapusan.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="split">
+        <div><label class="f">Teks A (asli)</label><textarea id="dina" class="code" style="min-height:170px">Halo dunia
+Baris kedua
+Baris ketiga</textarea></div>
+        <div><label class="f">Teks B (baru)</label><textarea id="dinb" class="code" style="min-height:170px">Halo dunia
+Baris kedua yang diubah
+Baris ketiga
+Baris keempat</textarea></div>
+      </div>
+      <div class="row mt"><div class="seg" id="dmode"><button class="on" data-m="line">Per baris</button><button data-m="word">Per kata</button></div>
+        <label class="row tight" style="font-size:.82rem"><input type="checkbox" id="dtrim" /> Abaikan spasi berlebih</label>
+        <button class="btn sm p" id="drun">Bandingkan</button></div>
+      <div id="dstat" class="row mt" style="gap:8px"></div>
+      <div class="out mt" id="dout" style="font-family:var(--mono);font-size:.79rem"></div>`;
+    let mode = 'line';
+    $('#dmode').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#dmode button').forEach(x => x.classList.remove('on')); b.classList.add('on'); mode = b.dataset.m; run();
+    };
+    $('#drun').onclick = run;
+    $('#dtrim').onchange = run;
+    function lcs(a, b) {
+      const n = a.length, m = b.length;
+      if (n * m > 4e6) return null;
+      const dp = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
+      for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+        dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+      const ops = []; let i = 0, j = 0;
+      while (i < n && j < m) {
+        if (a[i] === b[j]) { ops.push(['=', a[i]]); i++; j++; }
+        else if (dp[i + 1][j] >= dp[i][j + 1]) { ops.push(['-', a[i]]); i++; }
+        else { ops.push(['+', b[j]]); j++; }
+      }
+      while (i < n) ops.push(['-', a[i++]]);
+      while (j < m) ops.push(['+', b[j++]]);
+      return ops;
+    }
+    function run() {
+      const trim = $('#dtrim').checked;
+      const norm = s => { let t = trim ? s.trim().replace(/[ \t]+/g, ' ') : s; return t; };
+      let A, B;
+      if (mode === 'line') { A = $('#dina').value.split('\n'); B = $('#dinb').value.split('\n'); }
+      else { A = $('#dina').value.split(/(\s+)/); B = $('#dinb').value.split(/(\s+)/); }
+      A = A.map(norm); B = B.map(norm);
+      const ops = lcs(A, B);
+      if (!ops) { $('#dout').textContent = 'Teks terlalu besar untuk dibandingkan (maks ±2000 baris).'; return; }
+      let add = 0, del = 0, same = 0;
+      ops.forEach(([t]) => t === '+' ? add++ : t === '-' ? del++ : same++);
+      $('#dstat').innerHTML = `<span class="badge good">+${add} ${mode === 'line' ? 'baris' : 'kata'}</span>
+        <span class="badge bad">−${del}</span><span class="hint" style="margin:0">${same} sama</span>`;
+      if (!add && !del) { $('#dout').innerHTML = '<span class="diffline same">Kedua teks identik ✓</span>'; return; }
+      if (mode === 'line') {
+        $('#dout').innerHTML = ops.map(([t, v]) => {
+          const pre = t === '+' ? '+' : t === '-' ? '−' : ' ';
+          return `<div class="diffline ${t === '+' ? 'add' : t === '-' ? 'del' : 'same'}">${pre} ${esc(v) || ' '}</div>`;
+        }).join('');
+      } else {
+        $('#dout').innerHTML = ops.map(([t, v]) => {
+          if (t === '=') return esc(v);
+          return `<span class="diffline ${t === '+' ? 'add' : 'del'}" style="display:inline">${esc(v)}</span>`;
+        }).join('');
+      }
+    }
+    run();
+  }
+});
+
+/* ---------- 10. Lorem ipsum ---------- */
+tool({
+  id: 'lorem', name: 'Lorem Ipsum', cat: 'dev', icon: '¶', color: 'violet',
+  desc: 'Teks placeholder bahasa Indonesia atau Latin untuk desain & mockup.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:12px">
+        <div class="seg" id="ltype"><button class="on" data-t="p">Paragraf</button><button data-t="s">Kalimat</button><button data-t="w">Kata</button></div>
+        <div class="row tight"><label class="f" style="margin:0">Jumlah</label><input type="number" id="lnum" value="3" min="1" max="50" style="width:78px" /></div>
+        <div class="seg" id="llang"><button class="on" data-l="id">Indonesia</button><button data-l="la">Latin</button></div>
+      </div>
+      <label class="row tight" style="font-size:.85rem;margin-bottom:12px"><input type="checkbox" id="lhtml" /> Bungkus tag &lt;p&gt;</label>
+      <div class="outbox"><button class="btn sm copybtn" id="lcopy">Salin</button><div class="out" id="lout" style="font-family:inherit;font-size:.9rem"></div></div>
+      <div class="row mt"><button class="btn sm p" id="lgen">⟳ Generate lagi</button><button class="btn sm" id="ldl">⬇ Unduh .txt</button></div>`;
+    const ID = ['Ruang kerja yang rapi membuat pekerjaan terasa lebih ringan dan menyenangkan.',
+      'Setiap detail kecil pada antarmuka menentukan seberapa nyaman pengguna berinteraksi.',
+      'Desain yang baik tidak perlu menjelaskan dirinya sendiri, ia langsung dipahami.',
+      'Kecepatan memuat halaman adalah bagian dari pengalaman pengguna, bukan sekadar angka teknis.',
+      'Kesederhanaan sering kali lebih sulit dicapai daripada kerumitan, tetapi hasilnya lebih bertahan lama.',
+      'Tim produk perlu mendengar suara pengguna sebelum menulis satu baris kode pun.',
+      'Warna, jarak, dan tipografi bekerja bersama membentuk suasana sebuah halaman.',
+      'Data yang disajikan dengan jelas lebih berharga daripada data yang banyak tetapi membingungkan.',
+      'Iterasi kecil yang konsisten mengalahkan perubahan besar yang jarang dilakukan.',
+      'Aksesibilitas bukan fitur tambahan, melainkan syarat dasar sebuah produk digital.',
+      'Prototipe cepat membantu menguji gagasan sebelum biaya pengembangan membengkak.',
+      'Dokumentasi yang baik menghemat waktu seluruh tim di kemudian hari.'];
+    const LA = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
+      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.',
+      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.',
+      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur.'];
+    let type = 'p', lang = 'id';
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    function sentence() { return pick(lang === 'id' ? ID : LA); }
+    function paragraph() {
+      const n = 3 + Math.floor(Math.random() * 3);
+      return Array.from({ length: n }, sentence).join(' ');
+    }
+    function run() {
+      const n = clamp(+$('#lnum').value || 1, 1, 50);
+      let out = '';
+      if (type === 'p') out = Array.from({ length: n }, paragraph).join('\n\n');
+      else if (type === 's') out = Array.from({ length: n }, sentence).join(' ');
+      else {
+        const words = (lang === 'id' ? ID : LA).join(' ').replace(/[.,]/g, '').split(/\s+/).filter(Boolean);
+        out = Array.from({ length: n }, () => pick(words)).join(' ');
+      }
+      $('#lout').textContent = $('#lhtml').checked
+        ? out.split(/\n\n/).map(p => `<p>${esc(p)}</p>`).join('\n') : out;
+      $('#lout').dataset.raw = out;
+    }
+    $('#ltype').onclick = e => { const b = e.target.closest('button'); if (!b) return; $$('#ltype button').forEach(x => x.classList.remove('on')); b.classList.add('on'); type = b.dataset.t; run(); };
+    $('#llang').onclick = e => { const b = e.target.closest('button'); if (!b) return; $$('#llang button').forEach(x => x.classList.remove('on')); b.classList.add('on'); lang = b.dataset.l; run(); };
+    $('#lnum').oninput = run; $('#lhtml').onchange = run; $('#lgen').onclick = run;
+    $('#lcopy').onclick = () => copyText($('#lout').textContent, 'Teks disalin');
+    $('#ldl').onclick = () => download('lorem.txt', $('#lout').textContent);
+    run();
+  }
+});
+
+/* ---------- 11. Case converter ---------- */
+tool({
+  id: 'case', name: 'Case Converter', cat: 'dev', icon: 'Aa', color: 'pink',
+  desc: 'Ubah ke UPPER, lower, Title Case, camelCase, snake_case, kebab-case, slug, balik teks.',
+  mount(root) {
+    root.innerHTML = `
+      <label class="f">Teks</label>
+      <textarea id="cin" style="min-height:110px">Belajar membuat tools ringan di browser itu menyenangkan</textarea>
+      <div class="row mt tight" id="cbtns">
+        <button class="btn sm" data-m="upper">HURUF BESAR</button>
+        <button class="btn sm" data-m="lower">huruf kecil</button>
+        <button class="btn sm" data-m="title">Title Case</button>
+        <button class="btn sm" data-m="sentence">Sentence case</button>
+        <button class="btn sm" data-m="camel">camelCase</button>
+        <button class="btn sm" data-m="pascal">PascalCase</button>
+        <button class="btn sm" data-m="snake">snake_case</button>
+        <button class="btn sm" data-m="kebab">kebab-case</button>
+        <button class="btn sm" data-m="slug">slug-url</button>
+        <button class="btn sm" data-m="reverse">balik</button>
+        <button class="btn sm" data-m="mock">aLtErNaTiNg</button>
+      </div>
+      <div class="outbox mt"><button class="btn sm copybtn" id="ccopy">Salin</button><div class="out" id="cout" style="font-family:inherit;font-size:.92rem"></div></div>
+      <div class="hint" id="cinfo"></div>`;
+    const words = s => s.trim().replace(/([a-z])([A-Z])/g, '$1 $2').split(/[^A-Za-z0-9\u00C0-\u024F]+/).filter(Boolean);
+    const clean = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const map = {
+      upper: s => s.toUpperCase(),
+      lower: s => s.toLowerCase(),
+      title: s => s.toLowerCase().replace(/\b\p{L}/gu, c => c.toUpperCase()),
+      sentence: s => s.toLowerCase().replace(/(^\s*\p{L}|[.!?]\s+\p{L})/gu, c => c.toUpperCase()),
+      camel: s => words(s).map((w, i) => i ? w[0].toUpperCase() + w.slice(1).toLowerCase() : w.toLowerCase()).join(''),
+      pascal: s => words(s).map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(''),
+      snake: s => words(s).map(w => w.toLowerCase()).join('_'),
+      kebab: s => words(s).map(w => w.toLowerCase()).join('-'),
+      slug: s => clean(words(s).join('-').toLowerCase()).replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-'),
+      reverse: s => [...s].reverse().join(''),
+      mock: s => [...s].map((c, i) => i % 2 ? c.toUpperCase() : c.toLowerCase()).join('')
+    };
+    const run = m => {
+      const src = $('#cin').value;
+      const out = map[m](src);
+      $('#cout').textContent = out;
+      $('#cinfo').textContent = `${out.length} karakter · ${words(out).length} kata`;
+    };
+    $('#cbtns').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      run(b.dataset.m);
+    };
+    $('#cin').oninput = () => run('upper');
+    $('#ccopy').onclick = () => copyText($('#cout').textContent, 'Teks disalin');
+    run('upper');
+  }
+});
+
+/* ---------- 12. Word counter ---------- */
+tool({
+  id: 'count', name: 'Word Counter', cat: 'dev', icon: '⧉', color: 'rose',
+  desc: 'Hitung kata, karakter, kalimat, paragraf, kata terbanyak, dan estimasi waktu baca.',
+  mount(root) {
+    root.innerHTML = `
+      <label class="f">Teks</label>
+      <textarea id="win" class="grow" style="min-height:180px">Tulis atau tempel teks di sini. Tool ini menghitung kata, karakter, kalimat, paragraf, dan memberi estimasi waktu baca. Semua diproses langsung di browser tanpa mengirim data ke mana pun.</textarea>
+      <div class="statgrid mt" id="wstats"></div>
+      <div class="split mt">
+        <div><label class="f">Kata terbanyak</label><div id="wtop" class="out" style="font-family:inherit;font-size:.84rem;max-height:220px"></div></div>
+        <div><label class="f">Detail</label><div id="wdetail" class="out" style="font-family:inherit;font-size:.84rem;max-height:220px"></div></div>
+      </div>`;
+    const run = () => {
+      const t = $('#win').value;
+      const words = t.trim() ? t.trim().split(/\s+/) : [];
+      const chars = t.length, charsNoSpace = t.replace(/\s/g, '').length;
+      const sentences = (t.match(/[^.!?…]+[.!?…]+|\S+$/g) || []).length;
+      const paras = t.trim() ? t.trim().split(/\n\s*\n/).filter(p => p.trim()).length : 0;
+      const lines = t ? t.split('\n').length : 0;
+      const reading = words.length / 220, speaking = words.length / 140;
+      const fmtT = m => m < 1 ? Math.round(m * 60) + ' detik' : Math.floor(m) + ' mnt ' + Math.round((m % 1) * 60) + ' s';
+      const stats = [
+        ['Kata', words.length.toLocaleString('id')], ['Karakter', chars.toLocaleString('id')],
+        ['Tanpa spasi', charsNoSpace.toLocaleString('id')], ['Kalimat', sentences],
+        ['Paragraf', paras], ['Baris', lines],
+        ['Baca', fmtT(reading)], ['Bicara', fmtT(speaking)],
+        ['Rata² kata/kalimat', sentences ? (words.length / sentences).toFixed(1) : '0']
+      ];
+      $('#wstats').innerHTML = stats.map(([k, v]) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`).join('');
+      const freq = {};
+      const stop = new Set(['yang', 'dan', 'di', 'ke', 'dari', 'ini', 'itu', 'dengan', 'untuk', 'pada', 'adalah', 'atau', 'juga', 'akan', 'tidak', 'bisa', 'dalam', 'the', 'and', 'of', 'to', 'a', 'in', 'is', 'it']);
+      words.map(w => w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '')).filter(w => w.length > 2 && !stop.has(w))
+        .forEach(w => freq[w] = (freq[w] || 0) + 1);
+      const top = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 12);
+      $('#wtop').innerHTML = top.length ? top.map(([w, n]) => `<div style="display:flex;justify-content:space-between;gap:10px;padding:3px 0">
+        <span>${esc(w)}</span><span class="mono" style="color:var(--muted)">${n}×</span></div>`).join('')
+        : '<span style="color:var(--muted)">Belum ada kata.</span>';
+      $('#wdetail').innerHTML = `<div class="mono" style="line-height:1.9">
+        Unicode kata: ${words.length}<br>Huruf: ${(t.match(/\p{L}/gu) || []).length}<br>
+        Angka: ${(t.match(/\d/g) || []).length}<br>Spasi: ${(t.match(/\s/g) || []).length}<br>
+        Tanda baca: ${(t.match(/[.,!?;:'"()\[\]-]/g) || []).length}<br>
+        Unik: ${new Set(words.map(w => w.toLowerCase())).size}</div>`;
+    };
+    $('#win').oninput = run;
+    run();
+  }
+});
+
+/* ==========================================================
+   TOOLS: Warna & Gambar
+   ========================================================== */
+
+/* shared: dropzone helper */
+function dropzone(el, onFile, accept = 'image/*') {
+  el.innerHTML = `
+    <input type="file" accept="${accept}" style="display:none" />
+    <div class="dz" tabindex="0" role="button" style="border:2px dashed var(--line-2);border-radius:14px;padding:26px 18px;text-align:center;cursor:pointer;transition:.16s;background:rgba(0,0,0,.16)">
+      <div style="font-size:1.6rem;margin-bottom:6px">🖼️</div>
+      <div style="font-size:.86rem;font-weight:600">Klik atau tarik gambar ke sini</div>
+      <div class="hint">${accept === 'image/*' ? 'PNG, JPG, WebP, GIF, SVG' : accept} · diproses lokal</div>
+    </div>`;
+  const input = el.querySelector('input');
+  const dz = el.querySelector('.dz');
+  const fire = f => { if (f) onFile(f); };
+  dz.onclick = () => input.click();
+  dz.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } };
+  input.onchange = e => fire(e.target.files[0]);
+  ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => {
+    e.preventDefault(); dz.style.borderColor = 'var(--accent)'; dz.style.background = 'rgba(124,108,255,.12)';
+  }));
+  ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => {
+    e.preventDefault(); dz.style.borderColor = 'var(--line-2)'; dz.style.background = 'rgba(0,0,0,.16)';
+  }));
+  dz.addEventListener('drop', e => fire(e.dataTransfer.files[0]));
+  return input;
+}
+
+/* ---------- 13. Color converter ---------- */
+tool({
+  id: 'color', name: 'Color Converter', cat: 'warna', icon: '🎨', color: 'gold',
+  desc: 'Konversi HEX ⇄ RGB ⇄ HSL ⇄ CMYK, plus palet tint/shade dan CSS siap salin.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="split">
+        <div>
+          <div class="field"><label class="f">Pilih warna</label><input type="color" id="cPick" value="#7c6cff" style="height:64px" /></div>
+          <div class="field"><label class="f">Input (HEX / rgb / hsl)</label>
+            <input type="text" id="cIn" class="mono" value="#7c6cff" spellcheck="false" /></div>
+          <div id="cErr" class="err"></div>
+          <div id="cVals" class="mt"></div>
+        </div>
+        <div>
+          <label class="f">Preview</label>
+          <div id="cPrev" style="height:120px;border-radius:14px;border:1px solid var(--line)"></div>
+          <label class="f mt">Tint & shade</label>
+          <div class="swatches" id="cPal"></div>
+        </div>
+      </div>`;
+    const hex2rgb = h => {
+      h = h.replace('#', '').trim();
+      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      if (!/^[0-9a-f]{6}$/i.test(h)) return null;
+      return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+    };
+    const rgb2hex = ([r, g, b]) => '#' + [r, g, b].map(v => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0')).join('');
+    const rgb2hsl = ([r, g, b]) => {
+      r /= 255; g /= 255; b /= 255;
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      let h = 0, s = 0, l = (mx + mn) / 2;
+      const d = mx - mn;
+      if (d) {
+        s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn);
+        if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0));
+        else if (mx === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h *= 60;
+      }
+      return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
+    };
+    const hsl2rgb = ([h, s, l]) => {
+      h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
+      const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2;
+      let r = 0, g = 0, b = 0;
+      if (h < 60) [r, g, b] = [c, x, 0];
+      else if (h < 120) [r, g, b] = [x, c, 0];
+      else if (h < 180) [r, g, b] = [0, c, x];
+      else if (h < 240) [r, g, b] = [0, x, c];
+      else if (h < 300) [r, g, b] = [x, 0, c];
+      else [r, g, b] = [c, 0, x];
+      return [(r + m) * 255, (g + m) * 255, (b + m) * 255].map(v => Math.round(v));
+    };
+    const rgb2cmyk = ([r, g, b]) => {
+      r /= 255; g /= 255; b /= 255;
+      const k = 1 - Math.max(r, g, b);
+      if (k === 1) return [0, 0, 0, 100];
+      return [((1 - r - k) / (1 - k) * 100), ((1 - g - k) / (1 - k) * 100), ((1 - b - k) / (1 - k) * 100), k * 100].map(v => Math.round(v));
+    };
+    const parse = s => {
+      s = s.trim().toLowerCase();
+      let m;
+      if (m = s.match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/)) return hex2rgb(m[1]);
+      if (m = s.match(/rgba?\(([^)]+)\)/)) {
+        const p = m[1].replace(/%/g, '').split(/[,\s/]+/).filter(Boolean).map(Number);
+        return [p[0], p[1], p[2]];
+      }
+      if (m = s.match(/hsla?\(([^)]+)\)/)) {
+        const p = m[1].replace(/%|deg/g, '').split(/[,\s/]+/).filter(Boolean).map(Number);
+        if (p.length < 3 || p.some(x => !isFinite(x))) return null;
+        return hsl2rgb([p[0], p[1], p[2]]);
+      }
+      if (m = s.match(/^(\d{1,3})[,\s]+(\d{1,3})[,\s]+(\d{1,3})$/)) return [Number(m[1]), Number(m[2]), Number(m[3])];
+      return null;
+    };
+    const luminance = ([r, g, b]) => {
+      const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+      return .2126 * f(r) + .7152 * f(g) + .0722 * f(b);
+    };
+    function run() {
+      $('#cErr').textContent = '';
+      const rgb = parse($('#cIn').value);
+      if (!rgb) { $('#cErr').textContent = '✗ Format tidak dikenali. Coba #7c6cff, rgb(124,108,255), hsl(249,100%,71%)'; return; }
+      const hex = rgb2hex(rgb), hsl = rgb2hsl(rgb), cmyk = rgb2cmyk(rgb);
+      $('#cPick').value = hex;
+      const lum = luminance(rgb);
+      const txtOn = lum > .45 ? '#111' : '#fff';
+      $('#cPrev').style.background = hex;
+      $('#cPrev').innerHTML = `<div style="height:100%;display:grid;place-items:center;color:${txtOn};font-family:var(--mono);font-size:.86rem;font-weight:700">${hex.toUpperCase()}</div>`;
+      const rows = [
+        ['HEX', hex.toUpperCase(), `--color: ${hex};`],
+        ['RGB', `rgb(${rgb.join(', ')})`, `color: rgb(${rgb.map(v => Math.round(v)).join(', ')});`],
+        ['HSL', `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`, `color: hsl(${hsl.join(', ')});`],
+        ['CMYK', `cmyk(${cmyk[0]}%, ${cmyk[1]}%, ${cmyk[2]}%, ${cmyk[3]}%)`, ''],
+        ['Luminance', lum.toFixed(3), lum > .45 ? 'Teks gelap direkomendasikan' : 'Teks terang direkomendasikan'],
+      ];
+      $('#cVals').innerHTML = `<table class="mini"><tbody>${rows.map(([k, v]) => `
+        <tr><th style="width:92px">${k}</th><td class="mono">${v}</td>
+        <td style="width:34px"><button class="btn sm" data-c="${esc(v)}" title="Salin">⧉</button></td></tr>`).join('')}</tbody></table>`;
+      $$('#cVals [data-c]').forEach(b => b.onclick = () => copyText(b.dataset.c, b.dataset.c + ' disalin'));
+      const steps = [];
+      for (let i = 5; i >= 1; i--) steps.push(hsl2rgb([hsl[0], hsl[1], clamp(hsl[2] + (100 - hsl[2]) * i / 6, 0, 100)]));
+      steps.push(rgb);
+      for (let i = 1; i <= 5; i++) steps.push(hsl2rgb([hsl[0], hsl[1], clamp(hsl[2] * (1 - i / 6), 0, 100)]));
+      $('#cPal').innerHTML = steps.map(c => {
+        const h = rgb2hex(c);
+        return `<div class="sw" data-h="${h}"><div class="c" style="background:${h}"></div><div class="l">${h.slice(1)}</div></div>`;
+      }).join('');
+      $$('#cPal .sw').forEach(s => s.onclick = () => { $('#cIn').value = s.dataset.h; run(); });
+    }
+    $('#cIn').oninput = run;
+    $('#cPick').oninput = () => { $('#cIn').value = $('#cPick').value; run(); };
+    run();
+  }
+});
+
+/* ---------- 14. Palette generator ---------- */
+tool({
+  id: 'palette', name: 'Palette Generator', cat: 'warna', icon: '🌈', color: 'pink',
+  desc: 'Buat palet harmoni (analog, komplementer, triad, split) dan ekspor ke CSS/Tailwind.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:14px">
+        <div class="seg" id="pharm">
+          <button class="on" data-h="analog">Analog</button><button data-h="comp">Komplemen</button>
+          <button data-h="triad">Triad</button><button data-h="split">Split</button><button data-h="mono">Mono</button>
+        </div>
+        <button class="btn sm p" id="pgen">⟳ Acak</button>
+        <div class="row tight" style="margin-left:auto"><label class="f" style="margin:0">Basis</label>
+          <input type="color" id="pbase" value="#7c6cff" style="width:46px;height:34px" /></div>
+      </div>
+      <div id="pswatches" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px"></div>
+      <div class="seg" id="poutMode" style="margin-bottom:10px"><button class="on" data-o="css">CSS</button><button data-o="tailwind">Tailwind</button><button data-o="json">JSON</button><button data-o="scss">SCSS</button></div>
+      <div class="outbox"><button class="btn sm copybtn" id="pcopy">Salin</button><div class="out" id="pout" style="max-height:230px"></div></div>
+      <div class="hint">Klik salah satu warna untuk menyalin nilainya.</div>`;
+    let harm = 'analog', outMode = 'css', color = '#7c6cff';
+    const h2r = h => { h = h.replace('#', ''); return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)); };
+    const r2h = a => '#' + a.map(v => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0')).join('');
+    const toHSL = ([r, g, b]) => {
+      r /= 255; g /= 255; b /= 255;
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b); let h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) { s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? ((g - b) / d + (g < b ? 6 : 0)) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; }
+      return [h, s * 100, l * 100];
+    };
+    const fromHSL = ([h, s, l]) => {
+      h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
+      const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2;
+      let r, g, b;
+      if (h < 60) [r, g, b] = [c, x, 0]; else if (h < 120) [r, g, b] = [x, c, 0];
+      else if (h < 180) [r, g, b] = [0, c, x]; else if (h < 240) [r, g, b] = [0, x, c];
+      else if (h < 300) [r, g, b] = [x, 0, c]; else [r, g, b] = [c, 0, x];
+      return [(r + m) * 255, (g + m) * 255, (b + m) * 255].map(v => Math.round(v));
+    };
+    function build() {
+      const [h, s, l] = toHSL(h2r(color));
+      const j = () => (Math.random() - .5) * 8;
+      let specs;
+      if (harm === 'analog') specs = [-40, -20, 0, 20, 40].map(d => [h + d, clamp(s + j(), 25, 92), clamp(l + j(), 22, 82)]);
+      else if (harm === 'comp') specs = [0, 12, 0, 180, 192].map((d, i) => [h + d, s, i < 2 ? clamp(l + 12 - i * 10, 20, 85) : clamp(l - 8 + i * 6, 25, 80)]);
+      else if (harm === 'triad') specs = [0, 0, 120, 120, 240].map((d, i) => [h + d, s, i % 2 ? clamp(l + 12, 20, 85) : l]);
+      else if (harm === 'split') specs = [0, 150, 150, 210, 210].map((d, i) => [h + d, s, i < 2 ? l : clamp(l - 10 + i * 8, 20, 85)]);
+      else specs = [0, 0, 0, 0, 0].map((_, i) => [h, clamp(s, 10, 90), clamp(18 + i * 17, 10, 92)]);
+      return specs.map(x => r2h(fromHSL(x)));
+    }
+    let palette = [];
+    function run() {
+      palette = harm === 'mono' || harm === 'analog' ? (() => {
+        const [h, s, l] = toHSL(h2r(color));
+        const arr = [];
+        if (harm === 'mono') { for (let i = 0; i < 5; i++) arr.push(r2h(fromHSL([h, clamp(s, 12, 90), clamp(20 + i * 16, 12, 92)]))); }
+        else { [-40, -20, 0, 20, 40].forEach(d => arr.push(r2h(fromHSL([h + d, clamp(s + (Math.random() - .5) * 6, 30, 92), clamp(l + (Math.random() - .5) * 8, 24, 82)])))); }
+        return arr;
+      })() : build();
+      $('#pswatches').innerHTML = palette.map((c, i) => {
+        const lum = toHSL(h2r(c))[2];
+        return `<div class="sw" data-c="${c}" title="Klik untuk salin"><div class="c" style="background:${c};height:78px;display:grid;place-items:center;color:${lum > 58 ? '#111' : '#fff'};font-family:var(--mono);font-size:.74rem;font-weight:700">${c}</div>
+        <div class="l">${i + 1}</div></div>`;
+      }).join('');
+      $$('#pswatches .sw').forEach(s => s.onclick = () => copyText(s.dataset.c, s.dataset.c + ' disalin'));
+      render();
+    }
+    function render() {
+      let txt = '';
+      if (outMode === 'css') txt = ':root {\n' + palette.map((c, i) => `  --color-${i + 1}: ${c};`).join('\n') + '\n}';
+      else if (outMode === 'scss') txt = palette.map((c, i) => `$color-${i + 1}: ${c};`).join('\n');
+      else if (outMode === 'json') txt = JSON.stringify({ palette: palette.map((hex, i) => ({ name: `color-${i + 1}`, hex })) }, null, 2);
+      else txt = '// tailwind.config.js\ncolors: {\n  brand: {\n' + palette.map((c, i) => `    ${(i + 1) * 100}: '${c}',`).join('\n') + '\n  }\n}';
+      $('#pout').textContent = txt;
+    }
+    $('#pharm').onclick = e => { const b = e.target.closest('button'); if (!b) return; $$('#pharm button').forEach(x => x.classList.remove('on')); b.classList.add('on'); harm = b.dataset.h; run(); };
+    $('#poutMode').onclick = e => { const b = e.target.closest('button'); if (!b) return; $$('#poutMode button').forEach(x => x.classList.remove('on')); b.classList.add('on'); outMode = b.dataset.o; render(); };
+    $('#pbase').oninput = e => { color = e.target.value; run(); };
+    $('#pgen').onclick = () => {
+      const h = Math.floor(Math.random() * 360), s = 45 + Math.random() * 40, l = 42 + Math.random() * 25;
+      color = r2h(fromHSL([h, s, l])); $('#pbase').value = color; run();
+    };
+    $('#pcopy').onclick = () => copyText($('#pout').textContent, 'Palet disalin');
+    run();
+  }
+});
+
+/* ---------- 15. Contrast checker ---------- */
+tool({
+  id: 'contrast', name: 'Contrast Checker', cat: 'warna', icon: '◐', color: 'violet',
+  desc: 'Uji rasio kontras WCAG AA/AAA untuk teks dan tombol, lengkap dengan saran perbaikan.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid3" style="margin-bottom:12px">
+        <div><label class="f">Warna teks</label><input type="color" id="kfg" value="#a5a6c4" /></div>
+        <div><label class="f">Warna latar</label><input type="color" id="kbg" value="#0d0e18" /></div>
+        <div><label class="f">Ukuran font</label><select id="ksize">
+          <option value="normal">Normal (&lt; 18.66px)</option><option value="large">Besar (≥ 18.66px / bold 14px)</option></select></div>
+      </div>
+      <div class="split">
+        <div>
+          <div id="kprev" style="border-radius:14px;border:1px solid var(--line);padding:26px;min-height:170px">
+            <div style="font-size:1.5rem;font-weight:800;line-height:1.25" id="kprevBig">Judul contoh teks</div>
+            <div style="font-size:.92rem;margin-top:8px;line-height:1.6" id="kprevSm">Ini paragraf contoh berukuran normal untuk mengukur keterbacaan warna teks terhadap latar belakang yang dipilih.</div>
+            <button style="margin-top:14px;padding:9px 16px;border-radius:9px;border:none;font-weight:700;font-size:.85rem" id="kprevBtn">Tombol</button>
+          </div>
+          <div class="row mt"><button class="btn sm" id="kswap">⇄ Tukar</button>
+            <button class="btn sm" id="kauto">✧ Saran warna teks</button></div>
+        </div>
+        <div><div id="kresult"></div>
+          <div class="hint">Rasio kontras dihitung dengan rumus resmi WCAG 2.1: (L1 + 0.05) / (L2 + 0.05).</div></div>
+      </div>`;
+    const h2r = h => { h = h.replace('#', ''); return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)); };
+    const lum = ([r, g, b]) => {
+      const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+      return .2126 * f(r) + .7152 * f(g) + .0722 * f(b);
+    };
+    const ratio = (a, b) => { const L1 = lum(a), L2 = lum(b); const [hi, lo] = L1 > L2 ? [L1, L2] : [L2, L1]; return (hi + .05) / (lo + .05); };
+    function run() {
+      const fg = $('#kfg').value, bg = $('#kbg').value;
+      const large = $('#ksize').value === 'large';
+      const r = ratio(h2r(fg), h2r(bg));
+      $('#kprev').style.background = bg; $('#kprev').style.color = fg;
+      $('#kprevBig').style.color = fg; $('#kprevSm').style.color = fg;
+      const btn = $('#kprevBtn'); btn.style.background = fg; btn.style.color = bg;
+      const passAA = large ? r >= 3 : r >= 4.5;
+      const passAAA = large ? r >= 4.5 : r >= 7;
+      const ui = r >= 3;
+      const row = (label, ok, need) => `<tr><td>${label}</td><td class="mono">${need}</td>
+        <td><span class="badge ${ok ? 'good' : 'bad'}">${ok ? 'LULUS' : 'GAGAL'}</span></td></tr>`;
+      $('#kresult').innerHTML = `
+        <div class="ring-wrap" style="height:120px;width:120px;margin-bottom:14px">
+          <div class="txt"><b>${r.toFixed(2)}</b><span>rasio</span></div>
+        </div>
+        <table class="mini"><thead><tr><th>Tes</th><th>Min</th><th>Hasil</th></tr></thead><tbody>
+          ${row('WCAG AA teks', passAA, large ? '3.0' : '4.5')}
+          ${row('WCAG AAA teks', passAAA, large ? '4.5' : '7.0')}
+          ${row('Komponen UI / ikon', ui, '3.0')}
+        </tbody></table>`;
+      const el = $('#kresult .ring-wrap');
+      el.style.borderRadius = '50%';
+      el.style.background = `conic-gradient(${passAA ? 'var(--ok)' : passAAA ? 'var(--gold)' : 'var(--bad)'} ${clamp(r / 21 * 360, 0, 360)}deg, var(--surface-3) 0)`;
+      el.style.position = 'relative';
+      el.insertAdjacentHTML('afterbegin', '<div style="position:absolute;inset:9px;border-radius:50%;background:var(--surface)"></div>');
+      el.querySelector('.txt').style.position = 'relative';
+    }
+    function luminanceSuggest() {
+      const bg = h2r($('#kbg').value);
+      const target = lum(bg) > .5 ? [0, 0, 0] : [255, 255, 255];
+      const best = target === [0, 0, 0] ? '#000000' : '#ffffff';
+      const fg = $('#kfg').value;
+      // check if darkening the existing color passes
+      const c = h2r(fg);
+      for (let k = 1; k >= 0; k -= .08) {
+        const mix = c.map(v => Math.round(v * k));
+        if (ratio(mix, bg) >= 4.5) {
+          $('#kfg').value = '#' + mix.map(v => v.toString(16).padStart(2, '0')).join('');
+          run(); return;
+        }
+      }
+      $('#kfg').value = best; run();
+    }
+    $('#kswap').onclick = () => { const a = $('#kfg').value; $('#kfg').value = $('#kbg').value; $('#kbg').value = a; run(); };
+    $('#kauto').onclick = luminanceSuggest;
+    ['kfg', 'kbg', 'ksize'].forEach(id => $('#' + id).oninput = run);
+    run();
+  }
+});
+
+/* ---------- 16. Image converter ---------- */
+tool({
+  id: 'imgconv', name: 'Image Converter', cat: 'gambar', icon: '⇄', color: 'mint',
+  desc: 'Konversi PNG/JPG/WebP dan atur kualitas kompresi — lewat canvas, tanpa upload.',
+  mount(root) {
+    root.innerHTML = `
+      <div id="dz"></div>
+      <div class="grid3 mt">
+        <div><label class="f">Format output</label><select id="ifmt"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp" selected>WebP</option></select></div>
+        <div><label class="f">Kualitas: <span id="iqV">0.85</span></label><input type="range" id="iq" min="0.3" max="1" step="0.05" value="0.85" /></div>
+        <div><label class="f">Latar (untuk JPG)</label><input type="color" id="ibg" value="#ffffff" /></div>
+      </div>
+      <div class="row mt"><button class="btn p" id="iconv" disabled>Konversi</button>
+        <button class="btn" id="idl" disabled>⬇ Unduh hasil</button></div>
+      <div class="split mt">
+        <div><label class="f">Asli</label><div class="previewbox"><canvas id="icvA" class="preview"></canvas></div><div class="hint" id="iinfoA"></div></div>
+        <div><label class="f">Hasil</label><div class="previewbox"><canvas id="icvB" class="preview"></canvas></div><div class="hint" id="iinfoB"></div></div>
+      </div>`;
+    let img = null, outURL = null;
+    dropzone($('#dz'), async f => {
+      try {
+        img = await loadImage(await readFile(f));
+        const a = $('#icvA'); a.width = img.naturalWidth; a.height = img.naturalHeight;
+        a.getContext('2d').drawImage(img, 0, 0);
+        $('#iinfoA').innerHTML = `<b>${esc(f.name)}</b> · ${img.naturalWidth}×${img.naturalHeight} · ${fmtBytes(f.size)}`;
+        $('#iconv').disabled = false;
+      } catch (e) { toast('Gagal memuat gambar'); }
+    });
+    $('#iq').oninput = () => $('#iqV').textContent = $('#iq').value;
+    $('#iconv').onclick = () => {
+      if (!img) return;
+      const b = $('#icvB');
+      b.width = img.naturalWidth; b.height = img.naturalHeight;
+      const ctx = b.getContext('2d');
+      const fmt = $('#ifmt').value;
+      if (fmt === 'image/jpeg') { ctx.fillStyle = $('#ibg').value; ctx.fillRect(0, 0, b.width, b.height); }
+      ctx.drawImage(img, 0, 0);
+      const quality = parseFloat($('#iq').value);
+      outURL = b.toDataURL(fmt, quality);
+      const bytes = Math.round(outURL.length * 3 / 4);
+      const ext = fmt.split('/')[1].replace('jpeg', 'jpg');
+      $('#iinfoB').innerHTML = `≈ ${fmtBytes(bytes)} · ${ext.toUpperCase()} · kualitas ${quality}`;
+      $('#idl').disabled = false;
+      $('#idl').onclick = () => downloadDataURL(`toolbox-hasil.${ext}`, outURL);
+      toast('✓ Konversi selesai — cek ukuran hasilnya');
+    };
+  }
+});
+
+/* ---------- 17. Image resizer ---------- */
+tool({
+  id: 'resize', name: 'Image Resizer', cat: 'gambar', icon: '⤢', color: 'cyan',
+  desc: 'Ubah dimensi gambar dengan mode maintain aspect ratio, persen, atau target ukuran.',
+  mount(root) {
+    root.innerHTML = `
+      <div id="dz"></div>
+      <div class="row mt"><div class="seg" id="rmode"><button class="on" data-m="px">Piksel</button><button data-m="pct">Persen</button></div>
+        <label class="row tight" style="font-size:.83rem"><input type="checkbox" id="rrlock" checked /> Kunci rasio</label></div>
+      <div class="grid3 mt">
+        <div><label class="f">Lebar</label><input type="number" id="rw" min="1" /></div>
+        <div><label class="f">Tinggi</label><input type="number" id="rh" min="1" /></div>
+        <div><label class="f">Skala cepat</label><div class="row tight">
+          <button class="btn sm" data-p="50">50%</button><button class="btn sm" data-p="75">75%</button>
+          <button class="btn sm" data-p="100">100%</button></div></div>
+      </div>
+      <div class="row mt"><button class="btn p" id="rrun" disabled>Resize</button><button class="btn" id="rdl" disabled>⬇ Unduh</button></div>
+      <div class="split mt">
+        <div><label class="f">Asli</label><div class="previewbox"><canvas id="rcvA" class="preview"></canvas></div><div class="hint" id="rinfoA"></div></div>
+        <div><label class="f">Hasil</label><div class="previewbox"><canvas id="rcvB" class="preview"></canvas></div><div class="hint" id="rinfoB"></div></div>
+      </div>`;
+    let img = null, ratio = 1, outURL = null, name = 'hasil.png';
+    dropzone($('#dz'), async f => {
+      img = await loadImage(await readFile(f));
+      name = f.name.replace(/\.\w+$/, '') + '-resized.png';
+      ratio = img.naturalWidth / img.naturalHeight;
+      $('#rw').value = img.naturalWidth; $('#rh').value = img.naturalHeight;
+      const a = $('#rcvA'); a.width = img.naturalWidth; a.height = img.naturalHeight;
+      a.getContext('2d').drawImage(img, 0, 0);
+      $('#rinfoA').textContent = `${img.naturalWidth}×${img.naturalHeight} · ${fmtBytes(f.size)}`;
+      $('#rrun').disabled = false;
+    });
+    $('#rw').oninput = () => {
+      if (img && $('#rrlock').checked && $('#rmode .on').dataset.m === 'px') $('#rh').value = Math.round(+$('#rw').value / ratio) || '';
+    };
+    $('#rh').oninput = () => {
+      if (img && $('#rrlock').checked && $('#rmode .on').dataset.m === 'px') $('#rw').value = Math.round(+$('#rh').value * ratio) || '';
+    };
+    $('#rmode').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#rmode button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+      if (img) {
+        if (b.dataset.m === 'pct') { $('#rw').value = 100; $('#rh').value = 100; }
+        else { $('#rw').value = img.naturalWidth; $('#rh').value = img.naturalHeight; }
+      }
+    };
+    $$('[data-p]').forEach(b => b.onclick = () => {
+      if (!img) return;
+      $$('#rmode button').forEach(x => x.classList.toggle('on', x.dataset.m === 'pct'));
+      $('#rw').value = b.dataset.p; $('#rh').value = b.dataset.p;
+    });
+    $('#rrun').onclick = () => {
+      if (!img) return;
+      let w, h;
+      if ($('#rmode .on').dataset.m === 'pct') {
+        const p = clamp(safeNum($('#rw').value, 100), 1, 2000);
+        w = Math.max(1, Math.round(img.naturalWidth * p / 100));
+        h = Math.max(1, Math.round(img.naturalHeight * p / 100));
+      } else {
+        w = clamp(Math.round(safeNum($('#rw').value, img.naturalWidth)), 1, 12000);
+        h = clamp(Math.round(safeNum($('#rh').value, img.naturalHeight)), 1, 12000);
+      }
+      const c = $('#rcvB'); c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, w, h);
+      outURL = c.toDataURL('image/png');
+      $('#rinfoB').textContent = `${w}×${h} · ≈ ${fmtBytes(Math.round(outURL.length * 3 / 4))}`;
+      $('#rdl').disabled = false;
+      $('#rdl').onclick = () => downloadDataURL(name, outURL);
+    };
+  }
+});
+
+/* ---------- 18. Image crop ---------- */
+tool({
+  id: 'crop', name: 'Image Cropper', cat: 'gambar', icon: '⬚', color: 'rose',
+  desc: 'Potong gambar dengan drag area, preset rasio (1:1, 4:5, 16:9) dan rotasi 90°.',
+  mount(root) {
+    root.innerHTML = `
+      <div id="dz"></div>
+      <div id="cropArea" style="display:none" class="mt">
+        <div class="row" style="margin-bottom:10px">
+          <div class="seg" id="cratio"><button class="on" data-r="free">Bebas</button><button data-r="1">1:1</button>
+            <button data-r="0.8">4:5</button><button data-r="1.7778">16:9</button><button data-r="0.5625">9:16</button></div>
+          <button class="btn sm" id="crot">⟳ Rotasi 90°</button>
+          <button class="btn sm p" id="cdone">Potong ▶</button>
+        </div>
+        <div style="position:relative;display:inline-block;max-width:100%;user-select:none;touch-action:none">
+          <canvas id="ccv" style="max-width:100%;display:block;border-radius:10px"></canvas>
+          <div id="cbox" style="position:absolute;border:2px solid var(--accent);background:rgba(124,108,255,.18);cursor:move;box-shadow:0 0 0 9999px rgba(0,0,0,.5);display:none">
+            <div style="position:absolute;right:-6px;bottom:-6px;width:14px;height:14px;border-radius:3px;background:var(--accent);border:2px solid #fff;cursor:nwse-resize"></div>
+          </div>
+        </div>
+        <div class="hint" id="cinfo">Tarik area untuk memilih, lalu klik Potong.</div>
+      </div>
+      <div class="mt" id="cres"></div>`;
+    let img = null, sel = null, rot = 0, ratio = 'free', dragMode = null, start = null;
+    const drawBase = () => {
+      const c = $('#ccv');
+      const rotated = rot % 180 !== 0;
+      c.width = rotated ? img.naturalHeight : img.naturalWidth;
+      c.height = rotated ? img.naturalWidth : img.naturalHeight;
+      const ctx = c.getContext('2d');
+      ctx.save();
+      ctx.translate(c.width / 2, c.height / 2);
+      ctx.rotate(rot * Math.PI / 180);
+      ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+      ctx.restore();
+      $('#cropArea').style.display = 'block';
+      $('#cbox').style.display = 'none'; sel = null;
+    };
+    dropzone($('#dz'), async f => {
+      img = await loadImage(await readFile(f));
+      drawBase();
+      $('#cinfo').textContent = 'Tarik area untuk memilih, lalu klik Potong.';
+    });
+    const cv = () => $('#ccv');
+    function toCanvasXY(e) {
+      const c = cv(), r = c.getBoundingClientRect();
+      const x = (e.clientX - r.left) * (c.width / r.width);
+      const y = (e.clientY - r.top) * (c.height / r.height);
+      return { x: clamp(x, 0, c.width), y: clamp(y, 0, c.height) };
+    }
+    function posBox() {
+      const c = cv(), r = c.getBoundingClientRect();
+      if (!sel) return;
+      const sx = r.width / c.width, sy = r.height / c.height;
+      const b = $('#cbox');
+      b.style.left = sel.x * sx + 'px'; b.style.top = sel.y * sy + 'px';
+      b.style.width = sel.w * sx + 'px'; b.style.height = sel.h * sy + 'px'; b.style.display = 'block';
+    }
+    function startXY(e) {
+      const p = e.touches ? e.touches[0] : e;
+      return toCanvasXY(p);
+    }
+    $('#ccv').parentElement.addEventListener('pointerdown', e => {
+      if (!img) return;
+      e.preventDefault();
+      const p = startXY(e);
+      const c = cv();
+      if (e.target.style && e.target.style.cursor === 'nwse-resize') dragMode = 'resize';
+      else if (e.target.closest('#cbox')) dragMode = 'move';
+      else dragMode = 'new';
+      start = { ...p, orig: sel ? { ...sel } : null };
+      if (dragMode === 'new') sel = { x: p.x, y: p.y, w: 0, h: 0 };
+      posBox();
+    });
+    window.addEventListener('pointermove', e => {
+      if (!dragMode || !img) return;
+      const p = toCanvasXY(e);
+      const c = cv();
+      if (dragMode === 'new') {
+        sel.x = Math.min(start.x, p.x); sel.y = Math.min(start.y, p.y);
+        let w = Math.abs(p.x - start.x), h = Math.abs(p.y - start.y);
+        if (ratio !== 'free') { h = w / Number(ratio); }
+        sel.w = Math.min(w, c.width - sel.x); sel.h = Math.min(h, c.height - sel.y);
+      } else if (dragMode === 'move') {
+        sel.x = clamp(start.orig.x + (p.x - start.x), 0, c.width - start.orig.w);
+        sel.y = clamp(start.orig.y + (p.y - start.y), 0, c.height - start.orig.h);
+        sel.w = start.orig.w; sel.h = start.orig.h;
+      } else if (dragMode === 'resize') {
+        sel.w = clamp(p.x - sel.x, 20, c.width - sel.x);
+        sel.h = ratio !== 'free' ? sel.w / Number(ratio) : clamp(p.y - sel.y, 20, c.height - sel.y);
+        if (sel.y + sel.h > c.height) sel.h = c.height - sel.y;
+      }
+      posBox();
+    });
+    window.addEventListener('pointerup', () => { dragMode = null; });
+    $('#cratio').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#cratio button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+      ratio = b.dataset.r;
+      // terapkan rasio ke seleksi yang sudah ada
+      if (sel && ratio !== 'free' && sel.w > 4) {
+        const c = cv();
+        sel.h = sel.w / Number(ratio);
+        if (sel.y + sel.h > c.height) { sel.h = c.height - sel.y; sel.w = sel.h * Number(ratio); }
+        if (sel.x + sel.w > c.width) { sel.w = c.width - sel.x; sel.h = sel.w / Number(ratio); }
+        posBox();
+      }
+    };
+    $('#crot').onclick = () => { if (!img) return; rot = (rot + 90) % 360; drawBase(); };
+    $('#cdone').onclick = () => {
+      if (!img) return;
+      const c = cv();
+      const s = sel && sel.w > 4 && sel.h > 4 ? sel : { x: 0, y: 0, w: c.width, h: c.height };
+      const out = document.createElement('canvas');
+      out.width = Math.round(s.w); out.height = Math.round(s.h);
+      out.getContext('2d').drawImage(c, Math.round(s.x), Math.round(s.y), Math.round(s.w), Math.round(s.h), 0, 0, out.width, out.height);
+      const url = out.toDataURL('image/png');
+      $('#cres').innerHTML = `<label class="f">Hasil potongan (${out.width}×${out.height})</label>
+        <div class="previewbox"><img class="preview" src="${url}" alt="hasil potong" /></div>
+        <div class="row mt"><button class="btn g" id="cdl">⬇ Unduh PNG</button></div>`;
+      $('#cdl').onclick = () => downloadDataURL('crop.png', url);
+      $('#cinfo').textContent = `Area: ${Math.round(s.x)},${Math.round(s.y)} → ${out.width}×${out.height} px`;
+    };
+  }
+});
+
+/* ---------- 19. Image to Base64 ---------- */
+tool({
+  id: 'img64', name: 'Image → Base64', cat: 'gambar', icon: 'إ', color: 'gold',
+  desc: 'Jadikan gambar data URI untuk CSS/HTML, atau ubah Base64 kembali jadi file gambar.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:12px"><div class="seg" id="bmode"><button class="on" data-m="enc">Gambar → Base64</button><button data-m="dec">Base64 → Gambar</button></div></div>
+      <div id="encArea">
+        <div id="dz"></div>
+        <div class="mt" id="b64info"></div>
+        <div class="outbox mt"><button class="btn sm copybtn" id="b64copy">Salin data URI</button><div class="out" id="b64out" style="max-height:220px"></div></div>
+        <div class="row mt"><button class="btn sm p" id="b64css">Salin CSS</button><button class="btn sm" id="b64img">Salin &lt;img&gt;</button></div>
+      </div>
+      <div id="decArea" style="display:none">
+        <label class="f">Tempel Base64 / data URI</label>
+        <textarea id="b64in" class="code" style="min-height:110px" placeholder="data:image/png;base64,iVBORw0KGgo..."></textarea>
+        <div id="b64err" class="err"></div>
+        <div class="previewbox mt" id="b64prev"><span class="hint" style="margin:0">Preview gambar</span></div>
+        <button class="btn p mt" id="b64dl" disabled>⬇ Unduh gambar</button>
+      </div>`;
+    let dataURL = '';
+    let mode = 'enc';
+    const mountEnc = () => {
+      dropzone($('#dz'), async f => {
+        if (f.size > 3 * 1024 * 1024) toast('⚠ File > 3MB — halaman bisa terasa berat');
+        dataURL = await readFile(f);
+        const bytes = Math.round(dataURL.length * 3 / 4);
+        $('#b64out').textContent = dataURL;
+        $('#b64info').innerHTML = `<b>${esc(f.name)}</b> · ${fmtBytes(f.size)} → Base64 ≈ ${fmtBytes(bytes)} <span class="hint">(${(bytes / f.size * 100).toFixed(0)}% lebih besar)</span>`;
+      });
+    };
+    mountEnc();
+    $('#bmode').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#bmode button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+      mode = b.dataset.m;
+      $('#encArea').style.display = mode === 'enc' ? '' : 'none';
+      $('#decArea').style.display = mode === 'dec' ? '' : 'none';
+      if (mode === 'enc') mountEnc();
+    };
+    $('#b64copy').onclick = () => copyText($('#b64out').textContent, 'Data URI disalin');
+    $('#b64css').onclick = () => copyText(`background-image: url("${$('#b64out').textContent}");`, 'CSS disalin');
+    $('#b64img').onclick = () => copyText(`<img src="${$('#b64out').textContent}" alt="" />`, 'Tag <img> disalin');
+    $('#b64in').oninput = () => {
+      $('#b64err').textContent = '';
+      let v = $('#b64in').value.trim();
+      if (!v) { $('#b64prev').innerHTML = '<span class="hint" style="margin:0">Preview gambar</span>'; $('#b64dl').disabled = true; return; }
+      if (!v.startsWith('data:')) {
+        if (/^[A-Za-z0-9+/=\s]+$/.test(v)) v = 'data:image/png;base64,' + v.replace(/\s+/g, '');
+        else { $('#b64err').textContent = '✗ Bukan Base64 yang valid'; return; }
+      }
+      const im = new Image();
+      im.onload = () => {
+        $('#b64prev').innerHTML = `<img class="preview" src="${v}" alt="preview" />`;
+        $('#b64dl').disabled = false;
+        $('#b64dl').onclick = () => downloadDataURL('dari-base64.png', v);
+      };
+      im.onerror = () => { $('#b64err').textContent = '✗ Data tidak bisa dibaca sebagai gambar'; $('#b64dl').disabled = true; };
+      im.src = v;
+    };
+  }
+});
+
+/* ---------- 20. SVG to PNG ---------- */
+tool({
+  id: 'svgpng', name: 'SVG → PNG', cat: 'gambar', icon: '◈', color: 'violet',
+  desc: 'Render SVG jadi PNG dengan ukuran & latar transparan/padat, plus preview cepat.',
+  mount(root) {
+    root.innerHTML = `
+      <label class="f">Kode SVG</label>
+      <textarea id="sin" class="code" style="min-height:150px" spellcheck="false">&lt;svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"&gt;
+  &lt;defs&gt;&lt;linearGradient id="g" x1="0" y1="0" x2="1" y2="1"&gt;
+    &lt;stop offset="0" stop-color="#7c6cff"/&gt;&lt;stop offset="1" stop-color="#ff6b9d"/&gt;
+  &lt;/linearGradient&gt;&lt;/defs&gt;
+  &lt;rect width="320" height="320" rx="56" fill="url(#g)"/&gt;
+  &lt;circle cx="112" cy="128" r="30" fill="#fff" opacity=".92"/&gt;
+  &lt;path d="M84 232 L160 168 L236 232 Z" fill="#fff" opacity=".8"/&gt;
+  &lt;text x="160" y="290" font-family="sans-serif" font-size="26" fill="#fff" text-anchor="middle"&gt;Toolbox&lt;/text&gt;
+&lt;/svg&gt;</textarea>
+      <div class="grid3 mt">
+        <div><label class="f">Lebar (px)</label><input type="number" id="sw" value="800" min="16" max="4000" /></div>
+        <div><label class="f">Skala</label><select id="sscale"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option></select></div>
+        <div><label class="f">Latar</label><input type="color" id="sbg" value="#ffffff" /></div>
+      </div>
+      <label class="row tight mt" style="font-size:.84rem"><input type="checkbox" id="strans" checked /> Latar transparan</label>
+      <div id="serr" class="err"></div>
+      <div class="row mt"><button class="btn p" id="srun">Render</button><button class="btn" id="sdl" disabled>⬇ Unduh PNG</button></div>
+      <div class="split mt">
+        <div><label class="f">Preview SVG (langsung)</label><div class="previewbox" id="sprev" style="background:#fff"></div></div>
+        <div><label class="f">Hasil PNG</label><div class="previewbox"><canvas id="scv" class="preview"></canvas></div></div>
+      </div>`;
+    const live = () => {
+      $('#serr').textContent = '';
+      const svg = $('#sin').value;
+      const box = $('#sprev');
+      if (!svg.trim()) { box.innerHTML = ''; return; }
+      if (!/^\s*<svg[\s>]/i.test(svg)) { $('#serr').textContent = '✗ Kode harus diawali <svg …>'; box.innerHTML = ''; return; }
+      box.innerHTML = svg.replace(/<script[\s\S]*?<\/script>/gi, '');
+    };
+    $('#sin').oninput = live;
+    $('#strans').onchange = () => $('#sbg').disabled = $('#strans').checked;
+    $('#srun').onclick = async () => {
+      $('#serr').textContent = '';
+      try {
+        const svg = $('#sin').value.trim();
+        if (!/^\s*<svg[\s>]/i.test(svg)) throw new Error('Kode harus berupa elemen <svg>');
+        const scale = Number($('#sscale').value);
+        const targetW = clamp(Number($('#sw').value) || 800, 16, 4000);
+        const vb = /viewBox\s*=\s*["']([^"']+)["']/i.exec(svg);
+        let ratio = 1;
+        if (vb) {
+          const p = vb[1].trim().split(/[\s,]+/).map(Number);
+          if (p.length === 4 && p[3]) ratio = p[2] / p[3];
+        } else {
+          const w = /<svg[^>]*\swidth\s*=\s*["']([\d.]+)/i.exec(svg);
+          const h = /<svg[^>]*\sheight\s*=\s*["']([\d.]+)/i.exec(svg);
+          if (w && h) ratio = Number(w[1]) / Number(h[1]);
+        }
+        const w = Math.round(targetW), h = Math.round(targetW / ratio);
+        const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const im = await loadImage(url);
+        const c = $('#scv');
+        c.width = w * scale; c.height = h * scale;
+        const ctx = c.getContext('2d');
+        if (!$('#strans').checked) { ctx.fillStyle = $('#sbg').value; ctx.fillRect(0, 0, c.width, c.height); }
+        ctx.drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        const png = c.toDataURL('image/png');
+        $('#sdl').disabled = false;
+        $('#sdl').onclick = () => downloadDataURL('dari-svg.png', png);
+        toast(`✓ PNG ${c.width}×${c.height} siap`);
+      } catch (e) { $('#serr').textContent = '✗ ' + e.message; }
+    };
+    live();
+  }
+});
+
+/* ==========================================================
+   TOOLS: Konversi
+   ========================================================== */
+
+/* ---------- 21. Timestamp ---------- */
+tool({
+  id: 'time', name: 'Unix Timestamp', cat: 'konversi', icon: '⏱', color: 'cyan',
+  desc: 'Konversi timestamp ⇄ tanggal, ISO 8601, relatif ("3 jam lalu"), plus zona waktu.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="outbox" style="margin-bottom:14px">
+        <div class="out" id="tnow" style="font-size:1.05rem;font-family:var(--mono)"></div>
+        <button class="btn sm copybtn" id="tcopyNow">Salin</button>
+      </div>
+      <div class="split">
+        <div>
+          <label class="f">Timestamp / tanggal</label>
+          <input type="text" id="tin" class="mono" placeholder="1763740800 atau 2026-11-22T10:00:00Z" />
+          <div class="row mt"><button class="btn sm p" id="tconv">Konversi</button>
+            <button class="btn sm" id="tnowBtn">Sekarang</button>
+            <select id="tunit" style="width:auto"><option value="s">detik</option><option value="ms">milidetik</option></select></div>
+          <div id="terr" class="err"></div>
+          <div id="tres" class="mt"></div>
+        </div>
+        <div>
+          <label class="f">Input tanggal &amp; waktu</label>
+          <input type="datetime-local" id="tdt" style="width:100%" />
+          <div class="row mt"><button class="btn sm" id="tdtNow">Isi sekarang</button><button class="btn sm" id="tdtConv">→ Timestamp</button></div>
+          <div class="outbox mt"><div class="out" id="tdtOut" style="min-height:44px"></div></div>
+          <label class="f mt">Zona waktu</label>
+          <div class="hint" id="ttz"></div>
+        </div>
+      </div>`;
+    const pad = n => String(n).padStart(2, '0');
+    const tick = () => {
+      const d = new Date();
+      const s = Math.floor(d.getTime() / 1000);
+      $('#tnow').textContent = `${s}  ·  ${d.toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'medium' })}`;
+      $('#tnow').dataset.v = s;
+    };
+    tick();
+    const iv = setInterval(tick, 1000);
+    trackCleanup(() => clearInterval(iv));
+    $('#tcopyNow').onclick = () => copyText($('#tnow').dataset.v, 'Timestamp disalin');
+    function rel(ms) {
+      const diff = ms - Date.now();
+      const abs = Math.abs(diff);
+      const u = [['tahun', 31536e6], ['bulan', 2592e6], ['hari', 864e5], ['jam', 36e5], ['menit', 6e4], ['detik', 1e3]];
+      for (const [name, size] of u) {
+        if (abs >= size) {
+          const v = Math.round(abs / size);
+          return diff < 0 ? `${v} ${name} lalu` : `dalam ${v} ${name}`;
+        }
+      }
+      return 'baru saja';
+    }
+    function convert(val, unit) {
+      $('#terr').textContent = '';
+      val = val.trim();
+      if (!val) return;
+      let d = null;
+      if (/^-?\d+(\.\d+)?$/.test(val)) {
+        const n = Number(val);
+        d = new Date(unit === 's' ? n * 1000 : n);
+      } else {
+        d = new Date(val);
+      }
+      if (!d || isNaN(d.getTime())) { $('#terr').textContent = '✗ Format tidak dikenali. Contoh: 1763740800, 1763740800000, 2026-11-22T10:00:00Z, 2026-11-22 10:00'; $('#tres').innerHTML = ''; return; }
+      const iso = d.toISOString();
+      $('#tres').innerHTML = `<table class="mini"><tbody>
+        <tr><th style="width:120px">Unix (detik)</th><td class="mono">${Math.floor(d.getTime() / 1000)}</td></tr>
+        <tr><th>Unix (ms)</th><td class="mono">${d.getTime()}</td></tr>
+        <tr><th>ISO 8601</th><td class="mono">${iso}</td></tr>
+        <tr><th>UTC</th><td class="mono">${d.toUTCString()}</td></tr>
+        <tr><th>Lokal</th><td class="mono">${d.toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'medium' })}</td></tr>
+        <tr><th>Relatif</th><td class="mono">${rel(d.getTime())}</td></tr>
+        <tr><th>Hari ke-</th><td class="mono">${Math.ceil((d - new Date(d.getFullYear(), 0, 1)) / 864e5)} dari ${d.getFullYear()}</td></tr>
+      </tbody></table>`;
+    }
+    $('#tconv').onclick = () => convert($('#tin').value, $('#tunit').value);
+    $('#tin').oninput = () => convert($('#tin').value, $('#tunit').value);
+    $('#tnowBtn').onclick = () => { $('#tin').value = Math.floor(Date.now() / 1000); convert($('#tin').value, 's'); };
+    const fillNow = () => {
+      const d = new Date();
+      $('#tdt').value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
+    fillNow();
+    $('#tdtNow').onclick = fillNow;
+    $('#tdtConv').onclick = () => {
+      const v = $('#tdt').value;
+      if (!v) return;
+      const d = new Date(v);
+      $('#tdtOut').textContent = `${Math.floor(d.getTime() / 1000)}  (detik)\n${d.getTime()}  (ms)\n${d.toISOString()}`;
+    };
+    $('#ttz').innerHTML = `Zona perangkat: <b>${Intl.DateTimeFormat().resolvedOptions().timeZone}</b> · UTC${-new Date().getTimezoneOffset() / 60 >= 0 ? '+' : ''}${-new Date().getTimezoneOffset() / 60}`;
+    convert(String(Math.floor(Date.now() / 1000)), 's');
+  }
+});
+
+/* ---------- 22. Timezone converter ---------- */
+tool({
+  id: 'tz', name: 'Timezone Converter', cat: 'konversi', icon: '🌐', color: 'gold',
+  desc: 'Bandingkan satu waktu di beberapa kota dunia sekaligus — cocok untuk jadwal meeting.',
+  mount(root) {
+    const zones = [
+      ['Asia/Jakarta', 'Jakarta 🇮🇩'], ['Asia/Singapore', 'Singapura'], ['Asia/Tokyo', 'Tokyo 🇯🇵'],
+      ['Asia/Kolkata', 'Mumbai'], ['Asia/Dubai', 'Dubai'], ['Europe/London', 'London 🇬🇧'],
+      ['Europe/Paris', 'Paris'], ['America/New_York', 'New York 🇺🇸'], ['America/Los_Angeles', 'Los Angeles'],
+      ['Australia/Sydney', 'Sydney 🇦🇺'], ['UTC', 'UTC']
+    ];
+    root.innerHTML = `
+      <div class="grid2" style="margin-bottom:14px">
+        <div><label class="f">Waktu acuan</label><input type="datetime-local" id="zt" style="width:100%" /></div>
+        <div><label class="f">Zona acuan</label><select id="zz">${zones.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select></div>
+      </div>
+      <div id="ztable"></div>
+      <div class="hint">Perubahan waktu musim panas (DST) otomatis diperhitungkan lewat Intl API browser.</div>`;
+    const pad = n => String(n).padStart(2, '0');
+    const fillNow = () => {
+      const d = new Date();
+      $('#zt').value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
+    fillNow();
+    function run() {
+      const local = $('#zt').value;
+      if (!local) return;
+      const asUTC = new Date(local + ':00Z');
+      const refParts = $('#zz').value;
+      const rows = zones.map(([zone, label]) => {
+        const s = new Intl.DateTimeFormat('id-ID', { timeZone: zone, weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(asUTC);
+        const h = Number(new Intl.DateTimeFormat('en-GB', { timeZone: zone, hour: '2-digit', hour12: false }).format(asUTC));
+        const status = h >= 8 && h < 18 ? ['good', 'jam kerja'] : (h >= 21 || h < 6) ? ['bad', 'tengah malam'] : ['mid', 'luar jam'];
+        return { zone, label, s, h, status };
+      });
+      $('#ztable').innerHTML = `<table class="mini"><thead><tr><th>Kota</th><th>Waktu lokal</th><th>Status</th></tr></thead><tbody>
+        ${rows.map(r => `<tr><td>${r.label}<div style="font-size:.68rem;color:var(--muted)">${r.zone}</div></td>
+        <td class="mono">${esc(r.s)}</td>
+        <td><span class="badge ${r.status[0]}">${r.status[1]}</span></td></tr>`).join('')}</tbody></table>`;
+    }
+    $('#zt').oninput = run; $('#zz').onchange = run;
+    run();
+  }
+});
+
+/* ==========================================================
+   TOOLS: Konversi & Kalkulator & Fokus
+   ========================================================== */
+
+/* ---------- 23. Unit converter ---------- */
+const UNITS = {
+  'Panjang': { base: 'm', units: { 'kilometer': 1000, 'meter': 1, 'centimeter': 0.01, 'milimeter': 0.001, 'mil': 1609.344, 'yard': 0.9144, 'kaki': 0.3048, 'inci': 0.0254, 'mil laut': 1852 } },
+  'Massa': { base: 'kg', units: { 'ton': 1000, 'kuintal': 100, 'kilogram': 1, 'ons': 0.0283495, 'gram': 0.001, 'miligram': 0.000001, 'pon (lb)': 0.45359237, 'ounce (oz)': 0.0283495 } },
+  'Volume': { base: 'liter', units: { 'meter kubik': 1000, 'liter': 1, 'mililiter': 0.001, 'galon US': 3.785411784, 'galon UK': 4.54609, 'cup US': 0.2365882, 'sdm (tbsp)': 0.0147868, 'sdt (tsp)': 0.00492892 } },
+  'Luas': { base: 'm²', units: { 'kilometer²': 1000000, 'hektar': 10000, 'are': 100, 'meter²': 1, 'centimeter²': 0.0001, 'kaki²': 0.09290304, 'inci²': 0.00064516 } },
+  'Kecepatan': { base: 'm/s', units: { 'meter/detik': 1, 'km/jam': 0.2777778, 'mil/jam': 0.44704, 'knot': 0.5144444, 'kaki/detik': 0.3048 } },
+  'Data': { base: 'byte', units: { 'bit': 0.125, 'byte': 1, 'KB (1000)': 1000, 'KiB (1024)': 1024, 'MB (1000²)': 1e6, 'MiB (1024²)': 1048576, 'GB (1000³)': 1e9, 'GiB (1024³)': 1073741824, 'TB (1000⁴)': 1e12 } },
+  'Waktu': { base: 'detik', units: { 'detik': 1, 'menit': 60, 'jam': 3600, 'hari': 86400, 'minggu': 604800, 'bulan (rata²)': 2629800, 'tahun (rata²)': 31557600 } },
+  'Suhu': { base: '°C', special: true, units: { '°C': 1, '°F': 1, 'K': 1, '°R': 1 } }
+};
+const tempTo = {
+  '°C': v => v, '°F': (v) => (v - 32) * 5 / 9, 'K': v => v - 273.15, '°R': v => (v - 491.67) * 5 / 9
+};
+const tempFrom = {
+  '°C': v => v, '°F': v => v * 9 / 5 + 32, 'K': v => v + 273.15, '°R': v => (v + 273.15) * 9 / 5
+};
+tool({
+  id: 'unit', name: 'Unit Converter', cat: 'konversi', icon: '📐', color: 'mint',
+  desc: 'Panjang, massa, volume, luas, kecepatan, data, waktu, dan suhu — sekaligus tabel semua satuan.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="row" style="margin-bottom:14px"><select id="ucat" style="max-width:230px">
+        ${Object.keys(UNITS).map(c => `<option>${c}</option>`).join('')}</select>
+        <button class="btn sm" id="uswap">⇄ Tukar</button></div>
+      <div class="grid3">
+        <div><label class="f">Nilai</label><input type="text" id="uval" class="mono" value="1" inputmode="decimal" /></div>
+        <div><label class="f">Dari</label><select id="ufrom"></select></div>
+        <div><label class="f">Ke</label><select id="uto"></select></div>
+      </div>
+      <div class="outbox mt"><button class="btn sm copybtn" id="ucopy">Salin</button><div class="out" id="uout" style="font-size:1.1rem"></div></div>
+      <div id="utable" class="mt"></div>`;
+    function fillSelects() {
+      const cat = $('#ucat').value;
+      const units = Object.keys(UNITS[cat].units);
+      const opts = units.map(u => `<option>${u}</option>`).join('');
+      $('#ufrom').innerHTML = opts; $('#uto').innerHTML = opts;
+      $('#uto').selectedIndex = Math.min(1, units.length - 1);
+      run();
+    }
+    function convert(v, cat, from, to) {
+      if (UNITS[cat].special) return tempFrom[to](tempTo[from](v));
+      const u = UNITS[cat].units;
+      return v * u[from] / u[to];
+    }
+    const fmtNum = n => {
+      if (!isFinite(n)) return '—';
+      const a = Math.abs(n);
+      if (a !== 0 && (a < 0.0001 || a >= 1e12)) return n.toExponential(4);
+      return n.toLocaleString('id-ID', { maximumFractionDigits: 6 });
+    };
+    function run() {
+      const cat = $('#ucat').value;
+      const v = safeNum($('#uval').value, 0);
+      const from = $('#ufrom').value, to = $('#uto').value;
+      if (!from || !to) return;
+      const res = convert(v, cat, from, to);
+      $('#uout').textContent = `${fmtNum(v)} ${from}  =  ${fmtNum(res)} ${to}`;
+      $('#uout').dataset.v = String(res);
+      const units = Object.keys(UNITS[cat].units);
+      $('#utable').innerHTML = `<table class="mini"><thead><tr><th>Satuan</th><th>Nilai</th></tr></thead><tbody>
+        ${units.map(u => {
+          const val = convert(v, cat, from, u);
+          const hl = u === to ? 'style="color:var(--accent);font-weight:700"' : '';
+          return `<tr><td>${u}</td><td class="mono" ${hl}>${fmtNum(val)}</td></tr>`;
+        }).join('')}</tbody></table>`;
+    }
+    $('#ucat').onchange = fillSelects;
+    ['uval', 'ufrom', 'uto'].forEach(id => $('#' + id).oninput = run);
+    $('#uswap').onclick = () => {
+      const a = $('#ufrom').value; $('#ufrom').value = $('#uto').value; $('#uto').value = a; run();
+    };
+    $('#ucopy').onclick = () => copyText($('#uout').textContent, 'Hasil disalin');
+    fillSelects();
+  }
+});
+
+/* ---------- 24. Number base ---------- */
+tool({
+  id: 'numbase', name: 'Number Base Converter', cat: 'konversi', icon: '01', color: 'violet',
+  desc: 'Konversi biner, oktal, desimal, hex, dan basis kustom 2–36 + representasi bit & ASCII.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid3">
+        <div><label class="f">Nilai</label><input type="text" id="nin" class="mono" value="2026" spellcheck="false" /></div>
+        <div><label class="f">Basis input</label><select id="nbase">${[2, 8, 10, 16, 32, 36].map(b => `<option value="${b}" ${b === 10 ? 'selected' : ''}>Basis ${b}</option>`).join('')}</select></div>
+        <div><label class="f">Basis kustom (2–36)</label><input type="number" id="ncustom" min="2" max="36" value="7" /></div>
+      </div>
+      <div id="nerr" class="err"></div>
+      <div id="nout" class="mt"></div>`;
+    function run() {
+      $('#nerr').textContent = ''; $('#nout').innerHTML = '';
+      const raw = $('#nin').value.trim().replace(/\s+/g, '');
+      const b = Number($('#nbase').value);
+      if (!raw) return;
+      const valid = '0123456789abcdefghijklmnopqrstuvwxyz'.slice(0, b);
+      const clean = raw.toLowerCase().replace(/^0[xb]/, '');
+      if ([...clean].some(c => !valid.includes(c))) {
+        $('#nerr').textContent = `✗ Karakter tidak valid untuk basis ${b} (hanya ${valid.split('').join(' ')})`;
+        return;
+      }
+      const val = parseInt(clean, b);
+      if (!isFinite(val) || val > Number.MAX_SAFE_INTEGER) { $('#nerr').textContent = '✗ Angka terlalu besar (maks 2^53-1)'; return; }
+      const cb = clamp(Number($('#ncustom').value) || 2, 2, 36);
+      const rows = [2, 8, 10, 16, 32, 36, cb].filter((v, i, a) => a.indexOf(v) === i).sort((a, c) => a - c);
+      $('#nout').innerHTML = `
+        <table class="mini"><thead><tr><th>Basis</th><th>Nilai</th><th></th></tr></thead><tbody>
+        ${rows.map(x => `<tr><td>${x}${x === 10 ? ' (desimal)' : x === 16 ? ' (hex)' : x === 2 ? ' (biner)' : ''}</td>
+          <td class="mono" style="word-break:break-all">${val.toString(x).toUpperCase()}</td>
+          <td style="width:36px"><button class="btn sm" data-c="${val.toString(x).toUpperCase()}">⧉</button></td></tr>`).join('')}
+        </tbody></table>
+        <div class="statgrid mt">
+          <div class="stat"><div class="v">${val}</div><div class="k">desimal</div></div>
+          <div class="stat"><div class="v">${val.toString(2).length}</div><div class="k">bit</div></div>
+          <div class="stat"><div class="v">${Math.ceil(val.toString(2).length / 8)}</div><div class="k">byte</div></div>
+          <div class="stat"><div class="v">${val % 2 === 0 ? 'genap' : 'ganjil'}</div><div class="k">paritas</div></div>
+        </div>
+        <div class="hint">Byte view: <span class="mono">${val <= 4294967295 ? (val).toString(2).padStart(Math.ceil(val.toString(2).length / 8) * 8, '0').match(/.{8}/g).join(' ') : '—'}</span></div>`;
+      $$('#nout [data-c]').forEach(btn => btn.onclick = () => copyText(btn.dataset.c, 'Disalin'));
+    }
+    ['nin', 'nbase', 'ncustom'].forEach(id => $('#' + id).oninput = run);
+    run();
+  }
+});
+
+/* ---------- 25. BMI ---------- */
+tool({
+  id: 'bmi', name: 'Kalkulator BMI', cat: 'hitung', icon: '⚖️', color: 'cyan',
+  desc: 'Hitung indeks massa tubuh, kategori WHO (Asia-Pasifik), dan rentang berat ideal.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid3">
+        <div><label class="f">Berat (kg)</label><input type="number" id="bw" value="65" min="10" max="400" step="0.1" /></div>
+        <div><label class="f">Tinggi (cm)</label><input type="number" id="bh" value="170" min="50" max="250" /></div>
+        <div><label class="f">Usia (opsional)</label><input type="number" id="ba" value="25" min="2" max="120" /></div>
+      </div>
+      <div class="split mt">
+        <div id="bres"></div>
+        <div>
+          <label class="f">Skala kategori</label>
+          <div style="margin-top:6px">
+            ${[['< 18.5', 'Kurus', 'var(--cyan)'], ['18.5–22.9', 'Normal', 'var(--mint)'], ['23–24.9', 'Berisiko', 'var(--gold)'], ['25–29.9', 'Obesitas I', '#ff9f43'], ['≥ 30', 'Obesitas II', 'var(--rose)']]
+        .map(([r, l, c]) => `<div style="display:flex;align-items:center;gap:9px;padding:5px 0;font-size:.84rem">
+          <span style="width:9px;height:9px;border-radius:50%;background:${c}"></span><b style="width:78px;font-family:var(--mono);font-size:.78rem">${r}</b><span style="color:var(--dim)">${l}</span></div>`).join('')}
+          </div>
+          <div class="hint">Kategori mengikuti batas WHO untuk populasi Asia-Pasifik. BMI bukan diagnosis medis — konsultasikan dengan tenaga kesehatan.</div>
+        </div>
+      </div>`;
+    const cat = bmi => bmi < 18.5 ? ['Kurus', 'mid', 'cyan'] : bmi < 23 ? ['Normal', 'good', 'mint'] : bmi < 25 ? ['Berisiko', 'mid', 'gold'] : bmi < 30 ? ['Obesitas I', 'bad', 'rose'] : ['Obesitas II', 'bad', 'rose'];
+    function run() {
+      const w = safeNum($('#bw').value), h = safeNum($('#bh').value) / 100;
+      if (!w || !h) { $('#bres').innerHTML = ''; return; }
+      const bmi = w / (h * h);
+      const [label, cls] = cat(bmi);
+      const minIdeal = 18.5 * h * h, maxIdeal = 22.9 * h * h;
+      const delta = w < minIdeal ? -(minIdeal - w) : w > maxIdeal ? -(w - maxIdeal) : 0;
+      $('#bres').innerHTML = `
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div class="ring-wrap" style="width:132px;height:132px;border-radius:50%;position:relative;
+            background:conic-gradient(var(--${cls === 'good' ? 'mint' : cls === 'mid' ? 'gold' : 'rose'}) ${clamp((bmi - 10) / 30 * 360, 2, 359)}deg, var(--surface-3) 0)">
+            <div style="position:absolute;inset:10px;border-radius:50%;background:var(--surface)"></div>
+            <div class="txt" style="position:relative"><b>${bmi.toFixed(1)}</b><span>BMI</span></div>
+          </div>
+          <div>
+            <span class="badge ${cls}">${label}</span>
+            <div class="hint" style="margin-top:8px">Berat ideal: <b>${minIdeal.toFixed(1)}–${maxIdeal.toFixed(1)} kg</b><br>
+            ${delta === 0 ? 'Berat kamu sudah di rentang ideal ✓' : delta > 0 ? `Perlu tambah ± ${Math.abs(delta).toFixed(1)} kg` : `Perlu turun ± ${Math.abs(delta).toFixed(1)} kg`}</div>
+          </div>
+        </div>
+        <div class="statgrid mt">
+          <div class="stat"><div class="v">${w}</div><div class="k">berat kg</div></div>
+          <div class="stat"><div class="v">${(h * 100).toFixed(0)}</div><div class="k">tinggi cm</div></div>
+          <div class="stat"><div class="v">${(bmi * h * h).toFixed(0)}</div><div class="k">kg / m²</div></div>
+          <div class="stat"><div class="v">${Math.round(370 + 21.6 * bmi)}</div><div class="k">kalori dasar</div></div>
+        </div>`;
+    }
+    ['bw', 'bh'].forEach(id => $('#' + id).oninput = run);
+    run();
+  }
+});
+
+/* ---------- 26. Loan / cicilan ---------- */
+tool({
+  id: 'loan', name: 'Kalkulator Cicilan', cat: 'hitung', icon: '🏦', color: 'gold',
+  desc: 'Simulasi cicilan KPR/kredit: bunga efektif, total bunga, dan tabel amortisasi.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid3">
+        <div><label class="f">Pokok pinjaman (Rp)</label><input type="text" id="lp" class="mono" value="300.000.000" /></div>
+        <div><label class="f">Bunga / tahun (%)</label><input type="number" id="lr" value="8.5" step="0.1" min="0" max="100" /></div>
+        <div><label class="f">Tenor (tahun)</label><input type="number" id="lt" value="10" min="1" max="40" /></div>
+      </div>
+      <div class="row mt"><div class="seg" id="ltype"><button class="on" data-t="eff">Bunga efektif</button><button data-t="flat">Bunga flat</button></div>
+        <label class="row tight" style="font-size:.83rem"><input type="checkbox" id="lshow" /> Tampilkan tabel amortisasi</label></div>
+      <div id="lout" class="mt"></div>`;
+    let type = 'eff';
+    const parseRp = s => Number(String(s).replace(/[^\d]/g, '')) || 0;
+    const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+    $('#lp').oninput = e => { e.target.value = parseRp(e.target.value).toLocaleString('id-ID'); run(); };
+    $('#lr').oninput = run; $('#lt').oninput = run; $('#lshow').onchange = run;
+    $('#ltype').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#ltype button').forEach(x => x.classList.remove('on')); b.classList.add('on'); type = b.dataset.t; run();
+    };
+    function run() {
+      const P = parseRp($('#lp').value);
+      const rate = safeNum($('#lr').value) / 100;
+      const years = clamp(safeNum($('#lt').value, 1), 1, 40);
+      const n = Math.round(years * 12);
+      if (!P || !n) { $('#lout').innerHTML = ''; return; }
+      let monthly, total, interest, schedule = [];
+      if (type === 'flat') {
+        const flatMonthly = P * rate / 12;
+        monthly = P / n + flatMonthly;
+        total = monthly * n;
+        interest = total - P;
+        let sisa = P;
+        for (let i = 0; i < n; i++) {
+          sisa -= P / n;
+          schedule.push([i + 1, monthly, P / n, flatMonthly, Math.max(sisa, 0)]);
+        }
+      } else {
+        const r = rate / 12;
+        monthly = r === 0 ? P / n : P * r / (1 - Math.pow(1 + r, -n));
+        total = monthly * n;
+        interest = total - P;
+        let sisa = P;
+        for (let i = 0; i < n; i++) {
+          const bunga = sisa * r;
+          const pokok = monthly - bunga;
+          sisa -= pokok;
+          schedule.push([i + 1, monthly, pokok, bunga, Math.max(sisa, 0)]);
+        }
+      }
+      const pct = interest / total * 100;
+      $('#lout').innerHTML = `
+        <div class="outbox"><div class="out" style="font-size:1.25rem;font-family:var(--mono)">${rp(monthly)} <span style="font-size:.85rem;color:var(--muted)">/ bulan</span></div></div>
+        <div class="statgrid mt">
+          <div class="stat"><div class="v">${(n).toLocaleString('id-ID')}</div><div class="k">bulan</div></div>
+          <div class="stat"><div class="v">${rp(total)}</div><div class="k">total bayar</div></div>
+          <div class="stat"><div class="v">${rp(interest)}</div><div class="k">total bunga</div></div>
+          <div class="stat"><div class="v">${pct.toFixed(1)}%</div><div class="k">bunga / total</div></div>
+        </div>
+        <div style="height:8px;border-radius:99px;background:var(--surface-3);margin-top:12px;overflow:hidden;display:flex">
+          <div style="width:${(100 - pct).toFixed(1)}%;background:var(--mint)"></div>
+          <div style="width:${pct.toFixed(1)}%;background:var(--rose)"></div>
+        </div>
+        <div class="hint"><span style="color:var(--mint)">■</span> pokok ${rp(P)} &nbsp; <span style="color:var(--rose)">■</span> bunga ${rp(interest)}</div>
+        ${$('#lshow').checked ? `<div class="mt" style="max-height:340px;overflow:auto">
+          <table class="mini"><thead><tr><th>#</th><th>Cicilan</th><th>Pokok</th><th>Bunga</th><th>Sisa</th></tr></thead><tbody>
+          ${schedule.map(([i, m, p, b, s]) => `<tr><td class="mono">${i}</td><td class="mono">${rp(m)}</td><td class="mono">${rp(p)}</td><td class="mono">${rp(b)}</td><td class="mono">${rp(s)}</td></tr>`).join('')}
+          </tbody></table></div>` : ''}`;
+    }
+    run();
+  }
+});
+
+/* ---------- 27. Discount / tax ---------- */
+tool({
+  id: 'disc', name: 'Diskon & PPN', cat: 'hitung', icon: '％', color: 'rose',
+  desc: 'Hitung harga setelah diskon, pajak/PPN, split bill, dan tip — lengkap dengan rincian.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="grid2">
+        <div><label class="f">Harga awal (Rp)</label><input type="text" id="dp" class="mono" value="250.000" /></div>
+        <div><label class="f">Diskon (%)</label><input type="number" id="dd" value="20" min="0" max="100" step="0.5" /></div>
+        <div><label class="f">Diskon tambahan (%)</label><input type="number" id="dd2" value="0" min="0" max="100" step="0.5" /></div>
+        <div><label class="f">Pajak / PPN (%)</label><input type="number" id="dt" value="11" min="0" max="100" step="0.5" /></div>
+        <div><label class="f">Tip / service (%)</label><input type="number" id="dtip" value="0" min="0" max="100" step="0.5" /></div>
+        <div><label class="f">Dibagi untuk (orang)</label><input type="number" id="dsplit" value="1" min="1" max="100" /></div>
+      </div>
+      <div class="outbox mt"><button class="btn sm copybtn" id="dcopy">Salin rincian</button><div class="out" id="dout" style="font-family:var(--mono);font-size:.92rem"></div></div>
+      <div class="hint">Diskon dihitung berurutan (bukan dijumlah), lalu pajak & tip dihitung dari harga setelah diskon.</div>`;
+    const parseRp = s => Number(String(s).replace(/[^\d]/g, '')) || 0;
+    const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+    $('#dp').oninput = e => { e.target.value = parseRp(e.target.value).toLocaleString('id-ID'); run(); };
+    ['dd', 'dd2', 'dt', 'dtip', 'dsplit'].forEach(id => $('#' + id).oninput = run);
+    function run() {
+      const P = parseRp($('#dp').value);
+      const d1 = clamp(safeNum($('#dd').value), 0, 100) / 100;
+      const d2 = clamp(safeNum($('#dd2').value), 0, 100) / 100;
+      const tax = clamp(safeNum($('#dt').value), 0, 100) / 100;
+      const tip = clamp(safeNum($('#dtip').value), 0, 100) / 100;
+      const split = clamp(safeNum($('#dsplit').value, 1), 1, 100);
+      const afterD1 = P * (1 - d1);
+      const afterD2 = afterD1 * (1 - d2);
+      const taxAmt = afterD2 * tax, tipAmt = afterD2 * tip;
+      const total = afterD2 + taxAmt + tipAmt;
+      const lines = [
+        ['Harga awal', P],
+        [`Diskon ${(d1 * 100).toFixed(1)}%`, -(P - afterD1)],
+        d2 ? [`Diskon tambahan ${(d2 * 100).toFixed(1)}%`, -(afterD1 - afterD2)] : null,
+        ['Subtotal', afterD2],
+        [`PPN ${(tax * 100).toFixed(1)}%`, taxAmt],
+        tip ? [`Tip ${(tip * 100).toFixed(1)}%`, tipAmt] : null,
+        ['TOTAL', total]
+      ].filter(Boolean);
+      $('#dout').innerHTML = lines.map(([l, v], i) => {
+        const bold = l === 'TOTAL' || l === 'Subtotal';
+        return `<div style="display:flex;justify-content:space-between;gap:12px;padding:4px 0;${bold ? 'font-weight:700;border-top:1px dashed var(--line);margin-top:4px;padding-top:7px' : ''}">
+          <span style="${bold ? '' : 'color:var(--dim)'}">${l}</span><span>${v < 0 ? '−' + rp(-v) : rp(v)}</span></div>`;
+      }).join('') + `
+        <div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:var(--mint)">
+          <span>Hemat</span><span>${rp(P - afterD2)} (${((P - afterD2) / P * 100 || 0).toFixed(1)}%)</span></div>
+        ${split > 1 ? `<div style="display:flex;justify-content:space-between;color:var(--accent);font-weight:700">
+          <span>Per orang (${split}×)</span><span>${rp(total / split)}</span></div>` : ''}`;
+    }
+    $('#dcopy').onclick = () => copyText($('#dout').innerText, 'Rincian disalin');
+    run();
+  }
+});
+
+/* ---------- 28. Date range ---------- */
+tool({
+  id: 'daterange', name: 'Selisih Tanggal', cat: 'hitung', icon: '📅', color: 'violet',
+  desc: 'Hitung durasi antar tanggal: hari, minggu, hari kerja, plus breakdown tahun–bulan–hari.',
+  mount(root) {
+    const today = new Date();
+    const iso = d => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+    root.innerHTML = `
+      <div class="grid2">
+        <div><label class="f">Tanggal mulai</label><input type="date" id="d1" value="${iso(today)}" /></div>
+        <div><label class="f">Tanggal akhir</label><input type="date" id="d2" value="${iso(new Date(today.getTime() + 30 * 864e5))}" /></div>
+      </div>
+      <label class="row tight mt" style="font-size:.84rem"><input type="checkbox" id="dinc" /> Hitung hari terakhir juga (+1 hari)</label>
+      <div id="drout" class="mt"></div>
+      <div class="row mt"><button class="btn sm" id="drmon">Bulan ini</button><button class="btn sm" id="drnow">Hari ini</button>
+        <button class="btn sm" id="drq">Kuartal ini</button></div>`;
+    function diffParts(a, b) {
+      let y = b.getFullYear() - a.getFullYear();
+      let m = b.getMonth() - a.getMonth();
+      let d = b.getDate() - a.getDate();
+      if (d < 0) { m--; d += new Date(b.getFullYear(), b.getMonth(), 0).getDate(); }
+      if (m < 0) { y--; m += 12; }
+      return { y, m, d };
+    }
+    function bizDays(a, b) {
+      let count = 0;
+      const cur = new Date(a);
+      while (cur <= b) {
+        const wd = cur.getDay();
+        if (wd !== 0 && wd !== 6) count++;
+        cur.setDate(cur.getDate() + 1);
+      }
+      return count;
+    }
+    function run() {
+      const v1 = $('#d1').value, v2 = $('#d2').value;
+      if (!v1 || !v2) { $('#drout').innerHTML = ''; return; }
+      const a = new Date(v1 + 'T00:00:00'), b = new Date(v2 + 'T00:00:00');
+      const inc = $('#dinc').checked ? 1 : 0;
+      const ms = (b - a) + inc * 864e5;
+      const days = Math.round(ms / 864e5);
+      const absDays = Math.abs(days);
+      const [s, e] = a <= b ? [a, b] : [b, a];
+      const parts = diffParts(s, e);
+      const biz = bizDays(s, e);
+      const totalDays = Math.round((e - s) / 864e5) + 1;
+      const weeks = (absDays / 7).toFixed(1);
+      const fmtDate = d => d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      $('#drout').innerHTML = `
+        <div class="outbox"><div class="out" style="font-size:1.3rem">${absDays.toLocaleString('id-ID')} hari
+          <span style="font-size:.85rem;color:var(--muted)">${days < 0 ? '(tanggal akhir lebih awal)' : ''}</span></div></div>
+        <div class="statgrid mt">
+          <div class="stat"><div class="v">${parts.y}</div><div class="k">tahun</div></div>
+          <div class="stat"><div class="v">${parts.m}</div><div class="k">bulan</div></div>
+          <div class="stat"><div class="v">${parts.d}</div><div class="k">hari</div></div>
+          <div class="stat"><div class="v">${weeks}</div><div class="k">minggu</div></div>
+          <div class="stat"><div class="v">${biz}</div><div class="k">hari kerja</div></div>
+          <div class="stat"><div class="v">${(absDays * 24).toLocaleString('id-ID')}</div><div class="k">jam</div></div>
+          <div class="stat"><div class="v">${(absDays * 1440).toLocaleString('id-ID')}</div><div class="k">menit</div></div>
+          <div class="stat"><div class="v">${totalDays}</div><div class="k">total inklusif</div></div>
+        </div>
+        <table class="mini mt"><tbody>
+          <tr><th style="width:110px">Mulai</th><td>${fmtDate(s)}</td></tr>
+          <tr><th>Akhir</th><td>${fmtDate(e)}</td></tr>
+          <tr><th>Usia</th><td>${parts.y} tahun ${parts.m} bulan ${parts.d} hari</td></tr>
+        </tbody></table>`;
+    }
+    ['d1', 'd2'].forEach(id => $('#' + id).oninput = run);
+    $('#dinc').onchange = run;
+    const set = (a, b) => { $('#d1').value = iso(a); $('#d2').value = iso(b); run(); };
+    $('#drmon').onclick = () => { const n = new Date(); set(new Date(n.getFullYear(), n.getMonth(), 1), new Date(n.getFullYear(), n.getMonth() + 1, 0)); };
+    $('#drnow').onclick = () => set(new Date(), new Date());
+    $('#drq').onclick = () => { const n = new Date(); const q = Math.floor(n.getMonth() / 3); set(new Date(n.getFullYear(), q * 3, 1), new Date(n.getFullYear(), q * 3 + 3, 0)); };
+    run();
+  }
+});
+
+/* ---------- 29. Pomodoro ---------- */
+tool({
+  id: 'pomodoro', name: 'Pomodoro Timer', cat: 'fokus', icon: '🍅', color: 'rose',
+  desc: 'Timer 25/5 dengan siklus otomatis, notifikasi suara, dan penghitung sesi harian.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="split">
+        <div>
+          <div class="ring-wrap" style="margin:0 auto 18px;width:220px;height:220px;border-radius:50%" id="pring">
+            <div style="position:absolute;inset:14px;border-radius:50%;background:var(--surface)"></div>
+            <div class="txt" style="position:relative"><b id="ptime" style="font-size:2.5rem">25:00</b><span id="pstate">fokus</span></div>
+          </div>
+          <div class="row" style="justify-content:center">
+            <button class="btn p" id="pstart">▶ Mulai</button>
+            <button class="btn" id="preset">↺ Reset</button>
+            <button class="btn" id="pskip">⏭ Lewati</button>
+          </div>
+          <div class="hint" style="text-align:center;margin-top:12px">Sesi selesai: <b id="pdone">0</b> · total fokus <b id="pfocus">0 mnt</b></div>
+        </div>
+        <div>
+          <div class="grid3">
+            <div><label class="f">Fokus (mnt)</label><input type="number" id="pw" value="25" min="1" max="120" /></div>
+            <div><label class="f">Istirahat</label><input type="number" id="pb" value="5" min="1" max="60" /></div>
+            <div><label class="f">Istirahat panjang</label><input type="number" id="pl" value="15" min="1" max="90" /></div>
+          </div>
+          <label class="row tight mt" style="font-size:.84rem"><input type="checkbox" id="psound" checked /> Bunyi saat sesi selesai</label>
+          <label class="row tight mt-s" style="font-size:.84rem"><input type="checkbox" id="pauto" checked /> Lanjut otomatis</label>
+          <table class="mini mt" id="plog"><tbody></tbody></table>
+        </div>
+      </div>`;
+    let mode = 'work', left = 25 * 60, total = 25 * 60, timer = null, done = 0, focusMin = 0, log = [];
+    const beep = () => {
+      if (!$('#psound').checked) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [0, .18, .36].forEach((t, i) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = [880, 1100, 1320][i];
+          g.gain.setValueAtTime(.0001, ctx.currentTime + t);
+          g.gain.exponentialRampToValueAtTime(.22, ctx.currentTime + t + .02);
+          g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + t + .17);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + .2);
+        });
+      } catch { }
+    };
+    const dur = m => clamp(safeNum($('#' + (m === 'work' ? 'pw' : m === 'break' ? 'pb' : 'pl')).value, 25), 1, 120) * 60;
+    const draw = () => {
+      const m = Math.floor(left / 60), s = left % 60;
+      $('#ptime').textContent = `${pad2(m)}:${pad2(s)}`;
+      $('#pstate').textContent = mode === 'work' ? 'fokus' : mode === 'break' ? 'istirahat' : 'istirahat panjang';
+      const pct = total ? (1 - left / total) : 0;
+      const col = mode === 'work' ? 'var(--rose)' : 'var(--mint)';
+      const r = $('#pring');
+      r.style.position = 'relative';
+      r.style.background = `conic-gradient(${col} ${pct * 360}deg, var(--surface-3) 0)`;
+      document.title = (timer ? `${$('#ptime').textContent} · ` : '') + 'Toolbox — 30 Tools Ringan';
+    };
+    const setMode = m => { mode = m; total = dur(m); left = total; draw(); };
+    const next = () => {
+      if (mode === 'work') setMode(done % 4 === 3 ? 'long' : 'break');
+      else setMode('work');
+      if ($('#pauto').checked) start();
+    };
+    function start() {
+      if (timer) return;
+      $('#pstart').textContent = '⏸ Jeda';
+      timer = setInterval(() => {
+        left--;
+        if (left <= 0) {
+          clearInterval(timer); timer = null;
+          $('#pstart').textContent = '▶ Mulai';
+          beep();
+          if (mode === 'work') {
+            done++; focusMin += total / 60;
+            log.unshift(`${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} — sesi fokus ${total / 60} menit`);
+            $('#pdone').textContent = done;
+            $('#pfocus').textContent = Math.round(focusMin) + ' mnt';
+            $('#plog').innerHTML = log.slice(0, 6).map(l => `<tr><td class="mono" style="font-size:.76rem;color:var(--dim)">${l}</td></tr>`).join('');
+          }
+          toast(mode === 'work' ? '🍅 Sesi fokus selesai — istirahat dulu!' : '☕ Istirahat selesai — lanjut fokus!');
+          next();
+          return;
+        }
+        draw();
+      }, 1000);
+    }
+    function pause() { clearInterval(timer); timer = null; $('#pstart').textContent = '▶ Mulai'; draw(); }
+    $('#pstart').onclick = () => timer ? pause() : start();
+    $('#preset').onclick = () => { pause(); setMode(mode); };
+    $('#pskip').onclick = () => { pause(); next(); };
+    ['pw', 'pb', 'pl'].forEach(id => $('#' + id).onchange = () => { if (!timer) setMode(mode); });
+    setMode('work');
+    trackCleanup(() => { clearInterval(timer); document.title = 'Toolbox — 30 Tools Ringan, Jalan di Browser'; });
+  }
+});
+
+/* ---------- 30. Stopwatch ---------- */
+tool({
+  id: 'stopwatch', name: 'Stopwatch', cat: 'fokus', icon: '⏲', color: 'cyan',
+  desc: 'Stopwatch presisi milidetik dengan split lap, keyboard shortcut, dan ekspor lap.',
+  mount(root) {
+    root.innerHTML = `
+      <div class="time" id="swTime" style="font-size:clamp(2.4rem,9vw,4rem)">00:00.00</div>
+      <div class="row" style="justify-content:center;margin:16px 0 20px">
+        <button class="btn p" id="swStart" style="min-width:130px">▶ Mulai</button>
+        <button class="btn" id="swLap">◆ Lap</button>
+        <button class="btn" id="swReset">↺ Reset</button>
+      </div>
+      <div class="hint" style="text-align:center">Tekan <kbd class="k">Space</kbd> untuk mulai/jeda · <kbd class="k">L</kbd> untuk lap</div>
+      <div id="swLaps" class="mt" style="max-height:300px;overflow:auto"></div>`;
+    let running = false, start = 0, acc = 0, raf = null, laps = [];
+    const fmt = ms => {
+      const cs = Math.floor(ms / 10) % 100;
+      const s = Math.floor(ms / 1000) % 60;
+      const m = Math.floor(ms / 60000) % 60;
+      const h = Math.floor(ms / 3600000);
+      return (h ? pad2(h) + ':' : '') + pad2(m) + ':' + pad2(s) + '.' + pad2(cs);
+    };
+    const now = () => acc + (running ? performance.now() - start : 0);
+    const loop = () => { $('#swTime').textContent = fmt(now()); raf = requestAnimationFrame(loop); };
+    const drawLaps = () => {
+      $('#swLaps').innerHTML = laps.length ? `<table class="mini"><thead><tr><th>Lap</th><th>Split</th><th>Total</th></tr></thead><tbody>
+        ${laps.map((l, i) => `<tr><td class="mono">${i + 1}</td><td class="mono">${fmt(l.split)}</td><td class="mono">${fmt(l.total)}</td></tr>`).join('')}
+      </tbody></table>` : '';
+    };
+    const startSw = () => {
+      if (running) return;
+      running = true; start = performance.now();
+      $('#swStart').textContent = '⏸ Jeda';
+      loop();
+    };
+    const pauseSw = () => {
+      if (!running) return;
+      acc += performance.now() - start; running = false;
+      cancelAnimationFrame(raf);
+      $('#swStart').textContent = '▶ Lanjut';
+      $('#swTime').textContent = fmt(acc);
+    };
+    $('#swStart').onclick = () => running ? pauseSw() : startSw();
+    $('#swLap').onclick = () => {
+      const t = now();
+      const prev = laps.length ? laps[0].total : 0;
+      laps.unshift({ total: t, split: t - prev });
+      drawLaps();
+    };
+    $('#swReset').onclick = () => {
+      running = false; acc = 0; laps = []; cancelAnimationFrame(raf);
+      $('#swStart').textContent = '▶ Mulai';
+      $('#swTime').textContent = '00:00.00';
+      drawLaps();
+    };
+    const key = e => {
+      if (document.body.contains($('#swTime'))) {
+        if (e.code === 'Space' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); running ? pauseSw() : startSw(); }
+        if (e.key.toLowerCase() === 'l' && running) $('#swLap').click();
+      }
+    };
+    window.addEventListener('keydown', key);
+    trackCleanup(() => { window.removeEventListener('keydown', key); cancelAnimationFrame(raf); });
+  }
+});
+
+/* ==========================================================
+   UI: kategori, pencarian, grid, router
+   ========================================================== */
+const CATS = {
+  dev: { label: 'Teks & Dev', order: 1 },
+  warna: { label: 'Warna', order: 2 },
+  gambar: { label: 'Gambar & Media', order: 3 },
+  konversi: { label: 'Konversi', order: 4 },
+  hitung: { label: 'Kalkulator', order: 5 },
+  fokus: { label: 'Fokus & Waktu', order: 6 }
+};
+const catCount = c => TOOLS.filter(t => t.cat === c).length;
+let activeCat = 'all', query = '';
+
+function iconHTML(t) {
+  const isText = !/[^\x00-\x7F]/.test(t.icon) && t.icon.length <= 3;
+  return `<div class="ico" style="${isText ? 'font-family:var(--mono);font-size:' + (t.icon.length > 2 ? '.72rem' : '.9rem') + ';font-weight:700;opacity:.92' : 'font-size:1.05rem'}">${t.icon}</div>`;
+}
+
+function renderChips() {
+  const cats = Object.entries(CATS).sort((a, b) => a[1].order - b[1].order);
+  $('#chips').innerHTML =
+    `<button class="chip active" data-cat="all">Semua <span class="n">${TOOLS.length}</span></button>` +
+    cats.map(([k, v]) => `<button class="chip" data-cat="${k}">${v.label} <span class="n">${catCount(k)}</span></button>`).join('') +
+    `<button class="chip" id="randomBtn" title="Buka tool acak">🎲 Acak</button>`;
+  $$('#chips .chip').forEach(b => {
+    if (b.id === 'randomBtn') return;
+    b.onclick = () => {
+      activeCat = b.dataset.cat;
+      $$('#chips .chip').forEach(x => x.classList.toggle('active', x === b));
+      renderGrid();
+    };
+  });
+  $('#randomBtn').onclick = () => {
+    const pool = activeCat === 'all' ? TOOLS : TOOLS.filter(t => t.cat === activeCat);
+    openTool(pool[Math.floor(Math.random() * pool.length)].id);
+  };
+}
+
+function matches(t) {
+  if (activeCat !== 'all' && t.cat !== activeCat) return false;
+  if (!query) return true;
+  const hay = (t.name + ' ' + t.desc + ' ' + (CATS[t.cat]?.label || '') + ' ' + t.id).toLowerCase();
+  return query.toLowerCase().split(/\s+/).filter(Boolean).every(w => hay.includes(w));
+}
+
+function renderGrid() {
+  const list = TOOLS.filter(matches);
+  const grid = $('#grid');
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty"><div style="font-size:1.6rem;margin-bottom:8px">🔍</div>
+      Tidak ada tool yang cocok dengan <b>"${esc(query)}"</b>.<br>
+      <button class="btn sm mt" onclick="clearSearch()">Hapus pencarian</button></div>`;
+    return;
+  }
+  const grouped = activeCat === 'all' && !query;
+  let html = '';
+  if (grouped) {
+    Object.entries(CATS).sort((a, b) => a[1].order - b[1].order).forEach(([k, v]) => {
+      const items = list.filter(t => t.cat === k);
+      if (!items.length) return;
+      html += `<div style="grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:20px 0 0">
+        <span style="font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700">${v.label}</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-family:var(--mono);font-size:.7rem;color:var(--muted)">${items.length}</span></div>`;
+      html += items.map(cardHTML).join('');
+    });
+  } else {
+    html = list.map(cardHTML).join('');
+  }
+  grid.innerHTML = html;
+  $$('.card', grid).forEach(c => {
+    c.addEventListener('pointermove', e => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      c.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+}
+
+function cardHTML(t) {
+  return `<article class="card" data-id="${t.id}" tabindex="0" role="button" aria-label="Buka ${esc(t.name)}">
+    <div class="head">${iconHTML(t)}<div><h3>${esc(t.name)}</h3>
+      <div class="cat">${CATS[t.cat]?.label || t.cat}</div></div></div>
+    <p>${esc(t.desc)}</p>
+    <div class="go">Buka tool <span aria-hidden="true">→</span></div>
+  </article>`;
+}
+
+function clearSearch() {
+  query = ''; $('#q').value = ''; renderGrid();
+}
+
+/* ---------- router ---------- */
+let mounted = null;
+function cleanupTool() {
+  if (typeof window._tbCleanup === 'function') {
+    try { window._tbCleanup(); } catch { }
+  }
+  window._tbCleanup = null;
+  mounted = null;
+}
+
+function openTool(id) {
+  const target = '#/' + id;
+  if (location.hash !== target) { location.hash = target; return; }
+  paintTool(id);
+}
+
+function paintTool(id) {
+  const t = TOOLS.find(x => x.id === id);
+  if (!t) return paintHome();
+  cleanupTool();
+  $('#home').style.display = 'none';
+  $('#work').classList.add('on');
+  $('#wIco').innerHTML = iconHTML(t).replace(/class="ico"/, 'class="ico"');
+  $('#wName').textContent = t.name;
+  $('#wDesc').textContent = CATS[t.cat]?.label + ' · ' + t.desc;
+  const panel = $('#wPanel');
+  panel.innerHTML = '';
+  try {
+    t.mount(panel);
+    mounted = t.id;
+  } catch (e) {
+    panel.innerHTML = `<div class="err">Tool gagal dimuat: ${esc(e.message)}</div>`;
+    console.error(e);
+  }
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  document.title = t.name + ' · Toolbox';
+}
+
+function paintHome() {
+  cleanupTool();
+  $('#work').classList.remove('on');
+  $('#home').style.display = '';
+  document.title = 'Toolbox — 30 Tools Ringan, Jalan di Browser';
+  if (window.__lastHomeScroll) window.scrollTo(0, window.__lastHomeScroll);
+}
+
+function showHome() {
+  if (location.hash) {
+    window.__lastHomeScroll = 0;
+    location.hash = '';
+  } else paintHome();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const card = e.target.closest('.card[data-id]');
+  if (card) { window.__lastHomeScroll = window.scrollY; openTool(card.dataset.id); }
+});
+document.addEventListener('keydown', e => {
+  const card = e.target.closest?.('.card[data-id]');
+  if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); card.click(); }
+  if (e.key === 'Escape') { if ($('#work').classList.contains('on')) showHome(); }
+  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if (e.key === '/' && !typing) { e.preventDefault(); $('#q').focus(); }
+  if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $('#q').focus(); }
+});
+$('#q').addEventListener('input', e => {
+  query = e.target.value.trim();
+  if (location.hash) { location.hash = ''; setTimeout(renderGrid, 0); }
+  else renderGrid();
+});
+window.addEventListener('hashchange', () => {
+  const id = location.hash.replace(/^#\/?/, '');
+  if (id) paintTool(id); else paintHome();
+});
+
+/* ---------- boot ---------- */
+(function boot() {
+  TOOLS.sort((a, b) => (CATS[a.cat].order - CATS[b.cat].order) || a.name.localeCompare(b.name));
+  $('#topMeta').textContent = `${TOOLS.length} tools · 100% lokal`;
+  $('#footNote').textContent = `${TOOLS.length} tools aktif · semua proses berjalan di browser kamu.`;
+  renderChips();
+  renderGrid();
+  const id = location.hash.replace(/^#\/?/, '');
+  if (id && TOOLS.some(t => t.id === id)) paintTool(id);
+})();
+
+</script>
+</body>
+</html>
