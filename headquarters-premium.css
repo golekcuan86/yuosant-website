@@ -220,3 +220,13 @@ p{letter-spacing:-.012em}
  .hero-atmosphere{animation:none;transform:translate(-50%,-50%)}
  .product-card:hover .product-illustration{transform:none}
 }
+
+/* Digital Store — preserved legacy crystal artwork and store checkout destination.
+   Only this display card is styled here; Scalev logic stays inside the original store app. */
+.card-store{background:linear-gradient(150deg,#292239,#181c2b 63%,#12191f);border-color:rgba(202,174,242,.27)}
+.card-store .product-art{border-color:rgba(194,151,243,.24);background:linear-gradient(140deg,#241e34,#151c29)}
+.card-store .product-type{color:#d9b8ef}
+.card-store .product-body h3 span{color:#e2c2f6}
+.card-store .product-illustration{object-fit:cover;object-position:center}
+.card-store .product-state.live{color:#e9d7ff;border-color:rgba(196,155,244,.5);background:rgba(150,106,204,.12)}
+.card-store .card-foot[href]:hover{color:#e9c9ff}
