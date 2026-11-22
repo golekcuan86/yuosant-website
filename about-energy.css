@@ -70,11 +70,16 @@
 
 @media (max-width: 760px) {
   #about .about-energy-art {
-    inset: 24% 0 0;
-    opacity: .22;
-    mask-image: linear-gradient(145deg, transparent 16%, #000 87%);
+    inset: auto 0 0;
+    height: clamp(180px, 48%, 320px);
+    opacity: .76;
+    mask-image: linear-gradient(155deg, transparent 8%, #000 66%);
   }
-  #about .about-energy-art img { object-position: right bottom; }
+  #about .about-energy-art img { object-position: right 68%; }
+  #about .intro-grid > div::before {
+    background: #f6f8f5e6;
+    box-shadow: 0 0 16px 8px #f6f8f5b3;
+  }
 }
 @media (prefers-reduced-motion: no-preference) {
   #about.about-energy-seen .about-energy-art { animation: about-energy-reveal 950ms ease-out; }
