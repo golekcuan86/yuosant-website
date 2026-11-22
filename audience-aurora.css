@@ -1,0 +1,71 @@
+/* Audience cards only. All content and icons are visible in the base layout. */
+@media (prefers-reduced-motion: no-preference) {
+  #audiences .audience-grid > article {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
+  }
+
+  #audiences .audience-grid > article::before,
+  #audiences .audience-grid > article::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  #audiences .audience-grid > article::before {
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: clamp(180px, 75%, 252px);
+    aspect-ratio: 1;
+    transform: translate3d(calc(var(--aurora-x, 0px) - 50%), calc(var(--aurora-y, 0px) - 50%), 0);
+    background: radial-gradient(circle, #34edc72b, #24cba014 43%, transparent 72%);
+    transition: opacity 330ms ease;
+  }
+
+  #audiences .audience-grid > article:is(.aurora-pointer, .aurora-touch, :has(:focus-visible)) {
+    border-color: #4dc1ad;
+    box-shadow: 0 8px 20px #021c2080;
+    transform: translateY(-2px);
+  }
+
+  #audiences .audience-grid > article:is(.aurora-pointer, .aurora-touch, :has(:focus-visible))::before { opacity: 1; }
+
+  #audiences .audience-grid .aurora-drawn svg [pathLength] {
+    stroke-dasharray: 1.002 1.002;
+    animation: audience-icon-draw 900ms ease-out var(--aurora-delay, 0ms) backwards;
+  }
+
+  #audiences .audience-grid .aurora-drawn svg {
+    animation: audience-icon-glow 520ms ease-out calc(var(--aurora-delay, 0ms) + 900ms) both;
+  }
+
+  #audiences .audience-grid .aurora-drawn::after {
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(105deg, transparent 39%, #8bf9e1 50%, transparent 61%) 100% 0 / 240% 100%;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: audience-border-sweep 850ms ease-out calc(var(--aurora-delay, 0ms) + 900ms);
+  }
+
+  @keyframes audience-icon-draw {
+    from { stroke-dashoffset: 1.002; }
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes audience-icon-glow {
+    from { filter: none; }
+    to { filter: drop-shadow(0 0 4px #43edc65e); }
+  }
+
+  @keyframes audience-border-sweep {
+    0% { opacity: 0; background-position: 100% 0; }
+    30%, 70% { opacity: .66; }
+    100% { opacity: 0; background-position: 0 0; }
+  }
+}
