@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 
 const browser = await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});
 try {
-  for (const size of [{width:1440,height:900,label:'desktop'},{width:360,height:800,label:'mobile'}]) {
+  for (const size of [{width:1440,height:900,label:'desktop'},{width:1024,height:768,label:'laptop'},{width:768,height:1024,label:'tablet'},{width:390,height:844,label:'phone-390'},{width:360,height:800,label:'mobile'}]) {
     const page = await browser.newPage({viewport:size});
     const errors = [];
     page.on('pageerror',error=>errors.push(error.message));
@@ -25,7 +25,7 @@ try {
         columns: getComputedStyle(grid).gridTemplateColumns
       };
     });
-    if (size.label === 'mobile') {
+    if (size.width <= 760) {
       assert.ok(introLayout.copyTop >= introLayout.headingBottom - 3,
         'About must stack vertically on mobile: ' + JSON.stringify(introLayout));
       assert.ok(introLayout.copyWidth >= 300,
@@ -36,7 +36,7 @@ try {
     }
     const hrefs=await page.locator('.product-card a.card-foot').evaluateAll(nodes=>nodes.map(n=>n.href));
     assert.deepEqual(hrefs, ['https://finlab.yuosant.com/']);
-    if (size.label==='mobile') {
+    if (size.width <= 760) {
       const menu=page.locator('#menu-toggle');
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
       await menu.click();
@@ -66,7 +66,9 @@ try {
     await page.locator('#product-carousel').evaluate(el => el.scrollTo({left:0,behavior:'instant'}));
     await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
     await page.waitForTimeout(220);
-    await page.screenshot({path:'headquarters-'+size.label+'.png',fullPage:true,animations:'disabled'});
+    if (size.label === 'mobile' || size.label === 'desktop') {
+      await page.screenshot({path:'headquarters-'+size.label+'.png',fullPage:true,animations:'disabled'});
+    }
     console.log('PASS '+size.label+'; carousel '+current.trim());
     await page.close();
   }
