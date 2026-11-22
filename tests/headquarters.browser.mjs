@@ -27,6 +27,16 @@ try {
       await page.locator('#main-nav a[href="#ecosystem"]').click();
       assert.equal(await menu.getAttribute('aria-expanded'),'false');
     }
+    const imageChecks = await page.locator('.product-illustration, .hero-atmosphere').evaluateAll(async (imgs) => {
+      await Promise.all(imgs.map(async (img) => {
+        img.loading = 'eager';
+        try { await img.decode(); } catch {}
+      }));
+      return imgs.map(img => ({
+        src: img.getAttribute('src'), ok: img.complete && img.naturalWidth > 0
+      }));
+    });
+    assert.ok(imageChecks.every(img => img.ok), size.label + ' artwork failed ' + JSON.stringify(imageChecks));
     await page.locator('#ecosystem').scrollIntoViewIfNeeded();
     await page.locator('#carousel-next').click();
     await page.waitForTimeout(450);
