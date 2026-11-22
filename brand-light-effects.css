@@ -20,23 +20,32 @@
   }
 }
 
-#home .hero-visual::after {
-  inset: 5% -3% -10%;
-  background: radial-gradient(ellipse at 50% 55%, #26e4a74f, #00c99b2b 33%, #00a6860d 57%, transparent 74%);
-  filter: none;
-  opacity: .84;
+/* The glow follows the orbital mark and stays inside its own layer. */
+#home.hero {
+  background: linear-gradient(155deg, #06191d 0%, #082024 62%, #092528 100%);
 }
-
+#home .hero-aura,
+#home .hero-visual::before,
+#home .hero-visual::after {
+  display: none;
+}
+#home .hero-energy-title { opacity: .055; }
+#home .hero-visual .visual-shape { isolation: isolate; }
+#home .hero-visual .visual-shape::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 51%, #39ffc28a 0%, #0de7a84d 27%, #00c99b20 47%, transparent 70%);
+  opacity: .78;
+}
 @media (prefers-reduced-motion: no-preference) {
-  #home.hero-energy-running .hero-visual::after {
+  #home.hero-energy-running .hero-visual .visual-shape::after {
     animation: yuosant-orbital-breath 6s ease-in-out infinite;
   }
   @keyframes yuosant-orbital-breath {
-    0%, 100% { opacity: .68; transform: scale(.95); }
+    0%, 100% { opacity: .62; transform: scale(.94); }
     50% { opacity: 1; transform: scale(1.06); }
   }
-}
-
-@media (min-width: 761px) {
-  #home .hero-visual::after { inset: 8% 5% -6%; }
 }
