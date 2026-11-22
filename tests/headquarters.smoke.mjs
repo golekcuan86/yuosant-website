@@ -36,7 +36,7 @@ test('logo variants and brand tokens available', () => {
 });
 test('FinLab and Digital Store retain their destinations and Journal and Tools use legacy routes', () => {
   const outbound = [...html.matchAll(/<a[^>]*href="(https?:[^"]+)"/g)].map(match => match[1]);
-  assert.deepEqual(outbound, [
+  assert.deepEqual([...new Set(outbound)], [
     'https://finlab.yuosant.com/',
     'https://yuosant-digital-hacks.vercel.app/#harga'
   ]);

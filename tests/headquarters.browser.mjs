@@ -14,6 +14,14 @@ try {
     assert.match(await page.title(),/Yuosant/);
     assert.equal(await page.locator('h1').count(),1);
     assert.equal(await page.locator('.product-card').count(),7);
+    assert.equal(await page.locator('.overview-grid dd').count(), 4);
+    assert.equal(await page.locator('.audience-grid article').count(), 6);
+    assert.equal(await page.locator('.use-case-grid article').count(), 3);
+    assert.equal(await page.locator('.footer-directory nav').count(), 4);
+    assert.match(await page.locator('.contact-actions .primary').getAttribute('href'), /^mailto:hello@yuosant\.com\?/);
+    const header = await page.locator('.header').boundingBox();
+    assert.ok(header.x > 0 && header.x + header.width < size.width && header.y > 0,
+      size.label + ' navigation should float inside the viewport');
     const width = await page.evaluate(() => ({
       scroll:document.documentElement.scrollWidth,
       viewport:window.innerWidth

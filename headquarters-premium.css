@@ -406,3 +406,144 @@ p{letter-spacing:-.012em}
 @media (max-width: 480px) {
   .solution-list { grid-template-columns: 1fr; }
 }
+
+/* Floating navigation and landing sections adapted from the design reference. */
+.header, .header.scrolled {
+  top: 12px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: min(calc(100% - 24px), 1340px);
+  height: 66px;
+  background: #f4f7f6;
+  color: var(--ink);
+  border: 1px solid #cbded6;
+  border-radius: 17px;
+  box-shadow: 0 12px 32px #001f231a;
+}
+.header.scrolled { background: #f4f7f6f5; }
+.header .nav-wrap { width: auto; padding-inline: clamp(14px, 2.4vw, 28px); }
+.header .nav a { color: var(--ink); }
+.header .nav a:hover { color: #006e59; }
+.header .nav .nav-cta { background: #d9f4eb; border-color: #8bbdaf; }
+.header .menu-toggle span { background: var(--ink); }
+
+.overview, .audiences { background: var(--ink); color: var(--ivory); }
+.overview { padding-block: 14px clamp(42px, 7vw, 90px); }
+.overview-title {
+  margin: 0 0 22px;
+  color: #a5bdb8;
+  font: 700 .82rem/1.6 var(--font-body);
+  letter-spacing: .12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px 12px;
+  margin: 0;
+  padding: clamp(22px, 4vw, 44px);
+  text-align: center;
+  background: #0d2c30;
+  border: 1px solid #315357;
+  border-radius: 24px;
+}
+.overview-grid > div { display: flex; flex-direction: column-reverse; gap: 6px; }
+.overview-grid dd { margin: 0; font: 800 clamp(34px, 5vw, 58px)/1 var(--font-head); }
+.overview-grid dd span { color: var(--teal); }
+.overview-grid dt { color: #b7cec9; font-size: .85rem; line-height: 1.55; }
+
+.audiences { background: radial-gradient(ellipse at 85% 100%, #12473f, transparent 62%), var(--ink); }
+.audiences .section-ident { color: #70e5cc; }
+.audiences h2, .use-cases h2 { margin: 14px 0; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.08; }
+.showcase-lead { max-width: 56ch; line-height: 1.7; }
+.audiences .showcase-lead { color: #b7cec9; }
+.audience-grid, .use-case-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+.audience-grid article, .use-case-grid article {
+  padding: clamp(22px, 3vw, 32px);
+  border: 1px solid #37585a;
+  border-radius: 24px;
+  background: #113236;
+}
+.audience-grid svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.audience-grid h3, .use-case-grid h3 { margin: 22px 0 8px; font-size: 1.3rem; text-wrap: initial; }
+.audience-grid p, .use-case-grid p { margin: 0; line-height: 1.75; }
+.audience-grid p { color: #bed1cd; }
+
+.use-cases { color: var(--ink); background: #fff; }
+.use-case-grid article { display: flex; flex-direction: column; background: #eef5f2; border-color: #c9ddd5; }
+.case-mark {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 100px;
+  background: #d0efe4;
+  color: #006550;
+  font-weight: 800;
+}
+.case-products { margin-top: auto; padding-top: 24px; color: #006550; font-size: .8rem; font-weight: 750; }
+
+.contact { background: var(--ivory); padding-block: clamp(30px, 6vw, 78px); border: 0; }
+.contact-frame {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 28px;
+  background: radial-gradient(ellipse at 15% 10%, #176c58, transparent 70%), var(--ink);
+  padding: clamp(30px, 8vw, 108px) clamp(16px, 5vw, 72px);
+}
+.contact-frame::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: url('/assets/brand/yuosant-symbol-dark.svg') no-repeat right -8% center / min(58%, 680px);
+  opacity: .075;
+}
+.contact-frame .contact-inner { max-width: 760px; margin: auto; }
+.contact-frame .contact-actions { flex-wrap: wrap; }
+
+.footer { background: #eaf2ef; color: var(--ink); }
+.footer-directory {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(4, minmax(0, 1fr));
+  gap: 30px 20px;
+}
+.footer-directory nav { display: grid; align-content: start; gap: 9px; }
+.footer-directory h2 { margin: 0 0 5px; font-size: 1rem; text-wrap: initial; }
+.footer-directory a { color: #2e574f; font-size: .875rem; padding-block: 4px; }
+.footer-directory a:hover { color: #006b54; text-decoration: underline; }
+.footer-identity p { color: #2e574f; font-size: .875rem; }
+.footer-copyright { display: block; border-top: 1px solid #c5d8d0; margin-top: 32px; padding-top: 20px; color: #2e574f; }
+
+@media (max-width: 960px) {
+  .footer-directory { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .footer-identity { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .header .nav {
+    top: calc(100% + 8px);
+    background: var(--ivory);
+    border: 1px solid #cbded6;
+    border-radius: 16px;
+  }
+  .overview-grid, .footer-directory { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .audience-grid, .use-case-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .contact-frame .contact-actions .button { flex-basis: 100%; justify-content: center; }
+}
