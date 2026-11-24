@@ -58,7 +58,7 @@ function initialize(T, RoomEnvironment) {
     fallback.style.visibility = '';
   }
   try {
-    renderer = new T.WebGLRenderer({ alpha: true, antialias: !compact.matches, powerPreference: 'low-power', stencil: false });
+    renderer = new T.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power', stencil: false });
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = T.SRGBColorSpace;
     renderer.toneMapping = T.ACESFilmicToneMapping;
@@ -120,11 +120,11 @@ function initialize(T, RoomEnvironment) {
     right.closePath();
 
     const logo = new T.Group(); scene.add(logo);
-    const edges = [];
+    const rims = [];
     [left, right].forEach((shape, i) => {
       const geometry = new T.ExtrudeGeometry(shape, { depth: .30, bevelEnabled: true,
-        bevelSegments: compact.matches ? 3 : 5, bevelSize: .055, bevelThickness: .065,
-        curveSegments: compact.matches ? 10 : 16, steps: 1 });
+        bevelSegments: 6, bevelSize: .055, bevelThickness: .065,
+        curveSegments: 24, steps: 1 });
       geometry.computeVertexNormals();
       const front = new T.MeshPhysicalMaterial({
         color: i ? 0x08bfa9 : 0x07373b, metalness: i ? .68 : .77,
@@ -136,12 +136,9 @@ function initialize(T, RoomEnvironment) {
         emissive: i ? 0x00665b : 0x00373a, emissiveIntensity: .26
       });
       const mesh = new T.Mesh(geometry, [front, side]); logo.add(mesh);
-      const edgeMaterial = new T.LineBasicMaterial({
-        color: i ? 0x7affed : 0x35c9ca, transparent: true, opacity: .43,
-        blending: T.AdditiveBlending, depthWrite: false, toneMapped: false
-      });
-      mesh.add(new T.LineSegments(new T.EdgesGeometry(geometry, 24), edgeMaterial));
-      edges.push(edgeMaterial);
+      // Let the rounded metal bevel catch the light instead of drawing
+      // overlapping wire edges, which can shimmer and alias on small screens.
+      rims.push(side);
     });
     let hoverX = 0, hoverY = 0, drag = null, rotationX = 0, rotationY = 0, pulseAt = -1e6;
     let last = 0;
@@ -149,7 +146,11 @@ function initialize(T, RoomEnvironment) {
     function resize() {
       if (disposed) return;
       const w = Math.max(panel.clientWidth, 1), h = Math.max(panel.clientHeight, 1);
-      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, compact.matches ? 1 : 1.5));
+      // Retina clarity, with a fixed pixel budget to bound GPU cost.
+      const pixelBudget = compact.matches ? 900000 : 1600000;
+      const maxRatio = Math.sqrt(pixelBudget / (w * h));
+      const ratio = Math.min(devicePixelRatio || 1, compact.matches ? 3 : 2.5, maxRatio);
+      renderer.setPixelRatio(ratio);
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.position.z = 10.3 * Math.max(1, 1 / camera.aspect);
@@ -172,7 +173,7 @@ function initialize(T, RoomEnvironment) {
       const progress = (now - pulseAt) / 1350;
       const glow = progress >= 0 && progress <= 1 ? Math.sin(progress * Math.PI) : 0;
       pulse.intensity = glow * 18;
-      edges.forEach(mat => { mat.opacity = .43 + glow * .42; });
+      rims.forEach(mat => { mat.emissiveIntensity = .26 + glow * .35; });
       logo.scale.setScalar(1 + glow * .012);
       try {
         renderer.render(scene, camera);
