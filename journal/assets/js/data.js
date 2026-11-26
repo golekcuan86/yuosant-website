@@ -941,5 +941,61 @@ YJ.data.articles = YJ.data.articles.concat([
   }
 ]);
 
+YJ.data.articles.push({
+  slug: 'api-ai-tanpa-kartu-kredit-bayar-qris',
+  title: 'Cara Pakai API AI Tanpa Kartu Kredit: Bayar QRIS, Langsung Jalan di HP',
+  excerpt: 'Mau bikin bot, aplikasi, atau otomasi pakai Claude, GPT, Gemini, dan DeepSeek, tapi mentok di kartu kredit dan dolar? Ini panduan langkah demi langkah memakai satu API key yang dibayar dengan Rupiah.',
+  category: 'ai', author: 'pandu', date: '2026-11-27', readTime: 6,
+  hero: false, editorsPick: false,
+  seed: 'yj-api-ai-qris', img: 'assets/img/articles/api-ai-bayar-qris.jpg', imgAlt: 'Logo AiDO Router di latar gelap',
+  tags: ['AI', 'API', 'Developer', 'AiDO Router'],
+  content: [
+    { t: 'p', x: 'ChatGPT dan Gemini versi gratis sudah cukup untuk bertanya sehari-hari. Tapi begitu Anda ingin <strong>membuat sesuatu</strong> — bot WhatsApp yang menjawab pelanggan, aplikasi tugas akhir, alur otomasi di n8n, atau asisten coding — Anda butuh <strong>API key</strong>. Di sinilah banyak orang Indonesia berhenti: penyedia AI besar umumnya meminta kartu kredit dan menagih dalam dolar.' },
+    { t: 'h2', x: 'Apa itu API key, singkatnya?' },
+    { t: 'p', x: 'API key adalah “kunci” yang membuat aplikasi Anda boleh berbicara langsung dengan model AI. Aplikasi mengirim pertanyaan, model mengirim jawaban, dan setiap pemakaian dihitung dalam <em>token</em> (potongan kata). Anda membayar sesuai yang dipakai, bukan langganan bulanan.' },
+    { t: 'h2', x: 'Siapa yang membutuhkannya?' },
+    { t: 'list', items: [
+      'Programmer yang memakai asisten coding seperti Cline, Roo Code, atau Cursor dengan API key sendiri.',
+      'Pembuat bot WhatsApp atau Telegram untuk toko online dan layanan pelanggan.',
+      'Pengguna n8n dan alat otomasi lain: meringkas email, membalas chat, membuat konten.',
+      'Siswa dan mahasiswa RPL/TKJ/Informatika yang mengerjakan proyek atau tugas akhir berbasis AI.',
+      'Freelancer yang membangun aplikasi AI untuk klien.'
+    ]},
+    { t: 'h2', x: 'Solusinya: satu API key, bayar Rupiah' },
+    { t: 'p', x: '<a href="https://router.yuosant.com/" target="_blank" rel="noopener">AiDO Router</a> menyediakan satu API key untuk banyak model — Claude, GPT, Gemini, DeepSeek, dan lainnya — dengan format yang <strong>kompatibel OpenAI</strong>. Artinya, hampir semua aplikasi yang punya pilihan “OpenAI API” bisa langsung memakainya cukup dengan mengganti alamat server. Saldo diisi lewat <strong>QRIS atau virtual account</strong>, mulai dari nominal kecil, tanpa kartu kredit.' },
+    { t: 'p', x: '<em>Catatan keterbukaan: AiDO Router adalah layanan dari ekosistem Yuosant, penerbit Yuosant Journal.</em>' },
+    { t: 'h2', x: 'Langkah 1 — Daftar dan isi saldo' },
+    { t: 'list', items: [
+      'Buka <a href="https://router.yuosant.com/" target="_blank" rel="noopener">router.yuosant.com</a>, lalu daftar dengan email.',
+      'Pilih paket kredit, bayar dengan QRIS atau virtual account.',
+      'Saldo masuk otomatis setelah pembayaran berhasil.'
+    ]},
+    { t: 'h2', x: 'Langkah 2 — Buat API key' },
+    { t: 'p', x: 'Masuk ke menu <strong>API keys</strong>, buat key baru, lalu salin. Simpan baik-baik: perlakukan seperti PIN ATM. Jangan dikirim di grup, dan tutup tampilannya sebelum mengambil screenshot.' },
+    { t: 'h2', x: 'Langkah 3 — Coba langsung di HP dengan Chatbox' },
+    { t: 'p', x: 'Cara tercepat menguji tanpa menulis kode adalah aplikasi <strong>Chatbox</strong> (tersedia di Play Store):' },
+    { t: 'list', items: [
+      'Buka <strong>Settings → Model Provider → OpenAI</strong>.',
+      'Isi <strong>API Key</strong> dengan key dari AiDO.',
+      'Isi <strong>API Host</strong> dengan <code>https://router.yuosant.com/v1</code>.',
+      'Tekan <strong>Check</strong> sampai muncul “Connection successful”, lalu ambil daftar model.',
+      'Buat chat baru dan pilih model dari grup <strong>OpenAI</strong> — bukan model berlabel “Chatbox AI” atau PRO, karena itu layanan berbayar milik Chatbox sendiri.'
+    ]},
+    { t: 'h2', x: 'Langkah 4 — Pakai di aplikasi atau kode Anda' },
+    { t: 'p', x: 'Di aplikasi apa pun yang mendukung OpenAI API (n8n, plugin coding, library Python/JavaScript), cukup ganti dua hal: <strong>Base URL</strong> menjadi <code>https://router.yuosant.com/v1</code> dan <strong>API key</strong> dengan key AiDO Anda. Contoh di Python:' },
+    { t: 'p', x: '<code>from openai import OpenAI<br>client = OpenAI(base_url="https://router.yuosant.com/v1", api_key="KEY_ANDA")<br>r = client.chat.completions.create(model="NAMA_MODEL", messages=[{"role": "user", "content": "Halo!"}])<br>print(r.choices[0].message.content)</code>' },
+    { t: 'p', x: 'Ganti <code>NAMA_MODEL</code> dengan nama model yang tercantum di dashboard AiDO.' },
+    { t: 'h2', x: 'Tips agar saldo awet' },
+    { t: 'list', items: [
+      'Pakai model cepat dan murah untuk tugas ringan (ringkasan, klasifikasi, balasan chat), dan model besar hanya untuk tugas berat.',
+      'Buat satu API key per aplikasi, supaya pemakaian mudah dipantau dan key bisa diganti tanpa mengganggu aplikasi lain.',
+      'Pantau menu <strong>Usage</strong> secara berkala.',
+      'Perhatikan masa berlaku kredit di dashboard, lalu isi sesuai kebutuhan nyata.'
+    ]},
+    { t: 'quote', x: 'Alat AI terbaik adalah yang benar-benar bisa Anda pakai hari ini — tanpa harus punya kartu kredit dulu.' },
+    { t: 'p', x: 'Mulai dari yang kecil: isi saldo secukupnya, uji di Chatbox, lalu sambungkan ke proyek pertama Anda. <a href="https://router.yuosant.com/" target="_blank" rel="noopener">Buka AiDO Router →</a>' }
+  ]
+});
+
 /* Artikel diurutkan terbaru dulu */
 YJ.data.articles.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
